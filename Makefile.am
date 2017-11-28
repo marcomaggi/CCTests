@@ -48,7 +48,8 @@ libcctests_la_SOURCES	= \
 #### tests
 
 check_PROGRAMS	= \
-	tests/version
+	tests/version		\
+	tests/conditions
 
 TESTS				= $(check_PROGRAMS)
 
@@ -57,6 +58,9 @@ cctests_tests_ldadd		= libcctests.la
 
 tests_version_CPPFLAGS		= $(cctests_tests_cppflags)
 tests_version_LDADD		= $(cctests_tests_ldadd)
+
+tests_conditions_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_conditions_LDADD		= $(cctests_tests_ldadd)
 
 installcheck-local: $(TESTS)
 	@for f in $(TESTS); do $(builddir)/$$f; done
