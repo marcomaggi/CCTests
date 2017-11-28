@@ -1,0 +1,307 @@
+\input texinfo.tex
+@c %**start of header
+@setfilename cctests.info
+@settitle CCTests
+@c %**end of header
+
+@include version.texi
+@include macros.texi
+
+@c page
+@c ------------------------------------------------------------
+@c Values.
+@c ------------------------------------------------------------
+
+@set TITLE                      CCTests
+
+@c To be used as @value{PACKAGE} whenever we need to include the full
+@c name of this package.
+@set PACKAGE                    CCTests
+
+@c To be used as @value{PACKAGE} whenever we need to include the
+@c nickname of the project: the name that is used to compose the
+@c distribution tarball or the web address.
+@set PACKAGE_NICKNAME           cctests
+
+@c To be used as @value{AUTHOR} whenever we need to include the list of
+@c authors of this document.
+@set AUTHOR                     Marco Maggi
+
+@c To be used as @value{AUTHOR_EMAIL} whenever we need to include the
+@c email of the *single* author of this document.
+@set AUTHOR_EMAIL               @email{marco.maggi-ipsu@@poste.it}
+
+@c To be used as @value{COPYRIGHT_YEARS} whenever we need to include the
+@c list of copyright years.
+@set COPYRIGHT_YEARS            2017
+
+@c ------------------------------------------------------------
+
+@set CCEXCEPTIONS_REQUIRED_VERSION      0.6.1
+
+@c ------------------------------------------------------------
+
+@set GITHUB_URL                 @url{https://github.com/marcomaggi/@value{PACKAGE_NICKNAME}}
+@set BITBUCKET_URL              @url{https://bitbucket.org/marcomaggi/@value{PACKAGE_NICKNAME}}
+@set DOWNLOAD_URL               @url{https://bitbucket.org/marcomaggi/@value{PACKAGE_NICKNAME}/downloads}
+@set DOCUMENTATION_URL          @url{https://marcomaggi.github.io/docs/@value{PACKAGE_NICKNAME}.html}
+
+@c page
+@c ------------------------------------------------------------
+@c Copyright notice.
+@c ------------------------------------------------------------
+
+@copying
+This document describes version @value{VERSION} of @value{PACKAGE}, a C11 language library
+implementing a framework to organise test suites.  The library targets @posix{} platforms.
+
+The package depends upon the external package CCExceptions at least version
+@value{CCEXCEPTIONS_REQUIRED_VERSION}, and relies on @command{pkg-config} to find it installed on
+the system.
+
+The package is distributed under the terms of the @gnu{} Lesser General Public License (@gpl{}).
+
+The latest release can be downloaded from:
+
+@center @value{DOWNLOAD_URL}
+
+@noindent
+development takes place at:
+
+@center @value{GITHUB_URL}
+
+@noindent
+and as backup at:
+
+@center @value{BITBUCKET_URL}
+
+@noindent
+Copyright @copyright{} @value{COPYRIGHT_YEARS} by @value{AUTHOR} @value{AUTHOR_EMAIL}
+
+@quotation
+Permission is granted to copy, distribute and/or modify this document under the terms of the @gnu{}
+Free Documentation License, Version 1.3 or any later version published by the Free Software
+Foundation; with Invariant Sections being ``@gnu{} Free Documentation License'' and ``@gnu{} General
+Public License'', no Front--Cover Texts, and no Back--Cover Texts.  A copy of the license is
+included in the section entitled ``@gnu{} Free Documentation License''.
+@end quotation
+@end copying
+
+@c page
+@c ------------------------------------------------------------
+@c Headers.
+@c ------------------------------------------------------------
+
+@titlepage
+@title @value{TITLE}
+@subtitle Revision @value{VERSION}
+@author @value{AUTHOR} @value{AUTHOR_EMAIL}
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@c ------------------------------------------------------------
+
+@ifinfo
+@dircategory Development
+@direntry
+* cctests: (cctests).           CCTests a C11 library to organise test suites.
+@end direntry
+@end ifinfo
+
+@c ------------------------------------------------------------
+
+@ignore
+@syncodeindex tp cp
+@syncodeindex vr cp
+@syncodeindex fn cp
+@end ignore
+
+@c page
+@ifnottex
+@node Top
+@top @value{TITLE}
+
+@insertcopying
+
+@menu
+* overview::                    Overview of the package.
+* init::                        Library initialisation.
+* version::                     Version functions.
+
+Appendices
+
+* Package License::             GNU Lesser General Public License.
+* Documentation License::       GNU Free Documentation License.
+* references::                  Bibliography and references.
+
+Indexes
+
+* concept index::               An entry for each concept.
+* function index::              An entry for each function.
+* variable index::              An entry for each variable.
+* type index::                  An entry for each type.
+@end menu
+@end ifnottex
+
+@c page
+@node overview
+@chapter Overview of the package
+
+
+This document describes version @value{VERSION} of @value{PACKAGE}, a C11 language library
+implementing a framework to organise test suites.  The library targets @posix{} platforms.
+
+The package depends upon the external package CCExceptions at least version
+@value{CCEXCEPTIONS_REQUIRED_VERSION}, and relies on @command{pkg-config} to find it installed on
+the system.
+
+@value{PACKAGE} installs the single header file @file{cctests.h}.  All the function names in the
+@api{} are prefixed with @code{cctest_}; all the preprocessor symbol names are prefixed with
+@code{CCTEST_}; all the type names are prefixed with @code{cctest_} and suffixed with @code{_t}.
+
+The library's @api{} uses both @code{inline} functions and preprocessor macros to integrate some
+common operations at the call site.
+
+Notice that, before using the library, we need to call the global initialisation function
+@cfunc{cctest_init}.
+
+@strong{IMPORTANT} To use the library we must enable the @posix{} features when including the
+standard header files; so either we include @file{cctest.h} as first header, or we include the
+following definitions before including @strong{all} the header files:
+
+@example
+#define _POSIX_C_SOURCE         200809L
+@end example
+
+@menu
+* overview linking::            Linking code with the library.
+@end menu
+
+@c page
+@node overview linking
+@section Linking code with the library
+
+
+This package installs a data file for @command{pkg-config}, so when searching for the installed
+library with the @gnu{} Autotools, we can add the following macro use to @file{configure.ac}:
+
+@example
+PKG_CHECK_MODULES([CCTESTS],[cctests >= 0.1])
+@end example
+
+@noindent
+which will set the variables @code{CCTESTS_LIBS} and @code{CCTESTS_CFLAGS}.
+
+Alternatively we can use the raw @gnu{} Autoconf macros:
+
+@example
+AC_CHECK_LIB([cctests],[cctest_version_string],,
+  [AC_MSG_FAILURE([test for Cctests library failed])])
+AC_CHECK_HEADERS([cctests.h],,
+  [AC_MSG_FAILURE([test for Cctests header failed])])
+@end example
+
+@c page
+@node init
+@chapter Library initialisation
+
+
+@deftypefun void cctest_init (void)
+Initialise the internal structures of the library.  It is fine to call this function multiple times.
+
+@quotation
+@strong{NOTE} This function is defined with the @gcc{} attribute @code{constructor}, so, when the
+library is built with @gcc{}: it will be called automatically by the library initialisation code.
+@end quotation
+@end deftypefun
+
+@c page
+@node version
+@chapter Version functions
+
+
+The installed libraries follow version numbering as established by the @gnu{} Autotools.  For an
+explanation of interface numbers as managed by @gnu{} Libtool @xref{Libtool versioning, interface,
+Libtool's versioning system, libtool, Shared library support for @gnu{}}.
+
+
+@deftypefun {const char *} cctest_version_string (void)
+Return a pointer to a statically allocated @asciiz{} string representing the interface version
+number.
+@end deftypefun
+
+
+@deftypefun int cctest_version_interface_current (void)
+Return an integer representing the library interface current number.
+@end deftypefun
+
+
+@deftypefun int cctest_version_interface_revision (void)
+Return an integer representing the library interface current revision number.
+@end deftypefun
+
+
+@deftypefun int cctest_version_interface_age (void)
+Return an integer representing the library interface current age.
+@end deftypefun
+
+@c page
+@c ------------------------------------------------------------
+@c Appendices.
+@c ------------------------------------------------------------
+
+@include lgpl-3.0.texi
+@include fdl-1.3.texi
+
+@c page
+@node references
+@appendix Bibliography and references
+
+
+The documentation of @value{PACKAGE} is available online:
+
+@center @value{DOCUMENTATION_URL}
+
+@noindent
+the latest release of this package can be downloaded from:
+
+@center @value{DOWNLOAD_URL}
+
+@noindent
+development takes place at:
+
+@center @value{GITHUB_URL}
+
+@noindent
+and as backup at:
+
+@center @value{BITBUCKET_URL}
+
+@c page
+@node concept index
+@appendix An entry for each concept
+
+@printindex cp
+
+@node function index
+@appendix An entry for each function.
+
+@printindex fn
+
+@node variable index
+@appendix An entry for each variable.
+
+@printindex vr
+
+@node type index
+@appendix An entry for each type.
+
+@printindex tp
+
+@contents
+@bye
+
+@c end of file
+
