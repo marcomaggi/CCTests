@@ -165,6 +165,11 @@ the GNU Project software can be found here:
 
 [http://www.gnu.org/](http://www.gnu.org/)
 
+we can find the package CCExceptions at:
+
+[http://github.com/marcomaggi/ccexceptions/](http://github.com/marcomaggi/ccexceptions/)
+
+
 
 ## Badges and static analysis
 

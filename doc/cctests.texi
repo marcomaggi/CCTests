@@ -440,6 +440,11 @@ and as backup at:
 
 @center @value{BITBUCKET_URL}
 
+we can find the package CCExceptions at:
+
+@center @url{http://github.com/marcomaggi/ccexceptions/}
+
+
 @c page
 @node concept index
 @appendix An entry for each concept
