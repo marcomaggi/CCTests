@@ -1,6 +1,6 @@
 /*
   Part of: CCTests
-  Contents: version functions
+  Contents: initialisation functions
   Date: Nov 28, 2017
 
   Abstract
@@ -31,25 +31,10 @@
 #include "cctests-internals.h"
 
 
-const char *
-cctests_version_string (void)
+void
+cctests_init (void)
 {
-  return cctests_VERSION_INTERFACE_STRING;
-}
-int
-cctests_version_interface_current (void)
-{
-  return cctests_VERSION_INTERFACE_CURRENT;
-}
-int
-cctests_version_interface_revision (void)
-{
-  return cctests_VERSION_INTERFACE_REVISION;
-}
-int
-cctests_version_interface_age (void)
-{
-  return cctests_VERSION_INTERFACE_AGE;
+  cctests_conditions_module_initialisation();
 }
 
 /* end of file */

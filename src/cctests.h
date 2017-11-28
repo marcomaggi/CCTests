@@ -35,7 +35,7 @@
 extern "C" {
 #endif
 
-/* The macro CCTESTS_UNUSED indicates that a function, function argument
+/* The macro CCTESTS_UNUSED indicates  that a function, function argument
    or variable may potentially be unused. Usage examples:
 
    static int unused_function (char arg) CCTESTS_UNUSED;
@@ -84,9 +84,7 @@ extern "C" {
  ** Headers.
  ** ----------------------------------------------------------------- */
 
-/* Enable latest POSIX features. */
-#define _POSIX_C_SOURCE		200809L
-
+#include <ccexceptions.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -102,16 +100,72 @@ extern "C" {
  ** ----------------------------------------------------------------- */
 
 
+
+/** --------------------------------------------------------------------
+ ** Type definitions.
+ ** ----------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------ */
+
+typedef struct cctests_descriptor_base_t		cctests_descriptor_base_t;
+typedef struct cctests_descriptor_signal_1_t		cctests_descriptor_signal_1_t;
+
+typedef struct cctests_condition_base_t			cctests_condition_base_t;
+typedef struct cctests_condition_signal_1_t		cctests_condition_signal_1_t;
 
 
 /** --------------------------------------------------------------------
  ** Version functions.
  ** ----------------------------------------------------------------- */
 
-cctests_decl const char *	cctest_version_string (void);
-cctests_decl int		cctest_version_interface_current (void);
-cctests_decl int		cctest_version_interface_revision (void);
-cctests_decl int		cctest_version_interface_age (void);
+cctests_decl char const * cctests_version_string (void);
+cctests_decl int	cctests_version_interface_current (void);
+cctests_decl int	cctests_version_interface_revision (void);
+cctests_decl int	cctests_version_interface_age (void);
+
+
+/** --------------------------------------------------------------------
+ ** Condition objects.
+ ** ----------------------------------------------------------------- */
+
+struct cctests_descriptor_base_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_base_t {
+  cce_condition_t	condition;
+};
+
+cctests_decl const cctests_descriptor_base_t * const cctests_descriptor_base;
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_base (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_base->descriptor));
+}
+
+/* ------------------------------------------------------------------ */
+
+struct cctests_descriptor_signal_1_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_signal_1_t {
+  cctests_condition_base_t	base;
+};
+
+cctests_decl const cctests_descriptor_signal_1_t * const cctests_descriptor_signal_1;
+
+cctests_decl cce_condition_t const * cctests_condition_new_signal_1 (void)
+  __attribute__((__leaf__,__pure__));
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_signal_1 (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_signal_1->descriptor));
+}
 
 
 /** --------------------------------------------------------------------

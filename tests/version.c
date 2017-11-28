@@ -12,18 +12,18 @@
   See the COPYING file.
 */
 
+#include <cctests.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <cctests.h>
 
 int
 main (int argc CCTESTS_UNUSED, const char *const argv[] CCTESTS_UNUSED)
 {
-  printf("version number string: %s\n", cctest_version_string());
+  printf("version number string: %s\n", cctests_version_string());
   printf("libtool version number: %d:%d:%d\n",
-	 cctest_version_interface_current(),
-	 cctest_version_interface_revision(),
-	 cctest_version_interface_age());
+	 cctests_version_interface_current(),
+	 cctests_version_interface_revision(),
+	 cctests_version_interface_age());
   exit(EXIT_SUCCESS);
 }
 

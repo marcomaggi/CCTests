@@ -55,6 +55,7 @@
  ** Function prototypes.
  ** ----------------------------------------------------------------- */
 
+cctests_private_decl void cctests_conditions_module_initialisation (void);
 
 
 /** --------------------------------------------------------------------

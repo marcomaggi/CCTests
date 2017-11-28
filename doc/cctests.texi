@@ -129,6 +129,7 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 * overview::                    Overview of the package.
 * init::                        Library initialisation.
 * version::                     Version functions.
+* conditions::                  Condition object types.
 
 Appendices
 
@@ -158,14 +159,14 @@ The package depends upon the external package CCExceptions at least version
 the system.
 
 @value{PACKAGE} installs the single header file @file{cctests.h}.  All the function names in the
-@api{} are prefixed with @code{cctest_}; all the preprocessor symbol names are prefixed with
-@code{CCTEST_}; all the type names are prefixed with @code{cctest_} and suffixed with @code{_t}.
+@api{} are prefixed with @code{cctests_}; all the preprocessor symbol names are prefixed with
+@code{CCTESTS_}; all the type names are prefixed with @code{cctests_} and suffixed with @code{_t}.
 
 The library's @api{} uses both @code{inline} functions and preprocessor macros to integrate some
 common operations at the call site.
 
 Notice that, before using the library, we need to call the global initialisation function
-@cfunc{cctest_init}.
+@cfunc{cctests_init}.
 
 @strong{IMPORTANT} To use the library we must enable the @posix{} features when including the
 standard header files; so either we include @file{cctest.h} as first header, or we include the
@@ -197,7 +198,7 @@ which will set the variables @code{CCTESTS_LIBS} and @code{CCTESTS_CFLAGS}.
 Alternatively we can use the raw @gnu{} Autoconf macros:
 
 @example
-AC_CHECK_LIB([cctests],[cctest_version_string],,
+AC_CHECK_LIB([cctests],[cctests_version_string],,
   [AC_MSG_FAILURE([test for Cctests library failed])])
 AC_CHECK_HEADERS([cctests.h],,
   [AC_MSG_FAILURE([test for Cctests header failed])])
@@ -208,7 +209,7 @@ AC_CHECK_HEADERS([cctests.h],,
 @chapter Library initialisation
 
 
-@deftypefun void cctest_init (void)
+@deftypefun void cctests_init (void)
 Initialise the internal structures of the library.  It is fine to call this function multiple times.
 
 @quotation
@@ -227,25 +228,185 @@ explanation of interface numbers as managed by @gnu{} Libtool @xref{Libtool vers
 Libtool's versioning system, libtool, Shared library support for @gnu{}}.
 
 
-@deftypefun {const char *} cctest_version_string (void)
+@deftypefun {const char *} cctests_version_string (void)
 Return a pointer to a statically allocated @asciiz{} string representing the interface version
 number.
 @end deftypefun
 
 
-@deftypefun int cctest_version_interface_current (void)
+@deftypefun int cctests_version_interface_current (void)
 Return an integer representing the library interface current number.
 @end deftypefun
 
 
-@deftypefun int cctest_version_interface_revision (void)
+@deftypefun int cctests_version_interface_revision (void)
 Return an integer representing the library interface current revision number.
 @end deftypefun
 
 
-@deftypefun int cctest_version_interface_age (void)
+@deftypefun int cctests_version_interface_age (void)
 Return an integer representing the library interface current age.
 @end deftypefun
+
+@c page
+@node conditions
+@chapter Condition object types
+
+
+@value{PACKAGE} uses the external library CCExceptions to signal exceptional conditions and errors
+through non--local exits; @xref{Top, CCExceptions, CCExceptions, ccexceptions, CCExceptions}.
+
+The functions will raise exceptional conditions with @cfunc{cce_raise} and expect the caller to
+intercept them using the @code{cce_location_t} mechanics.  The basic code template is:
+
+@example
+#include <ccpair.h>
+
+cce_location_t  L[1];
+
+if (cce_location(L)) @{
+  /* Handle errors here. */
+  cce_run_error_handlers_final(L);
+@} else @{
+  /* Do something useful here. */
+  cce_run_cleanup_handlers(L);
+@}
+@end example
+
+@menu
+* conditions base::             Base condition object.
+* conditions signal one::       Convenience signal one.
+@end menu
+
+@c page
+@node conditions base
+@section Base condition object
+
+
+@cindex base, exceptional condition
+@cindex Exceptional conditions, base
+
+
+@deftp {Struct Typedef} cctests_descriptor_base_t
+Type of data structure representing the base exceptional--condition descriptor for the exceptions
+defined by @value{PACKAGE}.  It has the following public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the root descriptor.  @xref{conditions root, CCExceptions,
+CCExceptions, ccexceptions, CCExceptions}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_base_t
+Type of data structure representing the base exceptional--condition object for the exceptions
+defined by @value{PACKAGE}.  It has the following public fields:
+
+@table @code
+@item cce_condition_t base
+The condition object's base values.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_base_t const * const} cctests_descriptor_base
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun bool cctests_condition_is_base (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_base}; otherwise return @cfalse{}.
+@end deftypefun
+
+
+To catch this exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_base(cce_condition(L))) @{
+    cctests_condition_base_t * C = (cctests_condition_base_t *) cce_condition(L);
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+@c page
+@node conditions signal one
+@section Convenience signal one
+
+
+@cindex Signal one, exceptional condition
+@cindex Exceptional conditions, signal one
+
+
+@deftp {Struct Typedef} cctests_descriptor_signal_1_t
+Type of data structure representing the exceptional--condition descriptor for the condition
+@emph{signal one}: an exception that client code can use to signal some test result.  It has the
+following public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_base},
+@ref{conditions base, Base condition object}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_signal_1_t
+Type of data structure representing the exceptional--condition object for the condition @emph{signal
+one}: an exception that client code can use to signal some test result.  It has the following public
+fields:
+
+@table @code
+@item cctests_condition_base_t base
+The condition object's base values.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_signal_1_t const * const} cctests_descriptor_signal_1
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_signal_1 (void)
+Return a pointer to exceptional condition object.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_signal_1 (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_signal_1}; otherwise return
+@cfalse{}.
+@end deftypefun
+
+
+To catch this exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_signal_1(cce_condition(L))) @{
+    cctests_condition_signal_1_t * C = (cctests_condition_signal_1_t *) cce_condition(L);
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
 
 @c page
 @c ------------------------------------------------------------
