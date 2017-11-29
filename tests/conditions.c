@@ -102,6 +102,8 @@ test_4_2 (void)
 int
 main (void)
 {
+  cctests_init();
+
   /* Condition signal one. */
   if (1) { test_1_1(); }
   if (1) { test_1_2(); }
