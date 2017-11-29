@@ -470,6 +470,23 @@ public fields:
 @table @code
 @item cctests_condition_base_t base
 The condition object's base values.
+
+@item char const * expr
+Pointer to a statically allocated @asciiz{} string representing the failed assertion's expression.
+
+@item char const * filename
+Pointer to a statically allocated @asciiz{} string representing the pathname of the source file in
+which the failed assertion is located.  This value is meant to be generated with the preprocessor
+macro @code{__FILE__}.
+
+@item char const * funcname
+Pointer to a statically allocated @asciiz{} string representing the name of the function in which
+the failed assertion is located.  This value is meant to be generated with the preprocessor macro
+@code{__func__}.
+
+@item int linenum
+The line number in the source file in which the failed assertion is located.  This value is meant to
+be generated with the preprocessor macro @code{__LINE__}.
 @end table
 @end deftp
 
@@ -479,7 +496,7 @@ Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun {cce_condition_t const *} cctests_condition_new_assertion_failure (void)
+@deftypefun {cce_condition_t const *} cctests_condition_new_assertion_failure (char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
 Return a pointer to exceptional condition object.
 @end deftypefun
 

@@ -32,12 +32,13 @@
 
 
 void
-cctests_p_assert (char const * const expr, bool const result, char const * const funcname, int const linenum, char const * const filename)
+cctests_p_assert (char const * const expr, bool const result,
+		  char const * const filename, char const * const funcname, int const linenum)
 {
   if (false == result) {
     fprintf(stderr, "%s: %s: line %d: assertion failure: %s\n",
 	    filename, funcname, linenum, expr);
-    cce_raise(cctests_location, cctests_condition_new_assertion_failure());
+    cce_raise(cctests_location, cctests_condition_new_assertion_failure(expr, filename, funcname, linenum));
   }
 }
 

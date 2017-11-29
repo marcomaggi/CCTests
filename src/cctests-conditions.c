@@ -96,26 +96,36 @@ condition_test_failure_static_message (cce_condition_t const * C CCTESTS_UNUSED)
  ** ----------------------------------------------------------------- */
 
 static cce_condition_static_message_fun_t	condition_assertion_failure_static_message;
+static cce_condition_delete_fun_t		condition_assertion_failure_delete;
 
 static cctests_descriptor_assertion_failure_t descriptor_assertion_failure = {
   .descriptor.parent		= &descriptor_base.descriptor,
-  .descriptor.delete		= NULL,
+  .descriptor.delete		= condition_assertion_failure_delete,
   .descriptor.final		= NULL,
   .descriptor.static_message	= condition_assertion_failure_static_message
 };
 
 cctests_descriptor_assertion_failure_t const * const cctests_descriptor_assertion_failure = &descriptor_assertion_failure;
 
-/* This struct type has no dynamic fields, so there is only one instance
-   of this struct type.  We allocate it statically. */
-static cctests_condition_assertion_failure_t const condition_assertion_failure = {
-  .base.condition.descriptor	= &descriptor_assertion_failure.descriptor
-};
-
 cce_condition_t const *
-cctests_condition_new_assertion_failure (void)
+cctests_condition_new_assertion_failure (char const * const expr,
+					 char const * const filename,
+					 char const * const funcname,
+					 int const linenum)
 {
-  return (cce_condition_t *)&condition_assertion_failure;
+  cctests_condition_assertion_failure_t *	C = malloc(sizeof(cctests_condition_assertion_failure_t));
+  C->base.condition.descriptor	= &descriptor_assertion_failure.descriptor;
+  C->expr			= expr;
+  C->filename			= filename;
+  C->funcname			= funcname;
+  C->linenum			= linenum;
+  return (cce_condition_t *)C;
+}
+
+void
+condition_assertion_failure_delete (cce_condition_t * C)
+{
+  free(C);
 }
 
 char const *

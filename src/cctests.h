@@ -177,7 +177,7 @@ struct cctests_condition_test_failure_t {
 cctests_decl const cctests_descriptor_test_failure_t * const cctests_descriptor_test_failure;
 
 cctests_decl cce_condition_t const * cctests_condition_new_test_failure (void)
-  __attribute__((__leaf__,__pure__));
+  __attribute__((__leaf__,__pure__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
@@ -194,12 +194,19 @@ struct cctests_descriptor_assertion_failure_t {
 
 struct cctests_condition_assertion_failure_t {
   cctests_condition_base_t	base;
+  char const *			expr;
+  char const *			filename;
+  char const *			funcname;
+  int				linenum;
 };
 
 cctests_decl const cctests_descriptor_assertion_failure_t * const cctests_descriptor_assertion_failure;
 
-cctests_decl cce_condition_t const * cctests_condition_new_assertion_failure (void)
-  __attribute__((__leaf__,__pure__));
+cctests_decl cce_condition_t const * cctests_condition_new_assertion_failure (char const * const expr,
+									      char const * const filename,
+									      char const * const funcname,
+									      int const linenum)
+  __attribute__((__leaf__,__nonnull__(1,2,3),__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
@@ -221,7 +228,7 @@ struct cctests_condition_signal_1_t {
 cctests_decl const cctests_descriptor_signal_1_t * const cctests_descriptor_signal_1;
 
 cctests_decl cce_condition_t const * cctests_condition_new_signal_1 (void)
-  __attribute__((__leaf__,__pure__));
+  __attribute__((__leaf__,__pure__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
@@ -243,7 +250,7 @@ struct cctests_condition_signal_2_t {
 cctests_decl const cctests_descriptor_signal_2_t * const cctests_descriptor_signal_2;
 
 cctests_decl cce_condition_t const * cctests_condition_new_signal_2 (void)
-  __attribute__((__leaf__,__pure__));
+  __attribute__((__leaf__,__pure__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
@@ -265,7 +272,7 @@ struct cctests_condition_signal_3_t {
 cctests_decl const cctests_descriptor_signal_3_t * const cctests_descriptor_signal_3;
 
 cctests_decl cce_condition_t const * cctests_condition_new_signal_3 (void)
-  __attribute__((__leaf__,__pure__));
+  __attribute__((__leaf__,__pure__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
@@ -279,11 +286,10 @@ cctests_condition_is_signal_3 (cce_condition_t const * C)
  ** Assertions API.
  ** ----------------------------------------------------------------- */
 
-#define cctests_assert(EXPR)	cctests_p_assert(#EXPR, EXPR, __func__, __LINE__, __FILE__)
+#define cctests_assert(EXPR)	cctests_p_assert(#EXPR, EXPR, __FILE__, __func__, __LINE__)
 
 cctests_decl void cctests_p_assert (char const * const expr, bool result,
-				    char const * const funcname, int const linenum,
-				    char const * const filename);
+				    char const * const filename, char const * const funcname, int const linenum);
 
 
 /** --------------------------------------------------------------------
