@@ -199,9 +199,9 @@ Alternatively we can use the raw @gnu{} Autoconf macros:
 
 @example
 AC_CHECK_LIB([cctests],[cctests_version_string],,
-  [AC_MSG_FAILURE([test for Cctests library failed])])
+  [AC_MSG_FAILURE([test for CCTests library failed])])
 AC_CHECK_HEADERS([cctests.h],,
-  [AC_MSG_FAILURE([test for Cctests header failed])])
+  [AC_MSG_FAILURE([test for CCTests header failed])])
 @end example
 
 @c page
