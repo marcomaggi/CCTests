@@ -112,6 +112,13 @@ test_5_1 (void)
 
 void
 test_5_2 (void)
+/* Tests that "assertion_failure" is a "test_failure" condition. */
+{
+  test_assert(true == cctests_condition_is_test_failure(cctests_condition_new_assertion_failure("1+2", __FILE__, __func__, __LINE__)));
+}
+
+void
+test_5_3 (void)
 /* Tests that "assertion_failure" is a "assertion_failure" condition. */
 {
   test_assert(true == cctests_condition_is_assertion_failure(cctests_condition_new_assertion_failure("1+2", __FILE__, __func__, __LINE__)));
@@ -142,6 +149,7 @@ main (void)
   /* Condition assertion failure. */
   if (1) { test_5_1(); }
   if (1) { test_5_2(); }
+  if (1) { test_5_3(); }
 
   exit(EXIT_SUCCESS);
 }

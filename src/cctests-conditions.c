@@ -99,7 +99,7 @@ static cce_condition_static_message_fun_t	condition_assertion_failure_static_mes
 static cce_condition_delete_fun_t		condition_assertion_failure_delete;
 
 static cctests_descriptor_assertion_failure_t descriptor_assertion_failure = {
-  .descriptor.parent		= &descriptor_base.descriptor,
+  .descriptor.parent		= &descriptor_test_failure.descriptor,
   .descriptor.delete		= condition_assertion_failure_delete,
   .descriptor.final		= NULL,
   .descriptor.static_message	= condition_assertion_failure_static_message
