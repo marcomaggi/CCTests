@@ -76,14 +76,33 @@ void
 test_3_2 (void)
 /* Tests that signal_3 is a signal_3 condition. */
 {
-  test_assert(true == cctests_condition_is_signal_3(cctests_condition_new_signal_3()));
+test_assert(true == cctests_condition_is_signal_3(cctests_condition_new_signal_3()));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Condition object: test failure.
+ ** ----------------------------------------------------------------- */
+
+void
+test_4_1 (void)
+/* Tests that "test_failure" is a base condition. */
+{
+  test_assert(true == cctests_condition_is_base(cctests_condition_new_test_failure()));
+}
+
+void
+test_4_2 (void)
+/* Tests that "test_failure" is a "test_failure" condition. */
+{
+  test_assert(true == cctests_condition_is_test_failure(cctests_condition_new_test_failure()));
 }
 
 
 int
 main (void)
 {
-  /* Condition signale one. */
+  /* Condition signal one. */
   if (1) { test_1_1(); }
   if (1) { test_1_2(); }
 
@@ -91,9 +110,13 @@ main (void)
   if (1) { test_2_1(); }
   if (1) { test_2_2(); }
 
-  /* Condition signale three. */
+  /* Condition signal three. */
   if (1) { test_3_1(); }
   if (1) { test_3_2(); }
+
+  /* Condition test failure. */
+  if (1) { test_4_1(); }
+  if (1) { test_4_2(); }
 
   exit(EXIT_SUCCESS);
 }

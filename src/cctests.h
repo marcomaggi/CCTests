@@ -108,16 +108,22 @@ extern "C" {
 /* ------------------------------------------------------------------ */
 
 typedef struct cctests_descriptor_base_t		cctests_descriptor_base_t;
+typedef struct cctests_descriptor_test_failure_t	cctests_descriptor_test_failure_t;
+typedef struct cctests_descriptor_assertion_failure_t	cctests_descriptor_assertion_failure_t;
+
 typedef struct cctests_descriptor_signal_1_t		cctests_descriptor_signal_1_t;
 typedef struct cctests_descriptor_signal_2_t		cctests_descriptor_signal_2_t;
 typedef struct cctests_descriptor_signal_3_t		cctests_descriptor_signal_3_t;
-typedef struct cctests_descriptor_assertion_failed_t	cctests_descriptor_assertion_failed_t;
+
+/* ------------------------------------------------------------------ */
 
 typedef struct cctests_condition_base_t			cctests_condition_base_t;
+typedef struct cctests_condition_test_failure_t		cctests_condition_test_failure_t;
+typedef struct cctests_condition_assertion_failure_t	cctests_condition_assertion_failure_t;
+
 typedef struct cctests_condition_signal_1_t		cctests_condition_signal_1_t;
 typedef struct cctests_condition_signal_2_t		cctests_condition_signal_2_t;
 typedef struct cctests_condition_signal_3_t		cctests_condition_signal_3_t;
-typedef struct cctests_condition_assertion_failed_t	cctests_condition_assertion_failed_t;
 
 
 /** --------------------------------------------------------------------
@@ -153,24 +159,46 @@ cctests_condition_is_base (cce_condition_t const * C)
 
 /* ------------------------------------------------------------------ */
 
-struct cctests_descriptor_assertion_failed_t {
+struct cctests_descriptor_test_failure_t {
   cce_descriptor_t	descriptor;
 };
 
-struct cctests_condition_assertion_failed_t {
+struct cctests_condition_test_failure_t {
   cctests_condition_base_t	base;
 };
 
-cctests_decl const cctests_descriptor_assertion_failed_t * const cctests_descriptor_assertion_failed;
+cctests_decl const cctests_descriptor_test_failure_t * const cctests_descriptor_test_failure;
 
-cctests_decl cce_condition_t const * cctests_condition_new_assertion_failed (void)
+cctests_decl cce_condition_t const * cctests_condition_new_test_failure (void)
   __attribute__((__leaf__,__pure__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
-cctests_condition_is_assertion_failed (cce_condition_t const * C)
+cctests_condition_is_test_failure (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_assertion_failed->descriptor));
+  return cce_is_condition(C, &(cctests_descriptor_test_failure->descriptor));
+}
+
+/* ------------------------------------------------------------------ */
+
+struct cctests_descriptor_assertion_failure_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_assertion_failure_t {
+  cctests_condition_base_t	base;
+};
+
+cctests_decl const cctests_descriptor_assertion_failure_t * const cctests_descriptor_assertion_failure;
+
+cctests_decl cce_condition_t const * cctests_condition_new_assertion_failure (void)
+  __attribute__((__leaf__,__pure__));
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_assertion_failure (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_assertion_failure->descriptor));
 }
 
 /* ------------------------------------------------------------------ */

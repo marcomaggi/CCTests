@@ -58,36 +58,70 @@ descriptor_base_static_message (cce_condition_t const * C CCTESTS_UNUSED)
 
 
 /** --------------------------------------------------------------------
- ** Exceptional condition descriptor: failed assertion.
+ ** Exceptional condition descriptor: test failure.
  ** ----------------------------------------------------------------- */
 
-static cce_condition_static_message_fun_t	condition_assertion_failed_static_message;
+static cce_condition_static_message_fun_t	condition_test_failure_static_message;
 
-static cctests_descriptor_assertion_failed_t descriptor_assertion_failed = {
+static cctests_descriptor_test_failure_t descriptor_test_failure = {
   .descriptor.parent		= &descriptor_base.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
-  .descriptor.static_message	= condition_assertion_failed_static_message
+  .descriptor.static_message	= condition_test_failure_static_message
 };
 
-cctests_descriptor_assertion_failed_t const * const cctests_descriptor_assertion_failed = &descriptor_assertion_failed;
+cctests_descriptor_test_failure_t const * const cctests_descriptor_test_failure = &descriptor_test_failure;
 
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_assertion_failed_t const condition_assertion_failed = {
-  .base.condition.descriptor	= &descriptor_assertion_failed.descriptor
+static cctests_condition_test_failure_t const condition_test_failure = {
+  .base.condition.descriptor	= &descriptor_test_failure.descriptor
 };
 
 cce_condition_t const *
-cctests_condition_new_assertion_failed (void)
+cctests_condition_new_test_failure (void)
 {
-  return (cce_condition_t *)&condition_assertion_failed;
+  return (cce_condition_t *)&condition_test_failure;
 }
 
 char const *
-condition_assertion_failed_static_message (cce_condition_t const * C CCTESTS_UNUSED)
+condition_test_failure_static_message (cce_condition_t const * C CCTESTS_UNUSED)
 {
-  return "not enough items in list";
+  return "CCTests assertion failure";
+}
+
+
+/** --------------------------------------------------------------------
+ ** Exceptional condition descriptor: failed assertion.
+ ** ----------------------------------------------------------------- */
+
+static cce_condition_static_message_fun_t	condition_assertion_failure_static_message;
+
+static cctests_descriptor_assertion_failure_t descriptor_assertion_failure = {
+  .descriptor.parent		= &descriptor_base.descriptor,
+  .descriptor.delete		= NULL,
+  .descriptor.final		= NULL,
+  .descriptor.static_message	= condition_assertion_failure_static_message
+};
+
+cctests_descriptor_assertion_failure_t const * const cctests_descriptor_assertion_failure = &descriptor_assertion_failure;
+
+/* This struct type has no dynamic fields, so there is only one instance
+   of this struct type.  We allocate it statically. */
+static cctests_condition_assertion_failure_t const condition_assertion_failure = {
+  .base.condition.descriptor	= &descriptor_assertion_failure.descriptor
+};
+
+cce_condition_t const *
+cctests_condition_new_assertion_failure (void)
+{
+  return (cce_condition_t *)&condition_assertion_failure;
+}
+
+char const *
+condition_assertion_failure_static_message (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests assertion failure";
 }
 
 
