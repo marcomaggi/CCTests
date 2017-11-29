@@ -12,10 +12,15 @@
   See the COPYING file.
 */
 
+
+/** --------------------------------------------------------------------
+ ** Headers.
+ ** ----------------------------------------------------------------- */
+
 #include <cctests.h>
-#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "test-utils.h"
 
 
 /** --------------------------------------------------------------------
@@ -26,22 +31,69 @@ void
 test_1_1 (void)
 /* Tests that signal_1 is a base condition. */
 {
-  assert(true == cctests_condition_is_base(cctests_condition_new_signal_1()));
+  test_assert(true == cctests_condition_is_base(cctests_condition_new_signal_1()));
 }
 
 void
 test_1_2 (void)
 /* Tests that signal_1 is a signal_1 condition. */
 {
-  assert(true == cctests_condition_is_signal_1(cctests_condition_new_signal_1()));
+  test_assert(true == cctests_condition_is_signal_1(cctests_condition_new_signal_1()));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Condition object: signal two.
+ ** ----------------------------------------------------------------- */
+
+void
+test_2_1 (void)
+/* Tests that signal_2 is a base condition. */
+{
+  test_assert(true == cctests_condition_is_base(cctests_condition_new_signal_2()));
+}
+
+void
+test_2_2 (void)
+/* Tests that signal_2 is a signal_2 condition. */
+{
+  test_assert(true == cctests_condition_is_signal_2(cctests_condition_new_signal_2()));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Condition object: signal three.
+ ** ----------------------------------------------------------------- */
+
+void
+test_3_1 (void)
+/* Tests that signal_3 is a base condition. */
+{
+  test_assert(true == cctests_condition_is_base(cctests_condition_new_signal_3()));
+}
+
+void
+test_3_2 (void)
+/* Tests that signal_3 is a signal_3 condition. */
+{
+  test_assert(true == cctests_condition_is_signal_3(cctests_condition_new_signal_3()));
 }
 
 
 int
 main (void)
 {
+  /* Condition signale one. */
   if (1) { test_1_1(); }
   if (1) { test_1_2(); }
+
+  /* Condition signal two. */
+  if (1) { test_2_1(); }
+  if (1) { test_2_2(); }
+
+  /* Condition signale three. */
+  if (1) { test_3_1(); }
+  if (1) { test_3_2(); }
 
   exit(EXIT_SUCCESS);
 }

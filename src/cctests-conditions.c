@@ -58,7 +58,41 @@ descriptor_base_static_message (cce_condition_t const * C CCTESTS_UNUSED)
 
 
 /** --------------------------------------------------------------------
- ** Exceptional condition descriptor: not enough items in list.
+ ** Exceptional condition descriptor: failed assertion.
+ ** ----------------------------------------------------------------- */
+
+static cce_condition_static_message_fun_t	condition_assertion_failed_static_message;
+
+static cctests_descriptor_assertion_failed_t descriptor_assertion_failed = {
+  .descriptor.parent		= &descriptor_base.descriptor,
+  .descriptor.delete		= NULL,
+  .descriptor.final		= NULL,
+  .descriptor.static_message	= condition_assertion_failed_static_message
+};
+
+cctests_descriptor_assertion_failed_t const * const cctests_descriptor_assertion_failed = &descriptor_assertion_failed;
+
+/* This struct type has no dynamic fields, so there is only one instance
+   of this struct type.  We allocate it statically. */
+static cctests_condition_assertion_failed_t const condition_assertion_failed = {
+  .base.condition.descriptor	= &descriptor_assertion_failed.descriptor
+};
+
+cce_condition_t const *
+cctests_condition_new_assertion_failed (void)
+{
+  return (cce_condition_t *)&condition_assertion_failed;
+}
+
+char const *
+condition_assertion_failed_static_message (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "not enough items in list";
+}
+
+
+/** --------------------------------------------------------------------
+ ** Exceptional condition descriptor: signal one.
  ** ----------------------------------------------------------------- */
 
 static cce_condition_static_message_fun_t	condition_signal_1_static_message;
@@ -87,7 +121,75 @@ cctests_condition_new_signal_1 (void)
 char const *
 condition_signal_1_static_message (cce_condition_t const * C CCTESTS_UNUSED)
 {
-  return "not enough items in list";
+  return "CCTests exception signal 1";
+}
+
+
+/** --------------------------------------------------------------------
+ ** Exceptional condition descriptor: signal two.
+ ** ----------------------------------------------------------------- */
+
+static cce_condition_static_message_fun_t	condition_signal_2_static_message;
+
+static cctests_descriptor_signal_2_t descriptor_signal_2 = {
+  .descriptor.parent		= &descriptor_base.descriptor,
+  .descriptor.delete		= NULL,
+  .descriptor.final		= NULL,
+  .descriptor.static_message	= condition_signal_2_static_message
+};
+
+cctests_descriptor_signal_2_t const * const cctests_descriptor_signal_2 = &descriptor_signal_2;
+
+/* This struct type has no dynamic fields, so there is only one instance
+   of this struct type.  We allocate it statically. */
+static cctests_condition_signal_2_t const condition_signal_2 = {
+  .base.condition.descriptor	= &descriptor_signal_2.descriptor
+};
+
+cce_condition_t const *
+cctests_condition_new_signal_2 (void)
+{
+  return (cce_condition_t *)&condition_signal_2;
+}
+
+char const *
+condition_signal_2_static_message (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests exception signal 2";
+}
+
+
+/** --------------------------------------------------------------------
+ ** Exceptional condition descriptor: signal three.
+ ** ----------------------------------------------------------------- */
+
+static cce_condition_static_message_fun_t	condition_signal_3_static_message;
+
+static cctests_descriptor_signal_3_t descriptor_signal_3 = {
+  .descriptor.parent		= &descriptor_base.descriptor,
+  .descriptor.delete		= NULL,
+  .descriptor.final		= NULL,
+  .descriptor.static_message	= condition_signal_3_static_message
+};
+
+cctests_descriptor_signal_3_t const * const cctests_descriptor_signal_3 = &descriptor_signal_3;
+
+/* This struct type has no dynamic fields, so there is only one instance
+   of this struct type.  We allocate it statically. */
+static cctests_condition_signal_3_t const condition_signal_3 = {
+  .base.condition.descriptor	= &descriptor_signal_3.descriptor
+};
+
+cce_condition_t const *
+cctests_condition_new_signal_3 (void)
+{
+  return (cce_condition_t *)&condition_signal_3;
+}
+
+char const *
+condition_signal_3_static_message (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests exception signal 3";
 }
 
 

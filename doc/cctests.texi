@@ -275,7 +275,12 @@ if (cce_location(L)) @{
 
 @menu
 * conditions base::             Base condition object.
+
+Convenience condition types
+
 * conditions signal one::       Convenience signal one.
+* conditions signal two::       Convenience signal two.
+* conditions signal three::     Convenience signal three.
 @end menu
 
 @c page
@@ -399,6 +404,144 @@ cce_location_t        L[1];
 if (cce_location(L)) @{
   if (cctests_condition_is_signal_1(cce_condition(L))) @{
     cctests_condition_signal_1_t * C = (cctests_condition_signal_1_t *) cce_condition(L);
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+@c page
+@node conditions signal two
+@section Convenience signal two
+
+
+@cindex Signal two, exceptional condition
+@cindex Exceptional conditions, signal two
+
+
+@deftp {Struct Typedef} cctests_descriptor_signal_2_t
+Type of data structure representing the exceptional--condition descriptor for the condition
+@emph{signal two}: an exception that client code can use to signal some test result.  It has the
+following public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_base},
+@ref{conditions base, Base condition object}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_signal_2_t
+Type of data structure representing the exceptional--condition object for the condition @emph{signal
+two}: an exception that client code can use to signal some test result.  It has the following public
+fields:
+
+@table @code
+@item cctests_condition_base_t base
+The condition object's base values.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_signal_2_t const * const} cctests_descriptor_signal_2
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_signal_2 (void)
+Return a pointer to exceptional condition object.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_signal_2 (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_signal_2}; otherwise return
+@cfalse{}.
+@end deftypefun
+
+
+To catch this exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_signal_2(cce_condition(L))) @{
+    cctests_condition_signal_2_t * C = (cctests_condition_signal_2_t *) cce_condition(L);
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+@c page
+@node conditions signal three
+@section Convenience signal three
+
+
+@cindex Signal three, exceptional condition
+@cindex Exceptional conditions, signal three
+
+
+@deftp {Struct Typedef} cctests_descriptor_signal_3_t
+Type of data structure representing the exceptional--condition descriptor for the condition
+@emph{signal three}: an exception that client code can use to signal some test result.  It has the
+following public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_base},
+@ref{conditions base, Base condition object}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_signal_3_t
+Type of data structure representing the exceptional--condition object for the condition @emph{signal
+three}: an exception that client code can use to signal some test result.  It has the following
+public fields:
+
+@table @code
+@item cctests_condition_base_t base
+The condition object's base values.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_signal_3_t const * const} cctests_descriptor_signal_3
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_signal_3 (void)
+Return a pointer to exceptional condition object.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_signal_3 (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_signal_3}; otherwise return
+@cfalse{}.
+@end deftypefun
+
+
+To catch this exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_signal_3(cce_condition(L))) @{
+    cctests_condition_signal_3_t * C = (cctests_condition_signal_3_t *) cce_condition(L);
     do_something_with(C);
   @}
   cce_run_error_handlers_final(L);

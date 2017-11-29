@@ -109,9 +109,15 @@ extern "C" {
 
 typedef struct cctests_descriptor_base_t		cctests_descriptor_base_t;
 typedef struct cctests_descriptor_signal_1_t		cctests_descriptor_signal_1_t;
+typedef struct cctests_descriptor_signal_2_t		cctests_descriptor_signal_2_t;
+typedef struct cctests_descriptor_signal_3_t		cctests_descriptor_signal_3_t;
+typedef struct cctests_descriptor_assertion_failed_t	cctests_descriptor_assertion_failed_t;
 
 typedef struct cctests_condition_base_t			cctests_condition_base_t;
 typedef struct cctests_condition_signal_1_t		cctests_condition_signal_1_t;
+typedef struct cctests_condition_signal_2_t		cctests_condition_signal_2_t;
+typedef struct cctests_condition_signal_3_t		cctests_condition_signal_3_t;
+typedef struct cctests_condition_assertion_failed_t	cctests_condition_assertion_failed_t;
 
 
 /** --------------------------------------------------------------------
@@ -147,6 +153,28 @@ cctests_condition_is_base (cce_condition_t const * C)
 
 /* ------------------------------------------------------------------ */
 
+struct cctests_descriptor_assertion_failed_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_assertion_failed_t {
+  cctests_condition_base_t	base;
+};
+
+cctests_decl const cctests_descriptor_assertion_failed_t * const cctests_descriptor_assertion_failed;
+
+cctests_decl cce_condition_t const * cctests_condition_new_assertion_failed (void)
+  __attribute__((__leaf__,__pure__));
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_assertion_failed (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_assertion_failed->descriptor));
+}
+
+/* ------------------------------------------------------------------ */
+
 struct cctests_descriptor_signal_1_t {
   cce_descriptor_t	descriptor;
 };
@@ -166,6 +194,61 @@ cctests_condition_is_signal_1 (cce_condition_t const * C)
 {
   return cce_is_condition(C, &(cctests_descriptor_signal_1->descriptor));
 }
+
+/* ------------------------------------------------------------------ */
+
+struct cctests_descriptor_signal_2_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_signal_2_t {
+  cctests_condition_base_t	base;
+};
+
+cctests_decl const cctests_descriptor_signal_2_t * const cctests_descriptor_signal_2;
+
+cctests_decl cce_condition_t const * cctests_condition_new_signal_2 (void)
+  __attribute__((__leaf__,__pure__));
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_signal_2 (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_signal_2->descriptor));
+}
+
+/* ------------------------------------------------------------------ */
+
+struct cctests_descriptor_signal_3_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_signal_3_t {
+  cctests_condition_base_t	base;
+};
+
+cctests_decl const cctests_descriptor_signal_3_t * const cctests_descriptor_signal_3;
+
+cctests_decl cce_condition_t const * cctests_condition_new_signal_3 (void)
+  __attribute__((__leaf__,__pure__));
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_signal_3 (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_signal_3->descriptor));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Assertions API.
+ ** ----------------------------------------------------------------- */
+
+#define cctests_assert(EXPR)	cctests_p_assert(#EXPR, EXPR, __func__, __LINE__, __FILE__)
+
+cctests_decl void cctests_p_assert (char const * const expr, bool result,
+				    char const * const funcname, int const linenum,
+				    char const * const filename);
 
 
 /** --------------------------------------------------------------------

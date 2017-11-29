@@ -42,18 +42,24 @@ libcctests_la_SOURCES	= \
 	src/cctests-internals.h		\
 	src/cctests-version.c		\
 	src/cctests-init.c		\
-	src/cctests-conditions.c
+	src/cctests-conditions.c	\
+	src/cctests-driver.c		\
+	src/cctests-assertions.c
 
 #page
 #### tests
+
+EXTRA_DIST	+= tests/test-utils.h
 
 check_PROGRAMS	= \
 	tests/version		\
 	tests/conditions
 
+tests/conditions.$(OBJEXT): tests/test-utils.h
+
 TESTS				= $(check_PROGRAMS)
 
-cctests_tests_cppflags		= -I$(srcdir)/src
+cctests_tests_cppflags		= -I$(srcdir)/src -I$(srcdir)/tests
 cctests_tests_ldadd		= libcctests.la
 
 tests_version_CPPFLAGS		= $(cctests_tests_cppflags)
