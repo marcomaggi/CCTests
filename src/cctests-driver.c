@@ -34,6 +34,15 @@ static cce_location_t	the_location;
 cce_destination_t	cctests_location = &the_location;
 
 
-
+void
+cctests_run_test_func (cctests_fun_t * test_fun)
+{
+  if (cce_location(cctests_location)) {
+    cce_run_error_handlers_final(cctests_location);
+  } else {
+    test_fun(cctests_location);
+    cce_run_cleanup_handlers(cctests_location);
+  }
+}
 
 /* end of file */

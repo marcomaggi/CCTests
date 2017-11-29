@@ -105,6 +105,8 @@ extern "C" {
  ** Type definitions.
  ** ----------------------------------------------------------------- */
 
+typedef void cctests_fun_t (cce_destination_t L);
+
 /* ------------------------------------------------------------------ */
 
 typedef struct cctests_descriptor_base_t		cctests_descriptor_base_t;
@@ -280,6 +282,31 @@ cctests_condition_is_signal_3 (cce_condition_t const * C)
 {
   return cce_is_condition(C, &(cctests_descriptor_signal_3->descriptor));
 }
+
+
+/** --------------------------------------------------------------------
+ ** System interface.
+ ** ----------------------------------------------------------------- */
+
+cce_decl void * cctests_sys_malloc (cce_destination_t L, size_t size)
+  __attribute__((__nonnull__(1),__returns_nonnull__));
+
+cce_decl void * cctests_sys_realloc (cce_destination_t L, void * ptr, size_t newsize)
+  __attribute__((__nonnull__(1),__returns_nonnull__));
+
+cce_decl void * cctests_sys_calloc (cce_destination_t L, size_t count, size_t eltsize)
+  __attribute__((__nonnull__(1),__returns_nonnull__));
+
+
+/** --------------------------------------------------------------------
+ ** Predefined POSIX exception handler: malloc pointer.
+ ** ----------------------------------------------------------------- */
+
+cce_decl void cctests_cleanup_handler_malloc_init (cce_destination_t L, cce_handler_t * H, void * pointer)
+  __attribute__((__nonnull__(1,2,3)));
+
+cce_decl void cctests_error_handler_malloc_init (cce_destination_t L, cce_handler_t * H, void * pointer)
+  __attribute__((__nonnull__(1,2,3)));
 
 
 /** --------------------------------------------------------------------

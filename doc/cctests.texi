@@ -130,6 +130,7 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 * init::                        Library initialisation.
 * version::                     Version functions.
 * conditions::                  Condition object types.
+* system::                      System interface.
 
 Appendices
 
@@ -714,6 +715,73 @@ Return a pointer to exceptional condition object.
 @deftypefun bool cctests_condition_is_signal_3 (cce_condition_t const * @var{C})
 Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_signal_3}; otherwise return
 @cfalse{}.
+@end deftypefun
+
+@c page
+@node system
+@chapter System interface
+
+
+@value{PACKAGE} provides interfaces to some system primitives to facilitate writing tests without
+using external libraries; the interfaces are wrappers for some basic @posix{} system calls.  Each
+wrapper accepts a pointer to @objtype{cce_location_t} as argument and, in case of error, it will
+perform a non--local exit by jumping to the selected location.
+
+The wrapper functions accept the same arguments of the system calls and return the same return value
+of the system calls (if they complete successfully).
+
+All the wrappers reset @code{errno} to zero before performing the system call and reset it to zero
+before returning.  In case of error: the raised exceptional condition objects are of type
+@objtype{cce_condition_errno_t}.
+
+@menu
+* system memory::               Memory allocation interface.
+@end menu
+
+@c page
+@node system memory
+@section Memory allocation interface
+
+
+@deftypefun {void *} cctests_sys_malloc (cce_destination_t  @var{L}, size_t @var{size})
+Wrapper for @cfunc{malloc}.  This function never returns @cnull{}.
+@end deftypefun
+
+
+@deftypefun {void *} cctests_sys_realloc (cce_destination_t  @var{L}, void * @var{ptr}, size_t @var{newsize})
+Wrapper for @cfunc{realloc}.  This function never returns @cnull{}.
+@end deftypefun
+
+
+@deftypefun {void *} cctests_sys_calloc (cce_destination_t  @var{L}, size_t @var{count}, size_t @var{eltsize})
+Wrapper for @cfunc{calloc}.  This function never returns @cnull{}.
+@end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@section Handler for allocated memory
+
+We can handle memory that must be released with the standard function @cfunc{free} as follows:
+
+@example
+cce_location_t  L[1];
+cce_handler_t   H[1];
+
+if (cce_location(L)) @{
+  cce_run_error_handlers(L);
+  cce_condition_delete(cce_condition(L));
+@} else @{
+  void *  P = cctests_sys_malloc(L, 4096);
+  cce_cleanup_handler_malloc_init(L, H, P);
+  cce_run_cleanup_handlers(L);
+@}
+@end example
+
+
+@deftypefun void cctests_cleanup_handler_malloc_init (cce_destination_t  @var{L}, cce_handler_t * @var{H}, void * @var{P})
+@deftypefunx void cctests_error_handler_malloc_init (cce_destination_t  @var{L}, cce_handler_t * @var{H}, void * @var{P})
+Register @var{H} as cleanup or error handler in the context of @var{L}.  The handler function will
+release the memory block referenced by @var{P} using the standard function @cfunc{free}.
 @end deftypefun
 
 @c page

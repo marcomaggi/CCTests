@@ -113,7 +113,7 @@ cctests_condition_new_assertion_failure (char const * const expr,
 					 char const * const funcname,
 					 int const linenum)
 {
-  cctests_condition_assertion_failure_t *	C = malloc(sizeof(cctests_condition_assertion_failure_t));
+  cctests_condition_assertion_failure_t *	C = cctests_sys_malloc(cctests_location, sizeof(cctests_condition_assertion_failure_t));
   C->base.condition.descriptor	= &descriptor_assertion_failure.descriptor;
   C->expr			= expr;
   C->filename			= filename;
