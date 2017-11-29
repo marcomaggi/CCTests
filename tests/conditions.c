@@ -76,7 +76,7 @@ void
 test_3_2 (void)
 /* Tests that signal_3 is a signal_3 condition. */
 {
-test_assert(true == cctests_condition_is_signal_3(cctests_condition_new_signal_3()));
+  test_assert(true == cctests_condition_is_signal_3(cctests_condition_new_signal_3()));
 }
 
 
