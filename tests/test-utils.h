@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define test_assert(EXPR)	test_p_assert(#EXPR, EXPR,__FILE__,  __func__, __LINE__)
+#define test_assert(EXPR)	test_p_assert(#EXPR, EXPR, __FILE__,  __func__, __LINE__)
 
 static void
 test_p_assert (char const * const expr, bool result, char const * const filename, char const * const funcname, int const linenum)

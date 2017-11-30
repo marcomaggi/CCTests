@@ -36,6 +36,8 @@
 #  include <config.h>
 #endif
 #include "cctests.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 
 /** --------------------------------------------------------------------

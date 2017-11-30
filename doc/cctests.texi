@@ -131,6 +131,8 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 * version::                     Version functions.
 * conditions::                  Condition object types.
 * system::                      System interface.
+* drivers::                     Driving test groups.
+* assertions::                  Verifying conditions.
 
 Appendices
 
@@ -783,6 +785,109 @@ if (cce_location(L)) @{
 Register @var{H} as cleanup or error handler in the context of @var{L}.  The handler function will
 release the memory block referenced by @var{P} using the standard function @cfunc{free}.
 @end deftypefun
+
+@c page
+@node drivers
+@chapter Driving test groups
+
+
+We create and run test group as follows in a full program:
+
+@example
+#include <cctests.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+void
+test_this (cce_destination_t L CCTESTS_UNUSED)
+@{
+  cctests_assert(true);
+@}
+
+void
+test_that (cce_destination_t L CCTESTS_UNUSED)
+@{
+  cctests_assert(true);
+@}
+
+int
+main (void)
+@{
+  cctests_begin_group("spiffy tests");
+  @{
+    cctests_run(test_this);
+    cctests_run(test_that);
+  @}
+  cctests_end_group();
+
+  if (cctests_latest_group_completed_successfully()) @{
+    exit(EXIT_SUCCESS);
+  @} else @{
+    exit(EXIT_FAILURE);
+  @}
+@}
+@end example
+
+
+@deftypefun void cctests_begin_group (char const * const @var{test_group_name})
+Begin a group of tests; initialise the internal state.  The argument is an @asciiz{} string
+representing the name of this group.  Print a message on @code{stderr}.
+@end deftypefun
+
+
+@deftypefun void cctests_end_group (void)
+End the latest group of tests begun with @cfunc{cctests_end_group}; finalise the internal state.
+Print a message on @code{stderr} reporting the result.
+@end deftypefun
+
+
+@deftypefn {Preprocessor Macro} void cctests_run (cctests_fun_t * @var{fun})
+Run the test function @var{fun} in the context of the currently active test group.  Print reports on
+@code{stderr}.
+@end deftypefn
+
+
+@deftypefun bool cctests_latest_group_completed_successfully (void)
+Return @ctrue{} if the latest test group has completed successfully; otherwise return @cfalse{}.
+@end deftypefun
+
+
+@deftypefn {Function Typedef} void cctests_fun_t (cce_destination_t @var{L})
+Prototype of test functions run by @cfunc{cctests_run}.  When successful: the test function should
+just return to its caller.  If an error occurs: the test function should raise an exception by
+performing a non--local exit to @var{L}.
+@end deftypefn
+
+@c page
+@node assertions
+@chapter Verifying conditions
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert (@var{expr})
+Evaluate the expression @var{expr}; this macro is similar, but not equal, to the standard
+@cfunc{assert}.  If the expression evaluates to @ctrue{}: just return.  Otherwise raise an exception
+by performing a non--local exit to a location internally selected by @value{PACKAGE}.
+
+Here are some usage examples:
+
+@example
+cctests_assert(true);   /* success */
+cctests_assert(false);  /* failure */
+
+@{
+  void *  P = malloc(16);
+
+  cctests_assert(NULL != P);
+@}
+
+@{
+  char const *  A = "ciao";
+  char const *  B = "hello";
+
+  cctests_assert(0 == strcmp(A, B));
+@}
+@end example
+@end deftypefn
 
 @c page
 @c ------------------------------------------------------------

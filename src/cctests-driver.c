@@ -33,16 +33,44 @@
 static cce_location_t	the_location;
 cce_destination_t	cctests_location = &the_location;
 
+static bool		test_group_successful;
+static char const *	current_test_group_name;
+
+
 
 void
-cctests_run_test_func (cctests_fun_t * test_fun)
+cctests_begin_group (char const * const test_group_name)
+{
+  current_test_group_name = test_group_name;
+  fprintf(stderr, "CCTests: beg group: %s\n", current_test_group_name);
+  test_group_successful = true;
+}
+
+void
+cctests_end_group (void)
+{
+  fprintf(stderr, "CCTests: end group: %s\n", current_test_group_name);
+  current_test_group_name = NULL;
+}
+
+void
+cctests_p_run (char const * const funcname, cctests_fun_t * const fun)
 {
   if (cce_location(cctests_location)) {
     cce_run_error_handlers_final(cctests_location);
+    test_group_successful = false;
+    fprintf(stderr, "CCTests: exception in test function: %s\n", funcname);
   } else {
-    test_fun(cctests_location);
+    fun(cctests_location);
     cce_run_cleanup_handlers(cctests_location);
+    fprintf(stderr, "CCTests: successful test function: %s\n", funcname);
   }
+}
+
+bool
+cctests_latest_group_completed_successfully (void)
+{
+  return test_group_successful;
 }
 
 /* end of file */

@@ -85,14 +85,7 @@ extern "C" {
  ** ----------------------------------------------------------------- */
 
 #include <ccexceptions.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
-/* #include <stdint.h> */
-/* #include <stddef.h> /\* for offsetof() *\/ */
-/* #include <setjmp.h> */
-/* #include <errno.h> */
-/* #include <unistd.h> */
 
 
 /** --------------------------------------------------------------------
@@ -132,7 +125,8 @@ typedef struct cctests_condition_signal_3_t		cctests_condition_signal_3_t;
  ** Library initialisation.
  ** ----------------------------------------------------------------- */
 
-cctests_decl void cctests_init (void);
+cctests_decl void cctests_init (void)
+  __attribute__((__constructor__));
 
 
 /** --------------------------------------------------------------------
@@ -307,6 +301,19 @@ cce_decl void cctests_cleanup_handler_malloc_init (cce_destination_t L, cce_hand
 
 cce_decl void cctests_error_handler_malloc_init (cce_destination_t L, cce_handler_t * H, void * pointer)
   __attribute__((__nonnull__(1,2,3)));
+
+
+/** --------------------------------------------------------------------
+ ** Test driver.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl void cctests_begin_group (char const * const test_group_name);
+cctests_decl void cctests_end_group   (void);
+
+cctests_decl void cctests_p_run (char const * funcname, cctests_fun_t * fun);
+#define cctests_run(FUNCNAME)	cctests_p_run(#FUNCNAME, FUNCNAME)
+
+cctests_decl bool cctests_latest_group_completed_successfully (void);
 
 
 /** --------------------------------------------------------------------

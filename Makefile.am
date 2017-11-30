@@ -54,7 +54,8 @@ EXTRA_DIST	+= tests/test-utils.h
 
 check_PROGRAMS	= \
 	tests/version		\
-	tests/conditions
+	tests/conditions	\
+	tests/driver
 
 tests/conditions.$(OBJEXT): tests/test-utils.h
 
@@ -68,6 +69,9 @@ tests_version_LDADD		= $(cctests_tests_ldadd)
 
 tests_conditions_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_conditions_LDADD		= $(cctests_tests_ldadd)
+
+tests_driver_CPPFLAGS		= $(cctests_tests_cppflags)
+tests_driver_LDADD		= $(cctests_tests_ldadd)
 
 installcheck-local: $(TESTS)
 	@for f in $(TESTS); do $(builddir)/$$f; done
