@@ -281,12 +281,14 @@ if (cce_location(L)) @{
 
 @menu
 * conditions base::             Base condition object.
+* conditions success::          Signalling test success.
 * conditions failure::          Signalling test failure.
 * conditions assertion::        Signalling failed assertions.
 * conditions regex::            Regular expression errors.
 
 Convenience condition types
 
+* conditions signal::           Convenience signal.
 * conditions signal one::       Convenience signal one.
 * conditions signal two::       Convenience signal two.
 * conditions signal three::     Convenience signal three.
@@ -383,6 +385,100 @@ condition-base-subtype-body.c
 @noindent
 under the @file{tests} directory of the source distribution; the code defines a new
 condition--object type @objtype{my_condition_base_subtype_t}.
+
+@c page
+@node conditions success
+@section Signalling test success
+
+
+@cindex Test success, exceptional condition
+@cindex Exceptional conditions, test success
+
+
+The @dfn{success exceptional--condition object--type} can be used to signal success in a test
+execution; it is not the only way a test can succeed, it is just an option that can be useful in
+some special cases.  We can instantiate this type and also derive new types from it.  To catch this
+exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_success(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_success_t, C, cce_condition(L));
+    do_something_with(C);
+    cce_run_cleanup_handlers_final(L);
+  @} else @{
+    cce_run_error_handlers_final(L);
+  @}
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+
+@deftp {Struct Typedef} cctests_descriptor_success_t
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_base_ptr},
+@ref{conditions base, Base condition object}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_success_t
+Type of data structure representing the condition object.  It has the following public fields:
+
+@table @code
+@item cctests_condition_base_t base
+The condition object's base values.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_success_t const * const} cctests_descriptor_success_ptr
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun void cctests_condition_init_success (cctests_condition_success_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_success_t}.
+@end deftypefun
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_success (void)
+Return a pointer to exceptional--condition object.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_success (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_success_t}; otherwise return
+@cfalse{}.
+@end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_success_t} we can copy the code in the files:
+
+@example
+condition-success-subtype.c
+condition-success-subtype-headear.h
+condition-success-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_success_subtype_t}.
 
 @c page
 @node conditions failure
@@ -691,6 +787,98 @@ Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_regex_error}; oth
 
 
 @c page
+@node conditions signal
+@section Convenience signal
+
+
+@cindex Signal, exceptional condition
+@cindex Exceptional conditions, signal
+
+
+We can use the @dfn{signal exceptional--condition object--type} to signal some special test
+condition.  We can instantiate this type and also derive new types from it.  To catch this
+exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_signal(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_signal_t, C, cce_condition(L));
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+
+@deftp {Struct Typedef} cctests_descriptor_signal_t
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_base_ptr},
+@ref{conditions base, Base condition object}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_signal_t
+Type of data structure representing the exceptional--condition object.  It has the following public
+fields:
+
+@table @code
+@item cctests_condition_base_t base
+The condition object's base values.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_signal_t const * const} cctests_descriptor_signal_ptr
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun void cctests_condition_new_signal (cctests_condition_signal_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_signal_t}.
+@end deftypefun
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_signal (void)
+Return a pointer to exceptional condition object.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_signal (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_signal_t}; otherwise return
+@cfalse{}.
+@end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_signal_t} we can copy the code in the files:
+
+@example
+condition-signal-subtype.c
+condition-signal-subtype-headear.h
+condition-signal-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_signal_subtype_t}.
+
+@c page
 @node conditions signal one
 @section Convenience signal one
 
@@ -699,8 +887,9 @@ Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_regex_error}; oth
 @cindex Exceptional conditions, signal one
 
 
-We can use the exception @emph{signal one} in client code to signal some test--related event.  To
-catch this exceptional condition we can do:
+We can use the @dfn{signal--1 exceptional--condition object--type} to signal some special test
+condition.  We can instantiate this type and also derive new types from it.  To catch this
+exceptional condition we can do:
 
 @smallexample
 cce_location_t        L[1];
@@ -719,35 +908,39 @@ if (cce_location(L)) @{
 
 
 @deftp {Struct Typedef} cctests_descriptor_signal_1_t
-Type of data structure representing the exceptional--condition descriptor for the condition
-@emph{signal one}: an exception that client code can use to signal some test result.  It has the
-following public fields:
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
 
 @table @code
 @item cce_descriptor_t descriptor
 The condition descriptor's base values.
 @end table
 
-The parent of this type descriptor is the one referenced by @code{cctests_descriptor_base},
-@ref{conditions base, Base condition object}.
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_signal_ptr},
+@ref{conditions signal, Convenience signal}.
 @end deftp
 
 
 @deftp {Struct Typedef} cctests_condition_signal_1_t
-Type of data structure representing the exceptional--condition object for the condition @emph{signal
-one}: an exception that client code can use to signal some test result.  It has the following public
+Type of data structure representing the exceptional--condition object.  It has the following public
 fields:
 
 @table @code
-@item cctests_condition_base_t base
+@item cctests_condition_signal_t signal
 The condition object's base values.
 @end table
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_signal_1_t const * const} cctests_descriptor_signal_1
+@deftypevr {Dynamic Constant} {cctests_descriptor_signal_1_t const * const} cctests_descriptor_signal_1_ptr
 Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
+
+
+@deftypefun void cctests_condition_new_signal_1 (cctests_condition_signal_1_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_signal_1_t}.
+@end deftypefun
 
 
 @deftypefun {cce_condition_t const *} cctests_condition_new_signal_1 (void)
@@ -756,24 +949,42 @@ Return a pointer to exceptional condition object.
 
 
 @deftypefun bool cctests_condition_is_signal_1 (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_signal_1}; otherwise return
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_signal_1_t}; otherwise return
 @cfalse{}.
 @end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_signal_1_t} we can copy the code in the files:
+
+@example
+condition-signal-1-subtype.c
+condition-signal-1-subtype-headear.h
+condition-signal-1-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_signal_1_subtype_t}.
 
 @c page
 @node conditions signal two
 @section Convenience signal two
 
 
-@cindex Signal two, exceptional condition
-@cindex Exceptional conditions, signal two
+@cindex Signal one, exceptional condition
+@cindex Exceptional conditions, signal one
 
 
-We can use the exception @emph{signal two} in client code to signal some test--related event.  To
-catch this exceptional condition we can do:
+We can use the @dfn{signal--2 exceptional--condition object--type} to signal some special test
+condition.  We can instantiate this type and also derive new types from it.  To catch this
+exceptional condition we can do:
 
 @smallexample
-cce_location_t        L[1];
+cce_location_t        L[2];
 
 if (cce_location(L)) @{
   if (cctests_condition_is_signal_2(cce_condition(L))) @{
@@ -789,35 +1000,39 @@ if (cce_location(L)) @{
 
 
 @deftp {Struct Typedef} cctests_descriptor_signal_2_t
-Type of data structure representing the exceptional--condition descriptor for the condition
-@emph{signal two}: an exception that client code can use to signal some test result.  It has the
-following public fields:
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
 
 @table @code
 @item cce_descriptor_t descriptor
 The condition descriptor's base values.
 @end table
 
-The parent of this type descriptor is the one referenced by @code{cctests_descriptor_base},
-@ref{conditions base, Base condition object}.
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_signal_ptr},
+@ref{conditions signal, Convenience signal}.
 @end deftp
 
 
 @deftp {Struct Typedef} cctests_condition_signal_2_t
-Type of data structure representing the exceptional--condition object for the condition @emph{signal
-two}: an exception that client code can use to signal some test result.  It has the following public
+Type of data structure representing the exceptional--condition object.  It has the following public
 fields:
 
 @table @code
-@item cctests_condition_base_t base
+@item cctests_condition_signal_t signal
 The condition object's base values.
 @end table
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_signal_2_t const * const} cctests_descriptor_signal_2
+@deftypevr {Dynamic Constant} {cctests_descriptor_signal_2_t const * const} cctests_descriptor_signal_2_ptr
 Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
+
+
+@deftypefun void cctests_condition_new_signal_2 (cctests_condition_signal_2_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_signal_2_t}.
+@end deftypefun
 
 
 @deftypefun {cce_condition_t const *} cctests_condition_new_signal_2 (void)
@@ -826,24 +1041,42 @@ Return a pointer to exceptional condition object.
 
 
 @deftypefun bool cctests_condition_is_signal_2 (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_signal_2}; otherwise return
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_signal_2_t}; otherwise return
 @cfalse{}.
 @end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_signal_2_t} we can copy the code in the files:
+
+@example
+condition-signal-2-subtype.c
+condition-signal-2-subtype-headear.h
+condition-signal-2-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_signal_2_subtype_t}.
 
 @c page
 @node conditions signal three
 @section Convenience signal three
 
 
-@cindex Signal three, exceptional condition
-@cindex Exceptional conditions, signal three
+@cindex Signal one, exceptional condition
+@cindex Exceptional conditions, signal one
 
 
-We can use the exception @emph{signal three} in client code to signal some test--related event.  To
-catch this exceptional condition we can do:
+We can use the @dfn{signal--3 exceptional--condition object--type} to signal some special test
+condition.  We can instantiate this type and also derive new types from it.  To catch this
+exceptional condition we can do:
 
 @smallexample
-cce_location_t        L[1];
+cce_location_t        L[3];
 
 if (cce_location(L)) @{
   if (cctests_condition_is_signal_3(cce_condition(L))) @{
@@ -859,35 +1092,39 @@ if (cce_location(L)) @{
 
 
 @deftp {Struct Typedef} cctests_descriptor_signal_3_t
-Type of data structure representing the exceptional--condition descriptor for the condition
-@emph{signal three}: an exception that client code can use to signal some test result.  It has the
-following public fields:
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
 
 @table @code
 @item cce_descriptor_t descriptor
 The condition descriptor's base values.
 @end table
 
-The parent of this type descriptor is the one referenced by @code{cctests_descriptor_base},
-@ref{conditions base, Base condition object}.
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_signal_ptr},
+@ref{conditions signal, Convenience signal}.
 @end deftp
 
 
 @deftp {Struct Typedef} cctests_condition_signal_3_t
-Type of data structure representing the exceptional--condition object for the condition @emph{signal
-three}: an exception that client code can use to signal some test result.  It has the following
-public fields:
+Type of data structure representing the exceptional--condition object.  It has the following public
+fields:
 
 @table @code
-@item cctests_condition_base_t base
+@item cctests_condition_signal_t signal
 The condition object's base values.
 @end table
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_signal_3_t const * const} cctests_descriptor_signal_3
+@deftypevr {Dynamic Constant} {cctests_descriptor_signal_3_t const * const} cctests_descriptor_signal_3_ptr
 Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
+
+
+@deftypefun void cctests_condition_new_signal_3 (cctests_condition_signal_3_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_signal_3_t}.
+@end deftypefun
 
 
 @deftypefun {cce_condition_t const *} cctests_condition_new_signal_3 (void)
@@ -896,9 +1133,26 @@ Return a pointer to exceptional condition object.
 
 
 @deftypefun bool cctests_condition_is_signal_3 (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_signal_3}; otherwise return
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_signal_3_t}; otherwise return
 @cfalse{}.
 @end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_signal_3_t} we can copy the code in the files:
+
+@example
+condition-signal-3-subtype.c
+condition-signal-3-subtype-headear.h
+condition-signal-3-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_signal_3_subtype_t}.
 
 @c page
 @node system

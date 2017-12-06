@@ -138,9 +138,15 @@ void
 cctests_p_run (char const * const funcname, cctests_fun_t * const fun)
 {
   if (cce_location(cctests_group_location)) {
-    cce_run_error_handlers_final(cctests_group_location);
-    test_group_successful = false;
-    fprintf(stderr, "CCTests: exception in test function: %s\n", funcname);
+    if (cctests_condition_is_success(cce_condition(cctests_group_location))) {
+      test_group_successful = true;
+    } else if (cctests_condition_is_signal(cce_condition(cctests_group_location))) {
+      test_group_successful = false;
+      fprintf(stderr, "CCTests: unexpected signal exception raised by test function: %s\n", funcname);
+    } else {
+      test_group_successful = false;
+      fprintf(stderr, "CCTests: exception in test function: %s\n", funcname);
+    }
   } else {
     if (matching_selected_test(funcname)) {
       fun(cctests_group_location);
@@ -148,8 +154,8 @@ cctests_p_run (char const * const funcname, cctests_fun_t * const fun)
     } else {
       fprintf(stderr, "CCTests: skipped test function: %s\n", funcname);
     }
-    cce_run_cleanup_handlers(cctests_group_location);
   }
+  cce_run_cleanup_handlers(cctests_group_location);
 }
 
 

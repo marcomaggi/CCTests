@@ -57,8 +57,13 @@ check_PROGRAMS	= \
 	tests/version					\
 	tests/assert-conditions				\
 	tests/condition-base-subtyping			\
+	tests/condition-success-subtyping		\
 	tests/condition-failure-subtyping		\
 	tests/condition-assertion-subtyping		\
+	tests/condition-signal-subtyping		\
+	tests/condition-signal-1-subtyping		\
+	tests/condition-signal-2-subtyping		\
+	tests/condition-signal-3-subtyping		\
 	tests/driver
 
 TESTS				= $(check_PROGRAMS)
@@ -89,6 +94,15 @@ tests_condition_base_subtyping_SOURCES		= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_success_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_condition_success_subtyping_LDADD		= $(cctests_tests_ldadd)
+tests_condition_success_subtyping_SOURCES	= \
+	tests/condition-success-subtyping.c		\
+	tests/condition-success-subtyping-body.c	\
+	tests/condition-success-subtyping-header.h
+
+## --------------------------------------------------------------------
+
 tests_condition_failure_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_failure_subtyping_LDADD		= $(cctests_tests_ldadd)
 tests_condition_failure_subtyping_SOURCES	= \
@@ -104,6 +118,42 @@ tests_condition_assertion_subtyping_SOURCES	= \
 	tests/condition-assertion-subtyping.c		\
 	tests/condition-assertion-subtyping-body.c	\
 	tests/condition-assertion-subtyping-header.h
+
+## --------------------------------------------------------------------
+
+tests_condition_signal_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_condition_signal_subtyping_LDADD		= $(cctests_tests_ldadd)
+tests_condition_signal_subtyping_SOURCES	= \
+	tests/condition-signal-subtyping.c		\
+	tests/condition-signal-subtyping-body.c		\
+	tests/condition-signal-subtyping-header.h
+
+## --------------------------------------------------------------------
+
+tests_condition_signal_1_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_condition_signal_1_subtyping_LDADD	= $(cctests_tests_ldadd)
+tests_condition_signal_1_subtyping_SOURCES	= \
+	tests/condition-signal-1-subtyping.c		\
+	tests/condition-signal-1-subtyping-body.c	\
+	tests/condition-signal-1-subtyping-header.h
+
+## --------------------------------------------------------------------
+
+tests_condition_signal_2_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_condition_signal_2_subtyping_LDADD	= $(cctests_tests_ldadd)
+tests_condition_signal_2_subtyping_SOURCES	= \
+	tests/condition-signal-2-subtyping.c		\
+	tests/condition-signal-2-subtyping-body.c	\
+	tests/condition-signal-2-subtyping-header.h
+
+## --------------------------------------------------------------------
+
+tests_condition_signal_3_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_condition_signal_3_subtyping_LDADD	= $(cctests_tests_ldadd)
+tests_condition_signal_3_subtyping_SOURCES	= \
+	tests/condition-signal-3-subtyping.c		\
+	tests/condition-signal-3-subtyping-body.c	\
+	tests/condition-signal-3-subtyping-header.h
 
 ## --------------------------------------------------------------------
 
