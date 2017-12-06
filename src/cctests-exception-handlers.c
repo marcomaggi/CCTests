@@ -1,7 +1,7 @@
 /*
   Part of: CCTests
-  Contents: assertion functions
-  Date: Nov 28, 2017
+  Contents: exception handelers
+  Date: Dec  2, 2017
 
   Abstract
 
@@ -31,15 +31,32 @@
 #include "cctests-internals.h"
 
 
-void
-cctests_p_assert (char const * const expr, bool const result,
-		  char const * const filename, char const * const funcname, int const linenum)
+/** --------------------------------------------------------------------
+ ** Predefined POSIX exception handler: malloc pointer.
+ ** ----------------------------------------------------------------- */
+
+__attribute__((__nonnull__(1,2)))
+static void
+cce_handler_malloc_function (cce_condition_t const * C CCE_UNUSED, cce_handler_t * H)
 {
-  if (false == result) {
-    fprintf(stderr, "CCTests: %s: %s: line %d: assertion failure: %s\n",
-	    filename, funcname, linenum, expr);
-    cce_raise(cctests_group_location, cctests_condition_new_assertion(cctests_group_location, expr, filename, funcname, linenum));
-  }
+  free(H->pointer);
+  if (0) { fprintf(stderr, "%s: done\n", __func__); }
+}
+
+void
+cctests_sys_cleanup_handler_malloc_init (cce_location_t * L, cce_handler_t * H, void * pointer)
+{
+  H->function	= cce_handler_malloc_function;
+  H->pointer	= pointer;
+  cce_register_cleanup_handler(L, H);
+}
+
+void
+cctests_sys_error_handler_malloc_init (cce_location_t * L, cce_handler_t * H, void * pointer)
+{
+  H->function	= cce_handler_malloc_function;
+  H->pointer	= pointer;
+  cce_register_error_handler(L, H);
 }
 
 /* end of file */

@@ -133,6 +133,7 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 * system::                      System interface.
 * drivers::                     Driving test groups.
 * assertions::                  Verifying conditions.
+* utils::                       Utility definitions.
 
 Appendices
 
@@ -164,6 +165,8 @@ the system.
 @value{PACKAGE} installs the single header file @file{cctests.h}.  All the function names in the
 @api{} are prefixed with @code{cctests_}; all the preprocessor symbol names are prefixed with
 @code{CCTESTS_}; all the type names are prefixed with @code{cctests_} and suffixed with @code{_t}.
+The header file @file{cctests.h} appropriately includes the header file @file{ccexceptions.h} from
+the package CCExceptions.
 
 The library's @api{} uses both @code{inline} functions and preprocessor macros to integrate some
 common operations at the call site.
@@ -263,7 +266,7 @@ The functions will raise exceptional conditions with @cfunc{cce_raise} and expec
 intercept them using the @code{cce_location_t} mechanics.  The basic code template is:
 
 @example
-#include <ccpair.h>
+#include <cctests.h>
 
 cce_location_t  L[1];
 
@@ -280,6 +283,7 @@ if (cce_location(L)) @{
 * conditions base::             Base condition object.
 * conditions failure::          Signalling test failure.
 * conditions assertion::        Signalling failed assertions.
+* conditions regex::            Regular expression errors.
 
 Convenience condition types
 
@@ -297,7 +301,13 @@ Convenience condition types
 @cindex Exceptional conditions, base
 
 
-The exception @dfn{base} is the base type for all the condition types defined by @value{PACKAGE}.
+The @dfn{base exceptional--condition object--type} is the base for all the condition types defined
+by @value{PACKAGE} related to testing operations; @value{PACKAGE} might raise exceptions not derived
+from this type, when an internal error occurs.
+
+We are @strong{not} meant to instantiate condition objects of type @emph{base} (so there is no
+@code{new} function), but we can derive new types from it (so there is an @code{init} function).
+
 To catch this exceptional condition we can do:
 
 @smallexample
@@ -305,7 +315,7 @@ cce_location_t        L[1];
 
 if (cce_location(L)) @{
   if (cctests_condition_is_base(cce_condition(L))) @{
-    cctests_condition_base_t * C = (cctests_condition_base_t *) cce_condition(L);
+    CCTESTS_PC(cctests_condition_base_t, C, cce_condition(L));
     do_something_with(C);
   @}
   cce_run_error_handlers_final(L);
@@ -317,38 +327,62 @@ if (cce_location(L)) @{
 
 
 @deftp {Struct Typedef} cctests_descriptor_base_t
-Type of data structure representing the base exceptional--condition descriptor for the exceptions
-defined by @value{PACKAGE}.  It has the following public fields:
+Type of data structure representing the base exceptional--condition descriptor.  It has the
+following public fields:
 
 @table @code
 @item cce_descriptor_t descriptor
 The condition descriptor's base values.
 @end table
 
-The parent of this type descriptor is the root descriptor.  @xref{conditions root, CCExceptions,
+The parent of this type descriptor is the root descriptor; @xref{conditions root, CCExceptions,
 CCExceptions, ccexceptions, CCExceptions}.
 @end deftp
 
 
 @deftp {Struct Typedef} cctests_condition_base_t
-Type of data structure representing the base exceptional--condition object for the exceptions
-defined by @value{PACKAGE}.  It has the following public fields:
+Type of data structure representing the base exceptional--condition object.  It has the following
+public fields:
 
 @table @code
-@item cce_condition_t base
-The condition object's base values.
+@item cce_condition_root_t root
+The parent condition type.
 @end table
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_base_t const * const} cctests_descriptor_base
+@deftypevr {Dynamic Constant} {cctests_descriptor_base_t const * const} cctests_descriptor_base_ptr
 Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun bool cctests_condition_is_base (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_base}; otherwise return @cfalse{}.
+@deftypefun void cctests_condition_init_base (cctests_condition_base_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_base_t}.
 @end deftypefun
+
+
+@deftypefun bool cctests_condition_is_base (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_base_t}; otherwise return
+@cfalse{}.
+@end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_base_t} we can copy the code in the files:
+
+@example
+condition-base-subtype.c
+condition-base-subtype-headear.h
+condition-base-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_base_subtype_t}.
 
 @c page
 @node conditions failure
@@ -359,16 +393,17 @@ Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_base}; otherwise 
 @cindex Exceptional conditions, test failure
 
 
-The exception @dfn{test failure} is used by @value{PACKAGE} to signal failure in a test execution;
-this is a base for all the types that signal a test failure.  To catch this exceptional condition we
-can do:
+The @dfn{failure exceptional--condition object--type} is used by @value{PACKAGE} to signal failure
+in a test execution; this is the base for all the types that signal a test failure.  We can
+instantiate this type and also derive new types from it.  To catch this exceptional condition we can
+do:
 
 @smallexample
 cce_location_t        L[1];
 
 if (cce_location(L)) @{
-  if (cctests_condition_is_test_failure(cce_condition(L))) @{
-    cctests_condition_test_failure_t * C = (cctests_condition_test_failure_t *) cce_condition(L);
+  if (cctests_condition_is_failure(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_failure_t, C, cce_condition(L));
     do_something_with(C);
   @}
   cce_run_error_handlers_final(L);
@@ -379,9 +414,8 @@ if (cce_location(L)) @{
 @end smallexample
 
 
-@deftp {Struct Typedef} cctests_descriptor_test_failure_t
-Type of data structure representing the exceptional--condition descriptor for the condition
-@emph{test failure}: an exception that signals a failure a in test execution.  It has the following
+@deftp {Struct Typedef} cctests_descriptor_failure_t
+Type of data structure representing the exceptional--condition descriptor.  It has the following
 public fields:
 
 @table @code
@@ -389,15 +423,13 @@ public fields:
 The condition descriptor's base values.
 @end table
 
-The parent of this type descriptor is the one referenced by @code{cctests_descriptor_base},
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_base_ptr},
 @ref{conditions base, Base condition object}.
 @end deftp
 
 
-@deftp {Struct Typedef} cctests_condition_test_failure_t
-Type of data structure representing the exceptional--condition object for the condition @emph{test
-failure}: an exception that signals a failure in a test execution.  It has the following public
-fields:
+@deftp {Struct Typedef} cctests_condition_failure_t
+Type of data structure representing the condition object.  It has the following public fields:
 
 @table @code
 @item cctests_condition_base_t base
@@ -406,20 +438,43 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_test_failure_t const * const} cctests_descriptor_test_failure
+@deftypevr {Dynamic Constant} {cctests_descriptor_failure_t const * const} cctests_descriptor_failure_ptr
 Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun {cce_condition_t const *} cctests_condition_new_test_failure (void)
-Return a pointer to exceptional condition object.
+@deftypefun void cctests_condition_init_failure (cctests_condition_failure_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_failure_t}.
 @end deftypefun
 
 
-@deftypefun bool cctests_condition_is_test_failure (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_test_failure}; otherwise return
+@deftypefun {cce_condition_t const *} cctests_condition_new_failure (void)
+Return a pointer to exceptional--condition object.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_failure (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_failure_t}; otherwise return
 @cfalse{}.
 @end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_failure_t} we can copy the code in the files:
+
+@example
+condition-failure-subtype.c
+condition-failure-subtype-headear.h
+condition-failure-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_failure_subtype_t}.
 
 @c page
 @node conditions assertion
@@ -430,16 +485,16 @@ Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_test_failure}; ot
 @cindex Exceptional conditions, failed assertion
 
 
-The exception @dfn{failed assertion} is used by @value{PACKAGE} to signal failure in an assertion
-verification, for example by @cfunc{cctests_assertion}.  To catch this exceptional condition we can
-do:
+The @dfn{assertion exceptional--condition object--type} is used by @value{PACKAGE} to signal failure
+in an assertion verification, for example by @cfunc{cctests_assertion}.  We can instantiate this
+type and also derive new types from it.  To catch this exceptional condition we can do:
 
 @smallexample
 cce_location_t        L[1];
 
 if (cce_location(L)) @{
-  if (cctests_condition_is_assertion_failure(cce_condition(L))) @{
-    cctests_condition_assertion_failure_t * C = (cctests_condition_assertion_failure_t *) cce_condition(L);
+  if (cctests_condition_is_assertion(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_assertion_t, C, cce_condition(L));
     do_something_with(C);
   @}
   cce_run_error_handlers_final(L);
@@ -450,28 +505,26 @@ if (cce_location(L)) @{
 @end smallexample
 
 
-@deftp {Struct Typedef} cctests_descriptor_assertion_failure_t
-Type of data structure representing the exceptional--condition descriptor for the condition
-@emph{failed assertion}: an exception that signals failure in an assertion verification.  It has the
-following public fields:
+@deftp {Struct Typedef} cctests_descriptor_assertion_t
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
 
 @table @code
 @item cce_descriptor_t descriptor
 The condition descriptor's base values.
 @end table
 
-The parent of this type descriptor is the one referenced by @code{cctests_descriptor_test_failure},
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_failure_ptr},
 @ref{conditions failure, Signalling test failure}.
 @end deftp
 
 
-@deftp {Struct Typedef} cctests_condition_assertion_failure_t
-Type of data structure representing the exceptional--condition object for the condition @emph{failed
-assertion}: an exception that signals failure in an assertion verification.  It has the following
-public fields:
+@deftp {Struct Typedef} cctests_condition_assertion_t
+Type of data structure representing the exceptional--condition object.  It has the following public
+fields:
 
 @table @code
-@item cctests_condition_base_t base
+@item cctests_condition_failure_t failure
 The condition object's base values.
 
 @item char const * expr
@@ -494,20 +547,148 @@ be generated with the preprocessor macro @code{__LINE__}.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_assertion_failure_t const * const} cctests_descriptor_assertion_failure
+@deftypevr {Dynamic Constant} {cctests_descriptor_assertion_t const * const} cctests_descriptor_assertion_ptr
 Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun {cce_condition_t const *} cctests_condition_new_assertion_failure (char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
+@deftypefun void cctests_condition_init_assertion (cctests_condition_assertion_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_assertion_t}.
+@end deftypefun
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_assertion (cce_destination_t @var{L}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
+Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
+an exception by performing a non--local exit to @var{L}.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_assertion (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_assertion_t}; otherwise return
+@cfalse{}.
+@end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_assertion_t} we can copy the code in the files:
+
+@example
+condition-assertion-subtype.c
+condition-assertion-subtype-headear.h
+condition-assertion-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_assertion_subtype_t}.
+
+@c page
+@node conditions regex
+@section Regular expression errors
+
+
+@menu
+* conditions regex base::       Base regular expression errors.
+* conditions regex comp::       Regular expression compilation errors.
+@end menu
+
+@c page
+@node conditions regex base
+@subsection Base regular expression errors
+
+
+@cindex Base regular expression error, exceptional condition
+@cindex Regular expression error, base exceptional condition
+@cindex Exceptional conditions, base regular expression error
+
+
+The exception @dfn{regex error} is used to represent an error related to the use of @posix{} regular
+expressions; this type is the base for more specialised types.  To catch this exceptional condition
+we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_regex_error(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_regex_error_t, C, cce_condition(L));
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+
+@deftp {Struct Typedef} cctests_descriptor_regex_error_t
+Type of data structure representing the exceptional--condition descriptor for the condition
+@emph{regex error}: an exception that signals an error using regular expressions.  It has the
+following public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by @code{cce_descriptor_runtime_error_ptr},
+@xref{conditions run-time error, CCExceptions, CCExceptions, ccexceptions, CCExceptions}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_regex_error_t
+Type of data structure representing the exceptional--condition object for the condition @emph{regex
+error}: an exception that signals an error using regular expressions.  It has the following public
+fields:
+
+@table @code
+@item cce_condition_runtime_error_t base
+The condition object's base values.
+
+@item char const * expr
+Pointer to a statically allocated @asciiz{} string representing the failed assertion's expression.
+
+@item char const * filename
+Pointer to a statically allocated @asciiz{} string representing the pathname of the source file in
+which the failed assertion is located.  This value is meant to be generated with the preprocessor
+macro @code{__FILE__}.
+
+@item char const * funcname
+Pointer to a statically allocated @asciiz{} string representing the name of the function in which
+the failed assertion is located.  This value is meant to be generated with the preprocessor macro
+@code{__func__}.
+
+@item int linenum
+The line number in the source file in which the failed assertion is located.  This value is meant to
+be generated with the preprocessor macro @code{__LINE__}.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_regex_error_t const * const} cctests_descriptor_regex_error
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_regex_error (char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
 Return a pointer to exceptional condition object.
 @end deftypefun
 
 
-@deftypefun bool cctests_condition_is_assertion_failure (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_assertion_failure}; otherwise return
+@deftypefun bool cctests_condition_is_regex_error (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @code{cctests_descriptor_regex_error}; otherwise return
 @cfalse{}.
 @end deftypefun
+
+@c page
+@node conditions regex comp
+@subsection Regular expression compilation errors
+
 
 @c page
 @node conditions signal one
@@ -526,7 +707,7 @@ cce_location_t        L[1];
 
 if (cce_location(L)) @{
   if (cctests_condition_is_signal_1(cce_condition(L))) @{
-    cctests_condition_signal_1_t * C = (cctests_condition_signal_1_t *) cce_condition(L);
+    CCTESTS_PC(cctests_condition_signal_1_t, C, cce_condition(L));
     do_something_with(C);
   @}
   cce_run_error_handlers_final(L);
@@ -596,7 +777,7 @@ cce_location_t        L[1];
 
 if (cce_location(L)) @{
   if (cctests_condition_is_signal_2(cce_condition(L))) @{
-    cctests_condition_signal_2_t * C = (cctests_condition_signal_2_t *) cce_condition(L);
+    CCTESTS_PC(cctests_condition_signal_2_t, C, cce_condition(L));
     do_something_with(C);
   @}
   cce_run_error_handlers_final(L);
@@ -666,7 +847,7 @@ cce_location_t        L[1];
 
 if (cce_location(L)) @{
   if (cctests_condition_is_signal_3(cce_condition(L))) @{
-    cctests_condition_signal_3_t * C = (cctests_condition_signal_3_t *) cce_condition(L);
+    CCTESTS_PC(cctests_condition_signal_3_t, C, cce_condition(L));
     do_something_with(C);
   @}
   cce_run_error_handlers_final(L);
@@ -791,24 +972,16 @@ release the memory block referenced by @var{P} using the standard function @cfun
 @chapter Driving test groups
 
 
-We create and run test group as follows in a full program:
+We create and run test group as follows, in a full program:
 
 @example
 #include <cctests.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
-void
-test_this (cce_destination_t L CCTESTS_UNUSED)
-@{
-  cctests_assert(true);
-@}
-
-void
-test_that (cce_destination_t L CCTESTS_UNUSED)
-@{
-  cctests_assert(true);
-@}
+/* test functions */
+void test_this (cce_destination_t L);
+void test_that (cce_destination_t L);
 
 int
 main (void)
@@ -825,6 +998,18 @@ main (void)
   @} else @{
     exit(EXIT_FAILURE);
   @}
+@}
+
+void
+test_this (cce_destination_t L CCTESTS_UNUSED)
+@{
+  cctests_assert(true);
+@}
+
+void
+test_that (cce_destination_t L CCTESTS_UNUSED)
+@{
+  cctests_assert(true);
 @}
 @end example
 
@@ -888,6 +1073,47 @@ cctests_assert(false);  /* failure */
 @}
 @end example
 @end deftypefn
+
+@c page
+@node utils
+@chapter Utility definitions
+
+
+@defmac CCTESTS_PC (@var{POINTER_TYPE}, @var{POINTER_NAME}, @var{EXPRESSION})
+Preprocessor macro used to define pointer variables initialised with a cast expression.  It expands
+to:
+
+@example
+POINTER_TYPE * POINTER_NAME = (POINTER_TYPE *) (EXPRESSION)
+@end example
+
+For example, the macro use:
+
+@example
+CCTESTS_PC(cctests_descriptor_test_failure_t, C, _C);
+@end example
+
+@noindent
+expands into:
+
+@example
+cctests_descriptor_test_failure_t * C = \
+   (cctests_descriptor_test_failure_t *) (_C);
+@end example
+@end defmac
+
+
+@defmac CCTESTS_UNUSED
+Preprocessor macro that is meant to expand into an attribute declaration.  If the symbol
+@code{__GNUC__} is defined, the expansion is:
+
+@example
+__attribute__((__unused__))
+@end example
+
+@noindent
+otherwise the expansion is the empty string.
+@end defmac
 
 @c page
 @c ------------------------------------------------------------

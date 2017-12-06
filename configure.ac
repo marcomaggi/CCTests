@@ -69,7 +69,7 @@ AC_SUBST(AX_CFLAGS)
 AM_PROG_AS
 AM_PROG_CC_C_O
 AC_HEADER_STDC
-dnl AC_CHECK_HEADERS([assert.h stdint.h strings.h errno.h stddef.h])
+AC_CHECK_HEADERS([regex.h])
 dnl AC_CHECK_SIZEOF(void *)
 
 AC_CACHE_SAVE
@@ -88,7 +88,7 @@ AC_CACHE_SAVE
 dnl page
 #### external libraries
 
-PKG_CHECK_MODULES([CCEXCEPTIONS],[ccexceptions >= 0.6.1])
+PKG_CHECK_MODULES([CCEXCEPTIONS],[ccexceptions >= 0.6.2])
 
 AC_CACHE_SAVE
 

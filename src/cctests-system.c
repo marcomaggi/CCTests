@@ -76,31 +76,18 @@ cctests_sys_calloc (cce_destination_t  L, size_t count, size_t eltsize)
 
 
 /** --------------------------------------------------------------------
- ** Predefined POSIX exception handler: malloc pointer.
+ ** System wrappers: POSIX regular expressions.
  ** ----------------------------------------------------------------- */
 
-__attribute__((__nonnull__(1,2)))
-static void
-cce_handler_malloc_function (cce_condition_t const * C CCE_UNUSED, cce_handler_t * H)
-{
-  free(H->pointer);
-  if (0) { fprintf(stderr, "%s: done\n", __func__); }
-}
-
 void
-cctests_sys_cleanup_handler_malloc_init (cce_location_t * L, cce_handler_t * H, void * pointer)
+cctests_sys_regcomp (cce_destination_t L, regex_t * rex, char const * pattern, int cflags)
 {
-  H->function	= cce_handler_malloc_function;
-  H->pointer	= pointer;
-  cce_register_cleanup_handler(L, H);
-}
+  int	rv;
 
-void
-cctests_sys_error_handler_malloc_init (cce_location_t * L, cce_handler_t * H, void * pointer)
-{
-  H->function	= cce_handler_malloc_function;
-  H->pointer	= pointer;
-  cce_register_error_handler(L, H);
+  rv = regcomp(rex, pattern, cflags);
+  if (0 != rv) {
+    cce_raise(L, cctests_condition_new_regex_compilation_error(L, rv));
+  }
 }
 
 /* end of file */

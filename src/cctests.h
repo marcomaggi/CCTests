@@ -89,9 +89,11 @@ extern "C" {
 
 
 /** --------------------------------------------------------------------
- ** Constants.
+ ** Constants and preprocessor macros.
  ** ----------------------------------------------------------------- */
 
+#define CCTESTS_PC(POINTER_TYPE, POINTER_NAME, EXPRESSION)	\
+  POINTER_TYPE * POINTER_NAME = (POINTER_TYPE *) (EXPRESSION)
 
 
 /** --------------------------------------------------------------------
@@ -102,23 +104,31 @@ typedef void cctests_fun_t (cce_destination_t L);
 
 /* ------------------------------------------------------------------ */
 
-typedef struct cctests_descriptor_base_t		cctests_descriptor_base_t;
-typedef struct cctests_descriptor_test_failure_t	cctests_descriptor_test_failure_t;
-typedef struct cctests_descriptor_assertion_failure_t	cctests_descriptor_assertion_failure_t;
+#define CCTESTS_STRUCT_TYPEDEF(NAME)	typedef struct NAME NAME
 
-typedef struct cctests_descriptor_signal_1_t		cctests_descriptor_signal_1_t;
-typedef struct cctests_descriptor_signal_2_t		cctests_descriptor_signal_2_t;
-typedef struct cctests_descriptor_signal_3_t		cctests_descriptor_signal_3_t;
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_base_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_failure_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_assertion_t);
+
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_signal_1_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_signal_2_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_signal_3_t);
+
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_regex_error_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_regex_compilation_error_t);
 
 /* ------------------------------------------------------------------ */
 
-typedef struct cctests_condition_base_t			cctests_condition_base_t;
-typedef struct cctests_condition_test_failure_t		cctests_condition_test_failure_t;
-typedef struct cctests_condition_assertion_failure_t	cctests_condition_assertion_failure_t;
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_base_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_failure_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_assertion_t);
 
-typedef struct cctests_condition_signal_1_t		cctests_condition_signal_1_t;
-typedef struct cctests_condition_signal_2_t		cctests_condition_signal_2_t;
-typedef struct cctests_condition_signal_3_t		cctests_condition_signal_3_t;
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_signal_1_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_signal_2_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_signal_3_t);
+
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_regex_error_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_regex_compilation_error_t);
 
 
 /** --------------------------------------------------------------------
@@ -140,7 +150,7 @@ cctests_decl int	cctests_version_interface_age (void);
 
 
 /** --------------------------------------------------------------------
- ** Condition objects.
+ ** Condition objects: base.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_base_t {
@@ -148,70 +158,101 @@ struct cctests_descriptor_base_t {
 };
 
 struct cctests_condition_base_t {
-  cce_condition_t	condition;
+  cce_condition_root_t	root;
 };
 
-cctests_decl const cctests_descriptor_base_t * const cctests_descriptor_base;
+cctests_decl cctests_descriptor_base_t const * const cctests_descriptor_base_ptr;
+
+__attribute__((__nonnull__((1)),,__always_inline__))
+static inline void
+cctests_condition_init_base (cctests_condition_base_t * C)
+{
+  cce_condition_init_root(&(C->root));
+}
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
 cctests_condition_is_base (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_base->descriptor));
+  return cce_is_condition(C, &(cctests_descriptor_base_ptr->descriptor));
 }
 
-/* ------------------------------------------------------------------ */
+
+/** --------------------------------------------------------------------
+ ** Condition objects: test failure.
+ ** ----------------------------------------------------------------- */
 
-struct cctests_descriptor_test_failure_t {
+struct cctests_descriptor_failure_t {
   cce_descriptor_t	descriptor;
 };
 
-struct cctests_condition_test_failure_t {
+struct cctests_condition_failure_t {
   cctests_condition_base_t	base;
 };
 
-cctests_decl const cctests_descriptor_test_failure_t * const cctests_descriptor_test_failure;
+cctests_decl cctests_descriptor_failure_t const * const cctests_descriptor_failure_ptr;
 
-cctests_decl cce_condition_t const * cctests_condition_new_test_failure (void)
-  __attribute__((__leaf__,__pure__,__returns_nonnull__));
+__attribute__((__nonnull__((1)),,__always_inline__))
+static inline void
+cctests_condition_init_failure (cctests_condition_failure_t * C)
+{
+  cctests_condition_init_base(&(C->base));
+}
+
+cctests_decl cce_condition_t const * cctests_condition_new_failure (void)
+  __attribute__((__const__,__pure__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
-cctests_condition_is_test_failure (cce_condition_t const * C)
+cctests_condition_is_failure (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_test_failure->descriptor));
+  return cce_is_condition(C, &(cctests_descriptor_failure_ptr->descriptor));
 }
 
-/* ------------------------------------------------------------------ */
+
+/** --------------------------------------------------------------------
+ ** Condition objects: assertion failure.
+ ** ----------------------------------------------------------------- */
 
-struct cctests_descriptor_assertion_failure_t {
+struct cctests_descriptor_assertion_t {
   cce_descriptor_t	descriptor;
 };
 
-struct cctests_condition_assertion_failure_t {
-  cctests_condition_base_t	base;
+struct cctests_condition_assertion_t {
+  cctests_condition_failure_t	failure;
   char const *			expr;
   char const *			filename;
   char const *			funcname;
   int				linenum;
 };
 
-cctests_decl const cctests_descriptor_assertion_failure_t * const cctests_descriptor_assertion_failure;
+cctests_decl cctests_descriptor_assertion_t const * const cctests_descriptor_assertion_ptr;
 
-cctests_decl cce_condition_t const * cctests_condition_new_assertion_failure (char const * const expr,
-									      char const * const filename,
-									      char const * const funcname,
-									      int const linenum)
-  __attribute__((__leaf__,__nonnull__(1,2,3),__returns_nonnull__));
+cctests_decl void cctests_condition_init_assertion (cctests_condition_assertion_t * C,
+						    char const * const expr,
+						    char const * const filename,
+						    char const * const funcname,
+						    int const linenum)
+  __attribute__((__nonnull__(1,2,3,4)));
+
+cctests_decl cce_condition_t const * cctests_condition_new_assertion (cce_destination_t L,
+								      char const * const expr,
+								      char const * const filename,
+								      char const * const funcname,
+								      int const linenum)
+  __attribute__((__nonnull__(1,2,3),__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
-cctests_condition_is_assertion_failure (cce_condition_t const * C)
+cctests_condition_is_assertion (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_assertion_failure->descriptor));
+  return cce_is_condition(C, &(cctests_descriptor_assertion_ptr->descriptor));
 }
 
-/* ------------------------------------------------------------------ */
+
+/** --------------------------------------------------------------------
+ ** Condition objects: signal one.
+ ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_signal_1_t {
   cce_descriptor_t	descriptor;
@@ -221,19 +262,29 @@ struct cctests_condition_signal_1_t {
   cctests_condition_base_t	base;
 };
 
-cctests_decl const cctests_descriptor_signal_1_t * const cctests_descriptor_signal_1;
+cctests_decl cctests_descriptor_signal_1_t const * const cctests_descriptor_signal_1_ptr;
+
+__attribute__((__nonnull__((1)),,__always_inline__))
+static inline void
+cctests_condition_init_signal_1 (cctests_condition_signal_1_t * C)
+{
+  cctests_condition_init_base(&(C->base));
+}
 
 cctests_decl cce_condition_t const * cctests_condition_new_signal_1 (void)
-  __attribute__((__leaf__,__pure__,__returns_nonnull__));
+  __attribute__((__leaf__,__const__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
 cctests_condition_is_signal_1 (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_signal_1->descriptor));
+  return cce_is_condition(C, &(cctests_descriptor_signal_1_ptr->descriptor));
 }
 
-/* ------------------------------------------------------------------ */
+
+/** --------------------------------------------------------------------
+ ** Condition objects: signal two.
+ ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_signal_2_t {
   cce_descriptor_t	descriptor;
@@ -243,19 +294,29 @@ struct cctests_condition_signal_2_t {
   cctests_condition_base_t	base;
 };
 
-cctests_decl const cctests_descriptor_signal_2_t * const cctests_descriptor_signal_2;
+cctests_decl cctests_descriptor_signal_2_t const * const cctests_descriptor_signal_2_ptr;
+
+__attribute__((__nonnull__((1)),,__always_inline__))
+static inline void
+cctests_condition_init_signal_2 (cctests_condition_signal_2_t * C)
+{
+  cctests_condition_init_base(&(C->base));
+}
 
 cctests_decl cce_condition_t const * cctests_condition_new_signal_2 (void)
-  __attribute__((__leaf__,__pure__,__returns_nonnull__));
+  __attribute__((__leaf__,__const__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
 cctests_condition_is_signal_2 (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_signal_2->descriptor));
+  return cce_is_condition(C, &(cctests_descriptor_signal_2_ptr->descriptor));
 }
 
-/* ------------------------------------------------------------------ */
+
+/** --------------------------------------------------------------------
+ ** Condition objects: signal three.
+ ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_signal_3_t {
   cce_descriptor_t	descriptor;
@@ -265,16 +326,81 @@ struct cctests_condition_signal_3_t {
   cctests_condition_base_t	base;
 };
 
-cctests_decl const cctests_descriptor_signal_3_t * const cctests_descriptor_signal_3;
+cctests_decl cctests_descriptor_signal_3_t const * const cctests_descriptor_signal_3_ptr;
+
+__attribute__((__nonnull__((1)),,__always_inline__))
+static inline void
+cctests_condition_init_signal_3 (cctests_condition_signal_3_t * C)
+{
+  cctests_condition_init_base(&(C->base));
+}
 
 cctests_decl cce_condition_t const * cctests_condition_new_signal_3 (void)
-  __attribute__((__leaf__,__pure__,__returns_nonnull__));
+  __attribute__((__leaf__,__const__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
 cctests_condition_is_signal_3 (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_signal_3->descriptor));
+  return cce_is_condition(C, &(cctests_descriptor_signal_3_ptr->descriptor));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Condition objects: regular expression error.
+ ** ----------------------------------------------------------------- */
+
+struct cctests_descriptor_regex_error_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_regex_error_t {
+  cce_condition_runtime_error_t	runtime_error;
+  int	errcode;
+  char	error_message[1024];
+};
+
+cctests_decl cctests_descriptor_regex_error_t const * const cctests_descriptor_regex_error_ptr;
+
+cctests_decl void cctests_condition_init_regex_error (cctests_condition_regex_error_t * C, int rv, void * rex)
+  __attribute__((__nonnull__(1)));
+
+cctests_decl cce_condition_t const * cctests_condition_new_regex_error (cce_destination_t L, int rv, void * rex)
+  __attribute__((__nonnull__(1,3),__returns_nonnull__));
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_regex_error (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_regex_error_ptr->descriptor));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Condition objects: regular expression compilation error.
+ ** ----------------------------------------------------------------- */
+
+struct cctests_descriptor_regex_compilation_error_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_regex_compilation_error_t {
+  cctests_condition_regex_error_t	regex_error;
+};
+
+cctests_decl cctests_descriptor_regex_compilation_error_t const * const cctests_descriptor_regex_compilation_error_ptr;
+
+cctests_decl void cctests_condition_init_regex_compilation_error (cctests_condition_regex_compilation_error_t * C, int rv)
+  __attribute__((__nonnull__(1)));
+
+cctests_decl cce_condition_t const * cctests_condition_new_regex_compilation_error (cce_destination_t L, int rv)
+  __attribute__((__nonnull__(1),__returns_nonnull__));
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_regex_compilation_error (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_regex_compilation_error_ptr->descriptor));
 }
 
 

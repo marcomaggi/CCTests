@@ -38,6 +38,7 @@
 #include "cctests.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <regex.h>
 
 
 /** --------------------------------------------------------------------
@@ -56,7 +57,7 @@
  ** Library variables.
  ** ----------------------------------------------------------------- */
 
-cctests_private_decl cce_destination_t cctests_location;
+cctests_private_decl cce_destination_t cctests_group_location;
 
 
 /** --------------------------------------------------------------------

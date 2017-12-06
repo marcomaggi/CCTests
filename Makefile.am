@@ -38,13 +38,14 @@ libcctests_la_CPPFLAGS	= $(CCEXCEPTIONS_CFLAGS)
 libcctests_la_LDFLAGS	= -version-info $(cctests_CURRENT):$(cctests_REVISION):$(cctests_AGE) \
 			  $(CCEXCEPTIONS_LIBS)
 libcctests_la_SOURCES	= \
-	src/cctests.h			\
-	src/cctests-internals.h		\
-	src/cctests-version.c		\
-	src/cctests-init.c		\
-	src/cctests-conditions.c	\
-	src/cctests-system.c		\
-	src/cctests-driver.c		\
+	src/cctests.h				\
+	src/cctests-internals.h			\
+	src/cctests-version.c			\
+	src/cctests-init.c			\
+	src/cctests-conditions.c		\
+	src/cctests-exception-handlers.c	\
+	src/cctests-system.c			\
+	src/cctests-driver.c			\
 	src/cctests-assertions.c
 
 #page
@@ -53,25 +54,65 @@ libcctests_la_SOURCES	= \
 EXTRA_DIST	+= tests/test-utils.h
 
 check_PROGRAMS	= \
-	tests/version		\
-	tests/conditions	\
+	tests/version					\
+	tests/assert-conditions				\
+	tests/condition-base-subtyping			\
+	tests/condition-failure-subtyping		\
+	tests/condition-assertion-subtyping		\
 	tests/driver
-
-tests/conditions.$(OBJEXT): tests/test-utils.h
 
 TESTS				= $(check_PROGRAMS)
 
 cctests_tests_cppflags		= -I$(srcdir)/src -I$(srcdir)/tests
 cctests_tests_ldadd		= libcctests.la
 
+## --------------------------------------------------------------------
+
 tests_version_CPPFLAGS		= $(cctests_tests_cppflags)
 tests_version_LDADD		= $(cctests_tests_ldadd)
 
-tests_conditions_CPPFLAGS	= $(cctests_tests_cppflags)
-tests_conditions_LDADD		= $(cctests_tests_ldadd)
+## --------------------------------------------------------------------
+
+tests_assert_conditions_CPPFLAGS= $(cctests_tests_cppflags)
+tests_assert_conditions_LDADD	= $(cctests_tests_ldadd)
+
+tests/assert_conditions.$(OBJEXT):	tests/test-utils.h
+
+## --------------------------------------------------------------------
+
+tests_condition_base_subtyping_CPPFLAGS		= $(cctests_tests_cppflags)
+tests_condition_base_subtyping_LDADD		= $(cctests_tests_ldadd)
+tests_condition_base_subtyping_SOURCES		= \
+	tests/condition-base-subtyping.c	\
+	tests/condition-base-subtyping-body.c	\
+	tests/condition-base-subtyping-header.h
+
+## --------------------------------------------------------------------
+
+tests_condition_failure_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_condition_failure_subtyping_LDADD		= $(cctests_tests_ldadd)
+tests_condition_failure_subtyping_SOURCES	= \
+	tests/condition-failure-subtyping.c		\
+	tests/condition-failure-subtyping-body.c	\
+	tests/condition-failure-subtyping-header.h
+
+## --------------------------------------------------------------------
+
+tests_condition_assertion_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_condition_assertion_subtyping_LDADD	= $(cctests_tests_ldadd)
+tests_condition_assertion_subtyping_SOURCES	= \
+	tests/condition-assertion-subtyping.c		\
+	tests/condition-assertion-subtyping-body.c	\
+	tests/condition-assertion-subtyping-header.h
+
+## --------------------------------------------------------------------
 
 tests_driver_CPPFLAGS		= $(cctests_tests_cppflags)
 tests_driver_LDADD		= $(cctests_tests_ldadd)
+
+tests/driver.$(OBJEXT):		tests/test-utils.h
+
+## --------------------------------------------------------------------
 
 installcheck-local: $(TESTS)
 	@for f in $(TESTS); do $(builddir)/$$f; done

@@ -86,16 +86,16 @@ test_3_2 (void)
 
 void
 test_4_1 (void)
-/* Tests that "test_failure" is a base condition. */
+/* Tests that "failure" is a base condition. */
 {
-  test_assert(true == cctests_condition_is_base(cctests_condition_new_test_failure()));
+  test_assert(true == cctests_condition_is_base(cctests_condition_new_failure()));
 }
 
 void
 test_4_2 (void)
-/* Tests that "test_failure" is a "test_failure" condition. */
+/* Tests that "failure" is a "failure" condition. */
 {
-  test_assert(true == cctests_condition_is_test_failure(cctests_condition_new_test_failure()));
+  test_assert(true == cctests_condition_is_failure(cctests_condition_new_failure()));
 }
 
 
@@ -105,23 +105,29 @@ test_4_2 (void)
 
 void
 test_5_1 (void)
-/* Tests that "assertion_failure" is a base condition. */
+/* Tests that "assertion" is a base condition. */
 {
-  test_assert(true == cctests_condition_is_base(cctests_condition_new_assertion_failure("1+2", __FILE__, __func__, __LINE__)));
+  cce_location_t	L[1];
+
+  test_assert(true == cctests_condition_is_base(cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__)));
 }
 
 void
 test_5_2 (void)
-/* Tests that "assertion_failure" is a "test_failure" condition. */
+/* Tests that "assertion" is a "failure" condition. */
 {
-  test_assert(true == cctests_condition_is_test_failure(cctests_condition_new_assertion_failure("1+2", __FILE__, __func__, __LINE__)));
+  cce_location_t	L[1];
+
+  test_assert(true == cctests_condition_is_failure(cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__)));
 }
 
 void
 test_5_3 (void)
-/* Tests that "assertion_failure" is a "assertion_failure" condition. */
+/* Tests that "assertion" is a "assertion" condition. */
 {
-  test_assert(true == cctests_condition_is_assertion_failure(cctests_condition_new_assertion_failure("1+2", __FILE__, __func__, __LINE__)));
+  cce_location_t	L[1];
+
+  test_assert(true == cctests_condition_is_assertion(cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__)));
 }
 
 

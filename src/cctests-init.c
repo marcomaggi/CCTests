@@ -34,7 +34,36 @@
 void
 cctests_init (void)
 {
-  cctests_conditions_module_initialisation();
+  static bool	to_be_initialised = true;
+
+  if (to_be_initialised) {
+    cctests_conditions_module_initialisation();
+  }
+}
+
+void
+acquire_environment_test_name (cce_destination_t upper_L)
+{
+  cce_location_t	L[1];
+
+  if (cce_location(L)) {
+    cce_run_error_handlers_raise(L, upper_L);
+  } else {
+    static int const	cflags = REG_NOSUB;
+    char const *	name_str = getenv("name");
+    regex_t		name_rex;
+    int			rv;
+
+    if (NULL == name_str) {
+      name_str = ".*";
+    }
+
+    rv = regcomp(&name_rex, name_str, cflags);
+    if (0 != rv) {
+      cce_raise(L, cctests_condition_new_regex_error (L, rv, (void *)&name_rex));
+    }
+    cce_run_cleanup_handlers(L);
+  }
 }
 
 /* end of file */
