@@ -59,7 +59,7 @@ The package depends upon the external package CCExceptions at least version
 @value{CCEXCEPTIONS_REQUIRED_VERSION}, and relies on @command{pkg-config} to find it installed on
 the system.
 
-The package is distributed under the terms of the @gnu{} Lesser General Public License (@gpl{}).
+The package is distributed under the terms of the @gnu{} Lesser General Public License (@lgpl{}).
 
 The latest release can be downloaded from:
 
@@ -234,7 +234,7 @@ explanation of interface numbers as managed by @gnu{} Libtool @xref{Libtool vers
 Libtool's versioning system, libtool, Shared library support for @gnu{}}.
 
 
-@deftypefun {const char *} cctests_version_string (void)
+@deftypefun {char const *} cctests_version_string (void)
 Return a pointer to a statically allocated @asciiz{} string representing the interface version
 number.
 @end deftypefun
