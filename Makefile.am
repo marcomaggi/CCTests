@@ -54,17 +54,18 @@ libcctests_la_SOURCES	= \
 EXTRA_DIST	+= tests/test-utils.h
 
 check_PROGRAMS	= \
-	tests/version					\
-	tests/assert-conditions				\
-	tests/condition-base-subtyping			\
-	tests/condition-success-subtyping		\
-	tests/condition-failure-subtyping		\
-	tests/condition-assertion-subtyping		\
-	tests/condition-signal-subtyping		\
-	tests/condition-signal-1-subtyping		\
-	tests/condition-signal-2-subtyping		\
-	tests/condition-signal-3-subtyping		\
-	tests/condition-regex-error-subtyping		\
+	tests/version						\
+	tests/assert-conditions					\
+	tests/condition-base-subtyping				\
+	tests/condition-success-subtyping			\
+	tests/condition-failure-subtyping			\
+	tests/condition-assertion-subtyping			\
+	tests/condition-signal-subtyping			\
+	tests/condition-signal-1-subtyping			\
+	tests/condition-signal-2-subtyping			\
+	tests/condition-signal-3-subtyping			\
+	tests/condition-regex-error-subtyping			\
+	tests/condition-regex-compilation-error-subtyping	\
 	tests/driver
 
 TESTS				= $(check_PROGRAMS)
@@ -164,6 +165,15 @@ tests_condition_regex_error_subtyping_SOURCES	= \
 	tests/condition-regex-error-subtyping.c		\
 	tests/condition-regex-error-subtyping-body.c	\
 	tests/condition-regex-error-subtyping-header.h
+
+## --------------------------------------------------------------------
+
+tests_condition_regex_compilation_error_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_condition_regex_compilation_error_subtyping_LDADD		= $(cctests_tests_ldadd)
+tests_condition_regex_compilation_error_subtyping_SOURCES	= \
+	tests/condition-regex-compilation-error-subtyping.c		\
+	tests/condition-regex-compilation-error-subtyping-body.c	\
+	tests/condition-regex-compilation-error-subtyping-header.h
 
 ## --------------------------------------------------------------------
 

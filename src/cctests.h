@@ -459,10 +459,10 @@ struct cctests_condition_regex_compilation_error_t {
 
 cctests_decl cctests_descriptor_regex_compilation_error_t const * const cctests_descriptor_regex_compilation_error_ptr;
 
-cctests_decl void cctests_condition_init_regex_compilation_error (cctests_condition_regex_compilation_error_t * C, int rv)
+cctests_decl void cctests_condition_init_regex_compilation_error (cctests_condition_regex_compilation_error_t * C, int errcode)
   __attribute__((__nonnull__(1)));
 
-cctests_decl cce_condition_t const * cctests_condition_new_regex_compilation_error (cce_destination_t L, int rv)
+cctests_decl cce_condition_t const * cctests_condition_new_regex_compilation_error (cce_destination_t L, int errcode)
   __attribute__((__nonnull__(1),__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))

@@ -401,7 +401,7 @@ static cctests_descriptor_regex_compilation_error_t const cctests_descriptor_reg
   .descriptor.static_message	= cctests_condition_static_message_regex_compilation_error
 };
 
-cctests_descriptor_regex_compilation_error_t const * const cctests_descriptor_regex_compilation_error_stru_ptr =
+cctests_descriptor_regex_compilation_error_t const * const cctests_descriptor_regex_compilation_error_ptr =
   &cctests_descriptor_regex_compilation_error_stru;
 
 /* ------------------------------------------------------------------ */
@@ -415,21 +415,21 @@ cctests_condition_static_message_regex_compilation_error (cce_condition_t const 
 /* ------------------------------------------------------------------ */
 
 void
-cctests_condition_init_regex_compilation_error (cctests_condition_regex_compilation_error_t * C, int rv)
+cctests_condition_init_regex_compilation_error (cctests_condition_regex_compilation_error_t * C, int errcode)
 {
   /* For a compilation error we have  no valid "regex_t" argument, so we
      set it to NULL as described in the specification. */
-  cctests_condition_init_regex_error(&(C->regex_error), rv, NULL);
+  cctests_condition_init_regex_error(&(C->regex_error), errcode, NULL);
 }
 
 cce_condition_t const *
-cctests_condition_new_regex_compilation_error (cce_destination_t L, int rv)
+cctests_condition_new_regex_compilation_error (cce_destination_t L, int errcode)
 {
   cctests_condition_regex_compilation_error_t *	C = \
     cctests_sys_malloc(L, sizeof(cctests_condition_regex_compilation_error_t));
 
   cce_condition_init((cce_condition_t *)C, &cctests_descriptor_regex_compilation_error_stru.descriptor);
-  cctests_condition_init_regex_compilation_error(C, rv);
+  cctests_condition_init_regex_compilation_error(C, errcode);
   return (cce_condition_t *)C;
 }
 

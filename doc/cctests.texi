@@ -766,12 +766,18 @@ Pointer to a statically allocated exceptional condition descriptor.
 @deftypefun void cctests_condition_init_regex_error (cctests_condition_regex_error_t * @var{C}, int @var{errcode}, regex_t * @var{rex})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_regex_error_t}.
+
+The argument @var{rex} should be a pointer to the regular expression that caused the error, but it
+can also be @cnull{}, in which case the error message will be less descriptive.
 @end deftypefun
 
 
 @deftypefun {cce_condition_t const *} cctests_condition_new_regex_error (cce_destination_t @var{L}, int @var{errcode}, regex_t * @var{rex})
 Return a pointer to exceptional condition object.  If an error occurs building the condition object:
 raise an exception by performing a non--local exit to @var{L}.
+
+The argument @var{rex} should be a pointer to the regular expression that caused the error, but it
+can also be @cnull{}, in which case the error message will be less descriptive.
 @end deftypefun
 
 
@@ -802,6 +808,97 @@ condition--object type @objtype{my_condition_regex_error_subtype_t}.
 @node conditions regex comp
 @subsection Regular expression compilation errors
 
+
+@cindex Regular expression compilation error, exceptional condition
+@cindex Exceptional conditions, regular expression compilation error
+
+
+The @dfn{regex compilation error exceptional--condition object--type} is used by @value{PACKAGE} to
+represent an error compiling a @posix{} regular expressions; it is used when calling the standard
+function @cfunc{regcomp}.  We can instantiate this type and also derive new types from it.  To catch
+this exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_regex_compilation_error(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+
+@deftp {Struct Typedef} cctests_descriptor_regex_compilation_error_t
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by
+@code{cctests_descriptor_regex_error_ptr}, @ref{conditions regex error, Base regular expression
+errors}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_regex_compilation_error_t
+Type of data structure representing the exceptional--condition object.  It has the following public
+fields:
+
+@table @code
+@item cctests_condition_regex_error_t regex_error
+The condition object's base values.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_regex_compilation_error_t const * const} cctests_descriptor_regex_compilation_error_ptr
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun void cctests_condition_init_regex_compilation_error (cctests_condition_regex_compilation_error_t * @var{C}, int @var{errcode})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_regex_compilation_error_t}.
+@end deftypefun
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_regex_compilation_error (cce_destination_t @var{L}, int @var{errcode})
+Return a pointer to exceptional condition object.  If an error occurs building the condition object:
+raise an exception by performing a non--local exit to @var{L}.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_regex_compilation_error (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_descriptor_regex_compilation_error_t};
+otherwise return @cfalse{}.
+@end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_regex_compilation_error_t} we can copy the code
+in the files:
+
+@example
+condition-regex-compilation-error-subtype.c
+condition-regex-compilation-error-subtype-headear.h
+condition-regex-compilation-error-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_regex_compilation_error_subtype_t}.
 
 @c page
 @node conditions signal
