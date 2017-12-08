@@ -344,9 +344,9 @@ cctests_condition_static_message_signal_3 (cce_condition_t const * C CCTESTS_UNU
  ** Exceptional condition descriptor: regular expression error.
  ** ----------------------------------------------------------------- */
 
-static cce_condition_static_message_fun_t	condition_static_message_regex_error;
+static cce_condition_static_message_fun_t	cctests_condition_static_message_regex_error;
 
-static cctests_descriptor_regex_error_t descriptor_regex_error = {
+static cctests_descriptor_regex_error_t cctests_descriptor_regex_error_stru = {
   /* This field is set by the initialisation function to the pointer:
    *
    *	&(cce_descriptor_runtime_error_ptr->descriptor)
@@ -354,33 +354,37 @@ static cctests_descriptor_regex_error_t descriptor_regex_error = {
   .descriptor.parent		= NULL,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
-  .descriptor.static_message	= condition_static_message_regex_error
+  .descriptor.static_message	= cctests_condition_static_message_regex_error
 };
 
-cctests_descriptor_regex_error_t const * const cctests_descriptor_regex_error_ptr = &descriptor_regex_error;
+cctests_descriptor_regex_error_t const * const cctests_descriptor_regex_error_ptr = &cctests_descriptor_regex_error_stru;
+
+/* ------------------------------------------------------------------ */
+
+char const *
+cctests_condition_static_message_regex_error (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests regular expression error";
+}
+
+/* ------------------------------------------------------------------ */
 
 void
-cctests_condition_init_regex_error (cctests_condition_regex_error_t * C, int rv, void * rex)
+cctests_condition_init_regex_error (cctests_condition_regex_error_t * C, int errcode, regex_t * rex)
 {
   cce_condition_init_runtime_error(&(C->runtime_error));
-  C->errcode = rv;
-  regerror(rv, (regex_t *) rex, C->error_message, 1024);
+  C->errcode = errcode;
+  regerror(errcode, rex, C->error_message, 1024);
 }
 
 cce_condition_t const *
-cctests_condition_new_regex_error (cce_destination_t L, int rv, void * rex)
+cctests_condition_new_regex_error (cce_destination_t L, int errcode, regex_t * rex)
 {
   cctests_condition_regex_error_t *	C = cctests_sys_malloc(L, sizeof(cctests_condition_regex_error_t));
 
-  cce_condition_init((cce_condition_t *)C, &descriptor_regex_error.descriptor);
-  cctests_condition_init_regex_error(C, rv, rex);
+  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_regex_error_stru.descriptor);
+  cctests_condition_init_regex_error(C, errcode, rex);
   return (cce_condition_t *)C;
-}
-
-char const *
-condition_static_message_regex_error (cce_condition_t const * C CCTESTS_UNUSED)
-{
-  return "CCTests regular expression error";
 }
 
 
@@ -388,16 +392,27 @@ condition_static_message_regex_error (cce_condition_t const * C CCTESTS_UNUSED)
  ** Exceptional condition descriptor: regular expression compilation error.
  ** ----------------------------------------------------------------- */
 
-static cce_condition_static_message_fun_t	condition_static_message_regex_compilation_error;
+static cce_condition_static_message_fun_t	cctests_condition_static_message_regex_compilation_error;
 
-static cctests_descriptor_regex_compilation_error_t const descriptor_regex_compilation_error = {
-  .descriptor.parent		= &descriptor_regex_error.descriptor,
+static cctests_descriptor_regex_compilation_error_t const cctests_descriptor_regex_compilation_error_stru = {
+  .descriptor.parent		= &cctests_descriptor_regex_error_stru.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
-  .descriptor.static_message	= condition_static_message_regex_compilation_error
+  .descriptor.static_message	= cctests_condition_static_message_regex_compilation_error
 };
 
-cctests_descriptor_regex_compilation_error_t const * const cctests_descriptor_regex_compilation_error_ptr = &descriptor_regex_compilation_error;
+cctests_descriptor_regex_compilation_error_t const * const cctests_descriptor_regex_compilation_error_stru_ptr =
+  &cctests_descriptor_regex_compilation_error_stru;
+
+/* ------------------------------------------------------------------ */
+
+char const *
+cctests_condition_static_message_regex_compilation_error (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests regular expression compilation error";
+}
+
+/* ------------------------------------------------------------------ */
 
 void
 cctests_condition_init_regex_compilation_error (cctests_condition_regex_compilation_error_t * C, int rv)
@@ -413,15 +428,9 @@ cctests_condition_new_regex_compilation_error (cce_destination_t L, int rv)
   cctests_condition_regex_compilation_error_t *	C = \
     cctests_sys_malloc(L, sizeof(cctests_condition_regex_compilation_error_t));
 
-  cce_condition_init((cce_condition_t *)C, &descriptor_regex_compilation_error.descriptor);
+  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_regex_compilation_error_stru.descriptor);
   cctests_condition_init_regex_compilation_error(C, rv);
   return (cce_condition_t *)C;
-}
-
-char const *
-condition_static_message_regex_compilation_error (cce_condition_t const * C CCTESTS_UNUSED)
-{
-  return "CCTests regular expression compilation error";
 }
 
 
@@ -433,7 +442,7 @@ void
 cctests_conditions_module_initialisation (void)
 {
   cce_descriptor_set_root_parent(&cctests_descriptor_base_stru.descriptor);
-  descriptor_regex_error.descriptor.parent = &(cce_descriptor_runtime_error_ptr->descriptor);
+  cctests_descriptor_regex_error_stru.descriptor.parent = &(cce_descriptor_runtime_error_ptr->descriptor);
 }
 
 /* end of file */

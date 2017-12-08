@@ -64,6 +64,7 @@ check_PROGRAMS	= \
 	tests/condition-signal-1-subtyping		\
 	tests/condition-signal-2-subtyping		\
 	tests/condition-signal-3-subtyping		\
+	tests/condition-regex-error-subtyping		\
 	tests/driver
 
 TESTS				= $(check_PROGRAMS)
@@ -154,6 +155,15 @@ tests_condition_signal_3_subtyping_SOURCES	= \
 	tests/condition-signal-3-subtyping.c		\
 	tests/condition-signal-3-subtyping-body.c	\
 	tests/condition-signal-3-subtyping-header.h
+
+## --------------------------------------------------------------------
+
+tests_condition_regex_error_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_condition_regex_error_subtyping_LDADD	= $(cctests_tests_ldadd)
+tests_condition_regex_error_subtyping_SOURCES	= \
+	tests/condition-regex-error-subtyping.c		\
+	tests/condition-regex-error-subtyping-body.c	\
+	tests/condition-regex-error-subtyping-header.h
 
 ## --------------------------------------------------------------------
 
