@@ -1308,7 +1308,7 @@ Wrapper for @cfunc{calloc}.  This function never returns @cnull{}.
 
 @c ------------------------------------------------------------------------
 
-@section Handler for allocated memory
+@subsubheading Handler for allocated memory
 
 We can handle memory that must be released with the standard function @cfunc{free} as follows:
 
