@@ -85,7 +85,7 @@ my_condition_static_message_regex_error_subtype (cce_condition_t const * C CCE_U
 
 void
 my_condition_init_regex_error_subtype (cce_destination_t L, my_condition_regex_error_subtype_t * C,
-				       int errcode, regex_t * rex, int the_data)
+				       int errcode, int the_data)
 /* This initialisation function must be called both by:
  *
  * - The constructor function of this object type.
@@ -97,14 +97,14 @@ my_condition_init_regex_error_subtype (cce_destination_t L, my_condition_regex_e
  * the fields of this type.
  */
 {
-  cctests_condition_init_regex_error(&(C->regex_error), errcode, rex);
+  cctests_condition_init_regex_error(&(C->regex_error), errcode);
   C->data = cce_sys_malloc(L, sizeof(int));
   *(C->data) = the_data;
   if (1) { fprintf(stderr, "%s: initialised %p\n", __func__, (void*)C); }
 }
 
 cce_condition_t const *
-my_condition_new_regex_error_subtype (cce_destination_t upper_L, int errcode, regex_t * rex, int the_data)
+my_condition_new_regex_error_subtype (cce_destination_t upper_L, int errcode, int the_data)
 /* This constructor function is the  public interface to the constructor
  * of condition objects of type "my_condition_regex_error_subtype_t".
  *
@@ -127,7 +127,7 @@ my_condition_new_regex_error_subtype (cce_destination_t upper_L, int errcode, re
     cce_error_handler_malloc_init(L, C_H, C);
 
     cce_condition_init((cce_condition_t *) C, &(my_descriptor_regex_error_subtype_ptr->descriptor));
-    my_condition_init_regex_error_subtype(L, C, errcode, rex, the_data);
+    my_condition_init_regex_error_subtype(L, C, errcode, the_data);
 
     cce_run_cleanup_handlers(L);
     if (1) { fprintf(stderr, "%s: constructed %p\n", __func__, (void*)C); }

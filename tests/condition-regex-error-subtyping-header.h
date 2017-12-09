@@ -44,11 +44,10 @@ struct my_condition_regex_error_subtype_t {
 cctests_decl my_descriptor_regex_error_subtype_t const * const	my_descriptor_regex_error_subtype_ptr;
 
 cctests_decl void my_condition_init_regex_error_subtype (cce_destination_t L, my_condition_regex_error_subtype_t * C,
-							 int errcode, regex_t * rex, int the_data)
+							 int errcode, int the_data)
   __attribute__((__nonnull__(1,2)));
 
-cctests_decl cce_condition_t const * my_condition_new_regex_error_subtype (cce_destination_t L,
-									   int errcode, regex_t * rex, int the_data)
+cctests_decl cce_condition_t const * my_condition_new_regex_error_subtype (cce_destination_t L, int errcode, int the_data)
   __attribute__((__nonnull__(1),__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))

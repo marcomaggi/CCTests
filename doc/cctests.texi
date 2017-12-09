@@ -763,21 +763,15 @@ Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun void cctests_condition_init_regex_error (cctests_condition_regex_error_t * @var{C}, int @var{errcode}, regex_t * @var{rex})
+@deftypefun void cctests_condition_init_regex_error (cctests_condition_regex_error_t * @var{C}, int @var{errcode})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_regex_error_t}.
-
-The argument @var{rex} should be a pointer to the regular expression that caused the error, but it
-can also be @cnull{}, in which case the error message will be less descriptive.
 @end deftypefun
 
 
-@deftypefun {cce_condition_t const *} cctests_condition_new_regex_error (cce_destination_t @var{L}, int @var{errcode}, regex_t * @var{rex})
+@deftypefun {cce_condition_t const *} cctests_condition_new_regex_error (cce_destination_t @var{L}, int @var{errcode})
 Return a pointer to exceptional condition object.  If an error occurs building the condition object:
 raise an exception by performing a non--local exit to @var{L}.
-
-The argument @var{rex} should be a pointer to the regular expression that caused the error, but it
-can also be @cnull{}, in which case the error message will be less descriptive.
 @end deftypefun
 
 

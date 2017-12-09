@@ -20,6 +20,7 @@
 #include <cctests.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <regex.h>
 #include "condition-regex-error-subtyping-header.h"
 
 
@@ -73,7 +74,7 @@ main (void)
 
       cce_run_error_handlers_final(L);
     } else {
-      cce_raise(L, my_condition_new_regex_error_subtype(L, REG_NOMATCH, NULL, 123));
+      cce_raise(L, my_condition_new_regex_error_subtype(L, REG_NOMATCH, 123));
       cce_run_cleanup_handlers(L);
     }
   }

@@ -370,20 +370,22 @@ cctests_condition_static_message_regex_error (cce_condition_t const * C CCTESTS_
 /* ------------------------------------------------------------------ */
 
 void
-cctests_condition_init_regex_error (cctests_condition_regex_error_t * C, int errcode, regex_t * rex)
+cctests_condition_init_regex_error (cctests_condition_regex_error_t * C, int errcode)
 {
   cce_condition_init_runtime_error(&(C->runtime_error));
   C->errcode = errcode;
-  regerror(errcode, rex, C->error_message, 1024);
+  /* For a compilation error we have  no valid "regex_t" argument, so we
+     set it to NULL as described in the specification. */
+  regerror(errcode, NULL, C->error_message, 1024);
 }
 
 cce_condition_t const *
-cctests_condition_new_regex_error (cce_destination_t L, int errcode, regex_t * rex)
+cctests_condition_new_regex_error (cce_destination_t L, int errcode)
 {
   cctests_condition_regex_error_t *	C = cctests_sys_malloc(L, sizeof(cctests_condition_regex_error_t));
 
   cce_condition_init((cce_condition_t *)C, &cctests_descriptor_regex_error_stru.descriptor);
-  cctests_condition_init_regex_error(C, errcode, rex);
+  cctests_condition_init_regex_error(C, errcode);
   return (cce_condition_t *)C;
 }
 
@@ -417,9 +419,7 @@ cctests_condition_static_message_regex_compilation_error (cce_condition_t const 
 void
 cctests_condition_init_regex_compilation_error (cctests_condition_regex_compilation_error_t * C, int errcode)
 {
-  /* For a compilation error we have  no valid "regex_t" argument, so we
-     set it to NULL as described in the specification. */
-  cctests_condition_init_regex_error(&(C->regex_error), errcode, NULL);
+  cctests_condition_init_regex_error(&(C->regex_error), errcode);
 }
 
 cce_condition_t const *

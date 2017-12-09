@@ -20,6 +20,7 @@
 #include <cctests.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <regex.h>
 #include "condition-regex-compilation-error-subtyping-header.h"
 
 

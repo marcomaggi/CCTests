@@ -60,7 +60,7 @@ acquire_environment_test_name (cce_destination_t upper_L)
 
     rv = regcomp(&name_rex, name_str, cflags);
     if (0 != rv) {
-      cce_raise(L, cctests_condition_new_regex_error (L, rv, (void *)&name_rex));
+      cce_raise(L, cctests_condition_new_regex_error(L, rv));
     }
     cce_run_cleanup_handlers(L);
   }
