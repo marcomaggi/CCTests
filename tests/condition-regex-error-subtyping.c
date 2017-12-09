@@ -36,7 +36,8 @@ main (void)
 
       if (my_condition_is_regex_error_subtype(cce_condition(L))) {
 	CCE_PC(my_condition_regex_error_subtype_t, C, cce_condition(L));
-	fprintf(stderr, "%s: is regex_error subtype, data=%d\n", __func__, *(C->data));
+	fprintf(stderr, "%s: is regex_error subtype, message='%s', data=%d\n",
+		__func__, C->regex_error.error_message, *(C->data));
       } else {
 	fprintf(stderr, "%s: wrong condition-object type\n", __func__);
 	exit(EXIT_FAILURE);
