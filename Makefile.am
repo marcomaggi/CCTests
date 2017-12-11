@@ -41,7 +41,6 @@ libcctests_la_SOURCES	= \
 	src/cctests.h				\
 	src/cctests-internals.h			\
 	src/cctests-version.c			\
-	src/cctests-init.c			\
 	src/cctests-conditions.c		\
 	src/cctests-exception-handlers.c	\
 	src/cctests-system.c			\

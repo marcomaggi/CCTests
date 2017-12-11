@@ -215,13 +215,85 @@ AC_CHECK_HEADERS([cctests.h],,
 @chapter Library initialisation
 
 
-@deftypefun void cctests_init (void)
-Initialise the internal structures of the library.  It is fine to call this function multiple times.
+A test suite under the management of @value{PACKAGE} is a collection of test programs.  Each test
+program should have the following structure:
+
+@example
+#include <cctests.h>
+
+cctests_fun_t   test_1_1;
+cctests_fun_t   test_1_2;
+cctests_fun_t   test_2_1;
+cctests_fun_t   test_2_2;
+
+int
+main (void)
+@{
+  cctests_init("demo");
+  @{
+    cctests_begin_group("one");
+    @{
+      cctests_run(test_1_1);
+      cctests_run(test_1_2);
+    @}
+    cctests_end_group();
+
+    cctests_begin_group("two");
+    @{
+      cctests_run(test_2_1);
+      cctests_run(test_2_2);
+    @}
+    cctests_end_group();
+  @}
+  cctests_final();
+@}
+
+void test_1_1 (cce_destination_t L) @{ ... @}
+void test_1_2 (cce_destination_t L) @{ ... @}
+void test_2_1 (cce_destination_t L) @{ ... @}
+void test_2_2 (cce_destination_t L) @{ ... @}
+@end example
+
+@noindent
+notice that first of all we must call the initialisation function @cfunc{cctests_init}.  We are free
+to put the test groups in subordinate functions.
+
+
+@deftypefun void cctests_init (char const * @var{test_file_name})
+Initialise the internal structures of the library; this function must be called before doing
+everything else in a test program.  It is fine to call this function multiple times.
+
+The argument @var{test_file_name} must reference an @asciiz{} string representing the name of the
+test program.
 
 @quotation
-@strong{NOTE} This function is defined with the @gcc{} attribute @code{constructor}, so, when the
-library is built with @gcc{}: it will be called automatically by the library initialisation code.
+@strong{NOTE} We could generate the value of the argument @var{test_file_name} with the preprocessor
+macro @code{__FILE__}, but we must be ware that such value includes directory and file extension
+parts we may not want (because they make it more complex to compose a regular expression that
+matches).
 @end quotation
+
+The test program name is used as follows:
+
+@itemize
+@item
+@cindex @env{cctests_file}, environment variable
+@cindex Environment variable @env{cctests_file}
+If the string matches the @posix{} regular expression in the environment variable
+@env{cctests_file}: this function initialises the library and returns.  This way the test program is
+executed.
+
+@item
+Otherwise this function terminates the current process by calling:
+
+@example
+exit(77);
+@end example
+
+@noindent
+effectively skipping this test program.  The exit status @code{77} is recognised by @gnu{}
+Automake's test harness as the code signalling a skipped test.
+@end itemize
 @end deftypefun
 
 @c page
@@ -1381,6 +1453,8 @@ test_that (cce_destination_t L CCTESTS_UNUSED)
 
 
 @deftypefun void cctests_begin_group (char const * const @var{test_group_name})
+@cindex @env{cctests_group}, environment variable
+@cindex Environment variable @env{cctests_group}
 Begin a group of tests; initialise the internal state.  The argument is an @asciiz{} string
 representing the name of this group.  Print a message on @code{stderr}.
 @end deftypefun
@@ -1393,6 +1467,8 @@ Print a message on @code{stderr} reporting the result.
 
 
 @deftypefn {Preprocessor Macro} void cctests_run (cctests_fun_t * @var{fun})
+@cindex @env{cctests_name}, environment variable
+@cindex Environment variable @env{cctests_name}
 Run the test function @var{fun} in the context of the currently active test group.  Print reports on
 @code{stderr}.
 @end deftypefn

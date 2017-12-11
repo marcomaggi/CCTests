@@ -27,6 +27,7 @@
 int
 main (void)
 {
+  cctests_init(__FILE__);
   condition_regex_error_subtyping_init_module();
 
   {

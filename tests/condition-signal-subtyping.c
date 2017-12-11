@@ -26,6 +26,7 @@
 int
 main (void)
 {
+  cctests_init(__FILE__);
   condition_signal_subtyping_init_module();
 
   {

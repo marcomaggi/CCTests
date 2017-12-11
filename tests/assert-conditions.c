@@ -134,7 +134,7 @@ test_5_3 (void)
 int
 main (void)
 {
-  cctests_init();
+  cctests_init(__FILE__);
 
   /* Condition signal one. */
   if (1) { test_1_1(); }

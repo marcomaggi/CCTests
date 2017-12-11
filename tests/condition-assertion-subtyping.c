@@ -26,6 +26,7 @@
 int
 main (void)
 {
+  cctests_init(__FILE__);
   condition_assertion_subtyping_init_module();
 
   {

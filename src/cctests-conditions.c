@@ -175,8 +175,6 @@ cctests_condition_init_assertion (cctests_condition_assertion_t * C,
 				  char const * const funcname,
 				  int const linenum)
 {
-  fprintf(stderr, "%s: enter\n", __func__);
-
   /* Initialise the parent type. */
   cctests_condition_init_failure(&(C->failure));
 
@@ -185,8 +183,6 @@ cctests_condition_init_assertion (cctests_condition_assertion_t * C,
   C->filename			= filename;
   C->funcname			= funcname;
   C->linenum			= linenum;
-
-  fprintf(stderr, "%s: done\n", __func__);
 }
 
 cce_condition_t const *

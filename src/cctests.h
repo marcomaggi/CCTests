@@ -139,8 +139,8 @@ CCTESTS_STRUCT_TYPEDEF(cctests_condition_regex_compilation_error_t);
  ** Library initialisation.
  ** ----------------------------------------------------------------- */
 
-cctests_decl void cctests_init (void)
-  __attribute__((__constructor__));
+cctests_decl void cctests_init (char const * test_file_name)
+  __attribute__((__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -501,11 +501,13 @@ cce_decl void cctests_error_handler_malloc_init (cce_destination_t L, cce_handle
  ** Test driver.
  ** ----------------------------------------------------------------- */
 
-cctests_decl void cctests_begin_group (char const * const test_group_name);
+cctests_decl void cctests_begin_group (char const * const test_group_name)
+  __attribute__((__nonnull__(1)));
 cctests_decl void cctests_end_group   (void);
 
-cctests_decl void cctests_p_run (char const * funcname, cctests_fun_t * fun);
-#define cctests_run(FUNCNAME)	cctests_p_run(#FUNCNAME, FUNCNAME)
+#define cctests_run(TEST_FUNC_NAME)	cctests_p_run(#TEST_FUNC_NAME, TEST_FUNC_NAME)
+cctests_decl void cctests_p_run (char const * test_func_name, cctests_fun_t * fun)
+  __attribute__((__nonnull__(1,2)));
 
 cctests_decl bool cctests_latest_group_completed_successfully (void);
 

@@ -19,6 +19,7 @@
 int
 main (int argc CCTESTS_UNUSED, const char *const argv[] CCTESTS_UNUSED)
 {
+  cctests_init(__FILE__);
   printf("version number string: %s\n", cctests_version_string());
   printf("libtool version number: %d:%d:%d\n",
 	 cctests_version_interface_current(),

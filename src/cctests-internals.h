@@ -45,6 +45,12 @@
  ** Preprocessor macros.
  ** ----------------------------------------------------------------- */
 
+#define CCTESTS_ENVIRONMENT_VARIABLE_FILE	"cctests_file"
+#define CCTESTS_ENVIRONMENT_VARIABLE_GROUP	"cctests_group"
+#define CCTESTS_ENVIRONMENT_VARIABLE_NAME	"cctests_name"
+
+#define CCTESTS_AUTOMAKE_TEST_HARNESS_SKIP_CODE		77
+#define CCTESTS_AUTOMAKE_TEST_HARNESS_HARD_ERROR	99
 
 
 /** --------------------------------------------------------------------
@@ -57,7 +63,7 @@
  ** Library variables.
  ** ----------------------------------------------------------------- */
 
-cctests_private_decl cce_destination_t cctests_group_location;
+cctests_private_decl cce_destination_t cctests_location;
 
 
 /** --------------------------------------------------------------------

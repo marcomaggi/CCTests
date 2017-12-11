@@ -87,7 +87,7 @@ test_1_3 (void)
 int
 main (void)
 {
-  cctests_init();
+  cctests_init("driver");
 
   if (1) { test_1_1(); }
   if (1) { test_1_2(); }
