@@ -142,6 +142,9 @@ CCTESTS_STRUCT_TYPEDEF(cctests_condition_regex_compilation_error_t);
 cctests_decl void cctests_init (char const * test_file_name)
   __attribute__((__nonnull__(1)));
 
+cctests_decl void cctests_final (void);
+cctests_decl void ctests_reset_global_state (void);
+
 
 /** --------------------------------------------------------------------
  ** Version functions.
@@ -510,6 +513,7 @@ cctests_decl void cctests_p_run (char const * test_func_name, cctests_fun_t * fu
   __attribute__((__nonnull__(1,2)));
 
 cctests_decl bool cctests_latest_group_completed_successfully (void);
+cctests_decl bool cctests_latest_func_completed_successfully (void);
 
 
 /** --------------------------------------------------------------------

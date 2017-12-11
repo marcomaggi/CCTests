@@ -25,7 +25,7 @@ main (int argc CCTESTS_UNUSED, const char *const argv[] CCTESTS_UNUSED)
 	 cctests_version_interface_current(),
 	 cctests_version_interface_revision(),
 	 cctests_version_interface_age());
-  exit(EXIT_SUCCESS);
+  cctests_final();
 }
 
 /* end of file */

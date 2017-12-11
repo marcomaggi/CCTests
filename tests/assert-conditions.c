@@ -157,7 +157,7 @@ main (void)
   if (1) { test_5_2(); }
   if (1) { test_5_3(); }
 
-  exit(EXIT_SUCCESS);
+  cctests_final();
 }
 
 /* end of file */

@@ -78,7 +78,7 @@ main (void)
     }
   }
 
-  exit(EXIT_SUCCESS);
+  cctests_final();
 }
 
 /* end of file */

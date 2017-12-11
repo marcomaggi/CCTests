@@ -93,7 +93,8 @@ main (void)
   if (1) { test_1_2(); }
   if (1) { test_1_3(); }
 
-  exit(EXIT_SUCCESS);
+  ctests_reset_global_state();
+  cctests_final();
 }
 
 /* end of file */

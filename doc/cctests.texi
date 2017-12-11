@@ -296,6 +296,18 @@ Automake's test harness as the code signalling a skipped test.
 @end itemize
 @end deftypefun
 
+
+@deftypefun void cctests_final (void)
+Finalise a test program.  This function calls @cfunc{exit} to terminate the current process.  The
+main purpose of this function is to select the correct exit status to interface, for example, to
+@gnu{} Automake's test harness.
+@end deftypefun
+
+
+@deftypefun void ctests_reset_global_state (void)
+Reset the internal state to represent an all--successful execution so far.
+@end deftypefun
+
 @c page
 @node version
 @chapter Version functions
