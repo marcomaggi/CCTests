@@ -127,8 +127,8 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 
 @menu
 * overview::                    Overview of the package.
-* init::                        Library initialisation.
 * version::                     Version functions.
+* init::                        Library initialisation.
 * drivers::                     Driving test groups.
 * assertions::                  Verifying conditions.
 * conditions::                  Condition object types.
@@ -209,6 +209,36 @@ AC_CHECK_LIB([cctests],[cctests_version_string],,
 AC_CHECK_HEADERS([cctests.h],,
   [AC_MSG_FAILURE([test for CCTests header failed])])
 @end example
+
+@c page
+@node version
+@chapter Version functions
+
+
+The installed libraries follow version numbering as established by the @gnu{} Autotools.  For an
+explanation of interface numbers as managed by @gnu{} Libtool @xref{Libtool versioning, interface,
+Libtool's versioning system, libtool, Shared library support for @gnu{}}.
+
+
+@deftypefun {char const *} cctests_version_string (void)
+Return a pointer to a statically allocated @asciiz{} string representing the interface version
+number.
+@end deftypefun
+
+
+@deftypefun int cctests_version_interface_current (void)
+Return an integer representing the library interface current number.
+@end deftypefun
+
+
+@deftypefun int cctests_version_interface_revision (void)
+Return an integer representing the library interface current revision number.
+@end deftypefun
+
+
+@deftypefun int cctests_version_interface_age (void)
+Return an integer representing the library interface current age.
+@end deftypefun
 
 @c page
 @node init
@@ -305,37 +335,8 @@ main purpose of this function is to select the correct exit status to interface,
 
 
 @deftypefun void ctests_reset_global_state (void)
-Reset the internal state to represent an all--successful execution so far.
-@end deftypefun
-
-@c page
-@node version
-@chapter Version functions
-
-
-The installed libraries follow version numbering as established by the @gnu{} Autotools.  For an
-explanation of interface numbers as managed by @gnu{} Libtool @xref{Libtool versioning, interface,
-Libtool's versioning system, libtool, Shared library support for @gnu{}}.
-
-
-@deftypefun {char const *} cctests_version_string (void)
-Return a pointer to a statically allocated @asciiz{} string representing the interface version
-number.
-@end deftypefun
-
-
-@deftypefun int cctests_version_interface_current (void)
-Return an integer representing the library interface current number.
-@end deftypefun
-
-
-@deftypefun int cctests_version_interface_revision (void)
-Return an integer representing the library interface current revision number.
-@end deftypefun
-
-
-@deftypefun int cctests_version_interface_age (void)
-Return an integer representing the library interface current age.
+Reset the internal state to represent an all--successful execution so far.  We can use this function
+if we want @cfunc{cctests_final} to exit successfully the current process.
 @end deftypefun
 
 @c page
