@@ -197,9 +197,10 @@ cctests_begin_group (char const * const test_group_name)
     cce_run_error_handlers_final(L);
   } else {
     if (test_group_matches_user_selection(L, test_group_name)) {
-      fprintf(cctests_log_stream, "CCTests: beg group: %s\n", cctests_test_group_name);
+      fprintf(cctests_log_stream, "CCTests: begin group: %s\n", cctests_test_group_name);
       run_tests_in_group	= true;
     } else {
+      fprintf(cctests_log_stream, "CCTests: skip group: %s\n", cctests_test_group_name);
       run_tests_in_group	= false;
     }
     cce_run_cleanup_handlers(L);
