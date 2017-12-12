@@ -467,11 +467,19 @@ Return @ctrue{} if the latest test function has completed successfully; otherwis
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert (@var{expr})
+@deftypefnx {Preprocessor Macro} void cctests_assert (cce_destination_t @var{L}, @var{expr})
 Evaluate the expression @var{expr}; this macro is similar, but not equal, to the standard
 @cfunc{assert}.  If the expression evaluates to @ctrue{}: just return.  Otherwise raise an exception
-of type @objtype{cctests_condition_assertion_t} by performing a non--local exit to a location
-internally selected by @value{PACKAGE}; this location is the same operand handed to the enclosing
-test function.
+of type @objtype{cctests_condition_assertion_t} by performing a non--local exit:
+
+@itemize
+@item
+If the macro is applied to a single argument: the exit destination is a location internally selected
+by @value{PACKAGE}; this location is the same operand handed to the enclosing test function.
+
+@item
+If the macro is applied to two arguments: the exit destination is @var{L}.
+@end itemize
 
 Here are some usage examples:
 
@@ -503,6 +511,23 @@ test_1_4 (cce_destination_t L)
   char const *  B = "hello";
 
   cctests_assert(0 == strcmp(A, B));
+@}
+
+void
+test_1_5 (cce_destination_t upper_L)
+@{
+  cce_location_t  L[1];
+  cce_handler_t   P_H[1];
+
+  if (cce_location(L)) @{
+    cce_run_error_handlers_raise(L, upper_L);
+  @} else @{
+    void *      P = cctests_sys_malloc(1024);
+    cctests_cleanup_handler_malloc_init(L, P_H, P);
+
+    /* do something with P, then: */
+    cctests_assert(L, some_predicate(P));
+  @}
 @}
 @end example
 @end deftypefn
@@ -1570,11 +1595,10 @@ cce_location_t  L[1];
 cce_handler_t   H[1];
 
 if (cce_location(L)) @{
-  cce_run_error_handlers(L);
-  cce_condition_delete(cce_condition(L));
+  cce_run_error_handlers_final(L);
 @} else @{
   void *  P = cctests_sys_malloc(L, 4096);
-  cce_cleanup_handler_malloc_init(L, H, P);
+  cctests_cleanup_handler_malloc_init(L, H, P);
   cce_run_cleanup_handlers(L);
 @}
 @end example

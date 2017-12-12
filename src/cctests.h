@@ -522,9 +522,15 @@ cctests_decl bool cctests_latest_func_completed_successfully (void);
  ** Assertions API.
  ** ----------------------------------------------------------------- */
 
-#define cctests_assert(EXPR)	cctests_p_assert(#EXPR, EXPR, __FILE__, __func__, __LINE__)
+cctests_decl cce_destination_t	cctests_location;
 
-cctests_decl void cctests_p_assert (char const * const expr, bool result,
+#define CCTESTS_GET_ASSERT_MACRO(_1,NAME,...)	NAME
+#define cctests_assert(...)	CCTESTS_GET_ASSERT_MACRO(__VA_ARGS__,cctests_m_assert,cctests_m_assert_ex)(__VA_ARGS__)
+
+#define cctests_m_assert(EXPR)		cctests_p_assert(cctests_location, #EXPR, EXPR, __FILE__, __func__, __LINE__)
+#define cctests_m_assert_ex(L,EXPR)	cctests_p_assert((L), #EXPR, (EXPR), __FILE__, __func__, __LINE__)
+
+cctests_decl void cctests_p_assert (cce_destination_t L, char const * const expr, bool result,
 				    char const * const filename, char const * const funcname, int const linenum);
 
 
