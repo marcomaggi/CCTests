@@ -135,6 +135,7 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 * conditions::                  Condition object types.
 * system::                      System interface.
 * utils::                       Utility definitions.
+* automake::                    Interfacing with @gnu{} Automake.
 
 Appendices
 
@@ -1625,6 +1626,104 @@ __attribute__((__unused__))
 @noindent
 otherwise the expansion is the empty string.
 @end defmac
+
+@c page
+@node automake
+@chapter Interfacing with @gnu{} Automake
+
+
+@value{PACKAGE} is primarily meant to interface with the parallel test harness of @gnu{} Automake,
+@xref{Parallel Test Harness, Parallel Test Harness, Parallel Test Harness, automake, @gnu{}
+Automake}.
+
+Let's say we are building a C language library with stem @samp{demo}, which depends on the package
+CCExceptions and has source files under the directory @file{src}; we put the following in the
+@file{Makefile.am} template:
+
+@example
+demo_CURRENT    = 1
+demo_REVISION   = 0
+demo_AGE        = 0
+
+include_HEADERS         = src/demo.h
+
+lib_LTLIBRARIES         = libdemo.la
+libdemo_la_CPPFLAGS     = $(CCEXCEPTIONS_CFLAGS)
+libdemo_la_LDFLAGS      = \
+   -version-info $(demo_CURRENT):$(demo_REVISION):$(demo_AGE) \
+   $(CCEXCEPTIONS_LIBS)
+libdemo_la_SOURCES      = \
+        src/demo.h              \
+        src/demo-internals.h    \
+        src/demo-version.c      \
+        src/demo-stuff.c
+@end example
+
+@noindent
+we can declare the test suite programs, with source files under the directory @file{tests}, as
+follows:
+
+@example
+check_PROGRAMS	= \
+  tests/one       \
+  tests/two       \
+  tests/three
+
+TESTS                   = $(check_PROGRAMS)
+
+demo_tests_cppflags     = \
+  -I$(srcdir)/src -I$(srcdir)/tests $(CCTESTS_CFLAGS)
+demo_tests_ldadd        = libdemo.la $(CCTESTS_LIBS)
+
+tests_one_CPPFLAGS      = $(demo_tests_cppflags)
+tests_one_LDADD         = $(demo_tests_ldadd)
+
+tests_two_CPPFLAGS      = $(demo_tests_cppflags)
+tests_two_LDADD         = $(demo_tests_ldadd)
+
+tests_three_CPPFLAGS    = $(cctests_tests_cppflags)
+tests_three_LDADD       = $(cctests_tests_ldadd)
+tests_three_SOURCES     = \
+  tests/three-main.c    \
+  tests/three-utils.c   \
+  tests/three-header.h
+@end example
+
+@noindent
+now on the command line we can build everything and run the tests with:
+
+@example
+$ make -j3 all && make -j3 check
+@end example
+
+@noindent
+if we want to run just the tests in the program @file{one}, we can do:
+
+@example
+$ make -j3 check cctests_file=one
+@end example
+
+@noindent
+if we want to run just the tests in the groups named @file{spiffy}, we can do:
+
+@example
+$ make -j3 check cctests_group=one
+@end example
+
+@noindent
+if we want to run just the tests in the test functions whose name include the string @samp{1_3}, we
+can do:
+
+@example
+$ make -j3 check cctests_name=1_3
+@end example
+
+@noindent
+obviously we can use multiple environment variables at the same time:
+
+@example
+$ make -j3 check cctests_file=two cctests_name=1_3
+@end example
 
 @c page
 @c ------------------------------------------------------------
