@@ -145,6 +145,8 @@ cctests_decl void cctests_init (char const * test_file_name)
 cctests_decl void cctests_final (void);
 cctests_decl void ctests_reset_global_state (void);
 
+cctests_decl FILE * cctests_log_stream;
+
 
 /** --------------------------------------------------------------------
  ** Version functions.

@@ -31,9 +31,11 @@
 #include "cctests-internals.h"
 #include <string.h>
 
-regex_t		cctests_test_program_selection;
-regex_t		cctests_test_group_selection;
-regex_t		cctests_test_name_selection;
+static regex_t	cctests_test_program_selection;
+static regex_t	cctests_test_group_selection;
+static regex_t	cctests_test_name_selection;
+
+FILE *	cctests_log_stream;
 
 static bool test_file_matches_user_selection (cce_destination_t L, char const * const groupname);
 static bool test_group_matches_user_selection (cce_destination_t L, char const * const groupname);
@@ -106,7 +108,8 @@ cctests_init (char const * const test_program_name)
   static bool	to_be_initialised = true;
 
   if (to_be_initialised) {
-    to_be_initialised = false;
+    to_be_initialised  = false;
+    cctests_log_stream = stderr;
     cctests_conditions_module_initialisation();
 
     cctests_test_program_name	= test_program_name;
@@ -137,10 +140,10 @@ cctests_init (char const * const test_program_name)
 	exit(CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_HARD_ERROR);
       } else {
 	if (test_file_matches_user_selection(L, test_program_name)) {
-	  fprintf(stderr, "CCTests: enter test program: %s\n", test_program_name);
+	  fprintf(cctests_log_stream, "CCTests: enter test program: %s\n", test_program_name);
 	  cce_run_cleanup_handlers(L);
 	} else {
-	  fprintf(stderr, "CCTests: skip test program: %s\n", test_program_name);
+	  fprintf(cctests_log_stream, "CCTests: skip test program: %s\n", test_program_name);
 	  cce_run_cleanup_handlers(L);
 	  exit(CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_SKIP_TEST);
 	}
@@ -159,7 +162,7 @@ cctests_final (void)
 {
   int	status;
 
-  fprintf(stderr, "CCTests: exit test program: %s\n", cctests_test_program_name);
+  fprintf(cctests_log_stream, "CCTests: exit test program: %s\n", cctests_test_program_name);
   if (cctests_all_test_passed) {
     status = CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_SUCCESS;
   } else {
@@ -194,7 +197,7 @@ cctests_begin_group (char const * const test_group_name)
     cce_run_error_handlers_final(L);
   } else {
     if (test_group_matches_user_selection(L, test_group_name)) {
-      fprintf(stderr, "CCTests: beg group: %s\n", cctests_test_group_name);
+      fprintf(cctests_log_stream, "CCTests: beg group: %s\n", cctests_test_group_name);
       run_tests_in_group	= true;
     } else {
       run_tests_in_group	= false;
@@ -206,7 +209,7 @@ cctests_begin_group (char const * const test_group_name)
 void
 cctests_end_group (void)
 {
-  fprintf(stderr, "CCTests: end group: %s\n", cctests_test_group_name);
+  fprintf(cctests_log_stream, "CCTests: end group: %s\n", cctests_test_group_name);
   cctests_test_group_name = NULL;
 }
 
@@ -235,21 +238,21 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	cctests_all_test_passed  = false;
 	cctests_successful_group = false;
 	cctests_successful_func  = false;
-	fprintf(stderr, "CCTests: unexpected signal exception raised by test function: %s\n", test_func_name);
+	fprintf(cctests_log_stream, "CCTests: unexpected signal exception raised by test function: %s\n", test_func_name);
       } else {
 	cctests_all_test_passed  = false;
 	cctests_successful_group = false;
 	cctests_successful_func  = false;
-	fprintf(stderr, "CCTests: exception in test function: %s\n", test_func_name);
+	fprintf(cctests_log_stream, "CCTests: exception in test function: %s\n", test_func_name);
       }
     } else {
       if (test_func_matches_user_selection(L, test_func_name)) {
 	cctests_location = L;
 	fun(L);
 	cctests_successful_func  = true;
-	fprintf(stderr, "CCTests: successful test function: %s\n", test_func_name);
+	fprintf(cctests_log_stream, "CCTests: successful test function: %s\n", test_func_name);
       } else {
-	fprintf(stderr, "CCTests: skipped test function: %s\n", test_func_name);
+	fprintf(cctests_log_stream, "CCTests: skipped test function: %s\n", test_func_name);
 	cctests_successful_func  = true;
       }
     }
@@ -276,10 +279,10 @@ acquire_environment_test_file (cce_destination_t upper_L)
   if (cce_location(L)) {
     if (cctests_condition_is_regex_compilation_error(cce_condition(L))) {
       CCE_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
-      fprintf(stderr, "CCTests: error acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_FILE "\": %s\n",
+      fprintf(cctests_log_stream, "CCTests: error acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_FILE "\": %s\n",
 	      C->regex_error.error_message);
     } else {
-      fprintf(stderr, "CCTests: error: %s\n", cce_condition_static_message(cce_condition(L)));
+      fprintf(cctests_log_stream, "CCTests: error: %s\n", cce_condition_static_message(cce_condition(L)));
     }
     cce_run_error_handlers_raise(L, upper_L);
   } else {
@@ -306,10 +309,10 @@ acquire_environment_test_group (cce_destination_t upper_L)
   if (cce_location(L)) {
     if (cctests_condition_is_regex_compilation_error(cce_condition(L))) {
       CCE_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
-      fprintf(stderr, "CCTests: error acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_GROUP "\": %s\n",
+      fprintf(cctests_log_stream, "CCTests: error acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_GROUP "\": %s\n",
 	      C->regex_error.error_message);
     } else {
-      fprintf(stderr, "CCTests: error: %s\n", cce_condition_static_message(cce_condition(L)));
+      fprintf(cctests_log_stream, "CCTests: error: %s\n", cce_condition_static_message(cce_condition(L)));
     }
     cce_run_error_handlers_raise(L, upper_L);
   } else {
@@ -337,10 +340,10 @@ acquire_environment_test_name (cce_destination_t upper_L)
   if (cce_location(L)) {
     if (cctests_condition_is_regex_compilation_error(cce_condition(L))) {
       CCE_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
-      fprintf(stderr, "CCTests: error acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_NAME "\": %s\n",
+      fprintf(cctests_log_stream, "CCTests: error acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_NAME "\": %s\n",
 	      C->regex_error.error_message);
     } else {
-      fprintf(stderr, "CCTests: error: %s\n", cce_condition_static_message(cce_condition(L)));
+      fprintf(cctests_log_stream, "CCTests: error: %s\n", cce_condition_static_message(cce_condition(L)));
     }
     cce_run_error_handlers_raise(L, upper_L);
   } else {

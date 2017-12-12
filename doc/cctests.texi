@@ -129,8 +129,9 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 * overview::                    Overview of the package.
 * version::                     Version functions.
 * init::                        Library initialisation.
-* drivers::                     Driving test groups.
-* assertions::                  Verifying conditions.
+* groups::                      Test groups.
+* funcs::                       Test functions.
+* assertions::                  Verifying assertions.
 * conditions::                  Condition object types.
 * system::                      System interface.
 * utils::                       Utility definitions.
@@ -311,7 +312,8 @@ The test program name is used as follows:
 @cindex Environment variable @env{cctests_file}
 If the string matches the @posix{} regular expression in the environment variable
 @env{cctests_file}: this function initialises the library and returns.  This way the test program is
-executed.
+executed.  If @env{cctests_file} is unset or set to the empty string: the test program name matches
+and the tests are executed.
 
 @item
 Otherwise this function terminates the current process by calling:
@@ -339,108 +341,162 @@ Reset the internal state to represent an all--successful execution so far.  We c
 if we want @cfunc{cctests_final} to exit successfully the current process.
 @end deftypefun
 
+
+@deftypevar {FILE *} cctests_log_stream
+An output stream used to log messages.  It is initialised to @code{stderr}.
+@end deftypevar
+
 @c page
-@node drivers
-@chapter Driving test groups
+@node groups
+@chapter Test groups
 
 
-We create and run test group as follows, in a full program:
+A test group is a set of tests that we consider related, or example: all the tests of a single C
+function applied to a single category of operands.  We create and run test group as follows:
 
 @example
-#include <cctests.h>
-#include <stdlib.h>
-#include <stdbool.h>
-
-/* test functions */
-void test_this (cce_destination_t L);
-void test_that (cce_destination_t L);
-
-int
-main (void)
+cctests_begin_group("spiffy tests");
 @{
-  cctests_begin_group("spiffy tests");
-  @{
-    cctests_run(test_this);
-    cctests_run(test_that);
-  @}
-  cctests_end_group();
-
-  if (cctests_latest_group_completed_successfully()) @{
-    exit(EXIT_SUCCESS);
-  @} else @{
-    exit(EXIT_FAILURE);
-  @}
+  cctests_run(test_this);
+  cctests_run(test_that);
 @}
-
-void
-test_this (cce_destination_t L CCTESTS_UNUSED)
-@{
-  cctests_assert(true);
-@}
-
-void
-test_that (cce_destination_t L CCTESTS_UNUSED)
-@{
-  cctests_assert(true);
-@}
+cctests_end_group();
 @end example
 
+@value{PACKAGE}'s @api{} allows us to select which groups to run in a test program using the
+environment variable @env{cctests_group}.
 
-@deftypefun void cctests_begin_group (char const * const @var{test_group_name})
+
+@deftypefun void cctests_begin_group (char const * @var{test_group_name})
+Begin a group of tests; initialise the internal state.  The argument is an @asciiz{} string
+representing the name of this group.  Print a message on the log stream to report the operation.
+
+The test group name is used as follows:
+
+@itemize
+@item
 @cindex @env{cctests_group}, environment variable
 @cindex Environment variable @env{cctests_group}
-Begin a group of tests; initialise the internal state.  The argument is an @asciiz{} string
-representing the name of this group.  Print a message on @code{stderr}.
+If the string matches the @posix{} regular expression in the environment variable
+@env{cctests_group}: this function initialises the group and returns.  This way the test group is
+executed.  If @env{cctests_group} is unset or set to the empty string: the test group name matches
+and the tests are executed.
+
+@item
+Otherwise this function configures the internal state of the library to skip the tests until the
+next call to @cfunc{cctests_end_group}.
+@end itemize
 @end deftypefun
 
 
 @deftypefun void cctests_end_group (void)
-End the latest group of tests begun with @cfunc{cctests_end_group}; finalise the internal state.
-Print a message on @code{stderr} reporting the result.
+End the latest group of tests begun with @cfunc{cctests_begin_group}; finalise the internal state.
+Print a message on the log stream to report the operation.
 @end deftypefun
-
-
-@deftypefn {Preprocessor Macro} void cctests_run (cctests_fun_t * @var{fun})
-@cindex @env{cctests_name}, environment variable
-@cindex Environment variable @env{cctests_name}
-Run the test function @var{fun} in the context of the currently active test group.  Print reports on
-@code{stderr}.
-@end deftypefn
 
 
 @deftypefun bool cctests_latest_group_completed_successfully (void)
 Return @ctrue{} if the latest test group has completed successfully; otherwise return @cfalse{}.
 @end deftypefun
 
+@c page
+@node funcs
+@chapter Test functions
+
+
+Test functions are where the meat of the tests is placed.  We can define a test function as:
+
+@example
+void
+test_1_1 (cce_destination_t L)
+@{
+  ...
+@}
+@end example
+
+
+@deftypefn {Preprocessor Macro} void cctests_run (cctests_fun_t * @var{fun})
+@cindex @env{cctests_name}, environment variable
+@cindex Environment variable @env{cctests_name}
+Run the test function @var{fun} in the context of the currently active test group.  Print reports on
+log stream.  The string name of @var{fun} is used as follows:
+
+@itemize
+@item
+@cindex @env{cctests_name}, environment variable
+@cindex Environment variable @env{cctests_name}
+If the string matches the @posix{} regular expression in the environment variable
+@env{cctests_name}: this function executes the test.  If @env{cctests_name} is unset or set to the
+empty string: the test function name matches and the test is executed.
+
+@item
+Otherwise this function skips running the test and returns.
+@end itemize
+@end deftypefn
+
 
 @deftypefn {Function Typedef} void cctests_fun_t (cce_destination_t @var{L})
-Prototype of test functions run by @cfunc{cctests_run}.  When successful: the test function should
-just return to its caller.  If an error occurs: the test function should raise an exception by
-performing a non--local exit to @var{L}.
+Prototype of test functions run by @cfunc{cctests_run}.  When the test completes successfully:
+
+@itemize
+@item
+The test function might just return to its caller.
+
+@item
+The test function might raise an exceptional condition of type @objtype{cctests_condition_success_t}
+by performing a non--local exit to @var{L}.
+@end itemize
+
+If an error occurs: the test function must raise an exception of type
+@objtype{cctests_condition_failure_t} by performing a non--local exit to @var{L}.
+
+If the test function raises an exceptional condition of a type different from
+@objtype{cctests_condition_success_t} and @objtype{cctests_condition_failure_t}: the function is
+considered failed with a hard error.
 @end deftypefn
+
+
+@deftypefun bool cctests_latest_func_completed_successfully (void)
+Return @ctrue{} if the latest test function has completed successfully; otherwise return @cfalse{}.
+@end deftypefun
 
 @c page
 @node assertions
-@chapter Verifying conditions
+@chapter Verifying assertions
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert (@var{expr})
 Evaluate the expression @var{expr}; this macro is similar, but not equal, to the standard
 @cfunc{assert}.  If the expression evaluates to @ctrue{}: just return.  Otherwise raise an exception
-by performing a non--local exit to a location internally selected by @value{PACKAGE}.
+of type @objtype{cctests_condition_assertion_t} by performing a non--local exit to a location
+internally selected by @value{PACKAGE}; this location is the same operand handed to the enclosing
+test function.
 
 Here are some usage examples:
 
 @example
-cctests_assert(true);   /* success */
-cctests_assert(false);  /* failure */
+void
+test_1_1 (cce_destination_t L)
+@{
+  cctests_assert(true);   /* success */
+@}
 
+void
+test_1_2 (cce_destination_t L)
+@{
+  cctests_assert(false);  /* failure */
+@}
+
+void
+test_1_3 (cce_destination_t L)
 @{
   void *  P = malloc(16);
 
   cctests_assert(NULL != P);
 @}
 
+void
+test_1_4 (cce_destination_t L)
 @{
   char const *  A = "ciao";
   char const *  B = "hello";
