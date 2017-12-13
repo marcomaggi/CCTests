@@ -240,6 +240,16 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	cctests_successful_group = false;
 	cctests_successful_func  = false;
 	fprintf(cctests_log_stream, "CCTests: unexpected signal exception raised by test function: %s\n", test_func_name);
+      } else if (cctests_condition_is_unreachable(cce_condition(L))) {
+	cctests_all_test_passed  = false;
+	cctests_successful_group = false;
+	cctests_successful_func  = false;
+	{
+	  CCTESTS_PC(cctests_condition_unreachable_t, C, cce_condition(L));
+	  fprintf(cctests_log_stream, "CCTests: exception in test function %s: "
+		  "unreachable code was executed in file=%s, function=%s, line number=%u\n",
+		  test_func_name, C->filename, C->funcname, C->linenum);
+	}
       } else {
 	cctests_all_test_passed  = false;
 	cctests_successful_group = false;
@@ -253,8 +263,8 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	cctests_successful_func  = true;
 	fprintf(cctests_log_stream, "CCTests: successful test function: %s\n", test_func_name);
       } else {
-	fprintf(cctests_log_stream, "CCTests: skipped test function: %s\n", test_func_name);
 	cctests_successful_func  = true;
+	fprintf(cctests_log_stream, "CCTests: skipped test function: %s\n", test_func_name);
       }
     }
     cce_run_cleanup_handlers(L);
