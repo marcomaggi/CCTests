@@ -562,6 +562,7 @@ if (cce_location(L)) @{
 * conditions success::          Signalling test success.
 * conditions failure::          Signalling test failure.
 * conditions assertion::        Signalling failed assertions.
+* conditions unreachable::      Signalling execution of unreachable code.
 * conditions regex::            Regular expression errors.
 
 Convenience condition types
@@ -959,6 +960,124 @@ condition-assertion-subtype-body.c
 @noindent
 under the @file{tests} directory of the source distribution; the code defines a new
 condition--object type @objtype{my_condition_assertion_subtype_t}.
+
+@c page
+@node conditions unreachable
+@section Signalling execution of unreachable code
+
+
+@cindex Unreachable code, exceptional condition
+@cindex Exceptional conditions, Unreachable code
+
+
+We can use the @dfn{unreachable code exceptional--condition object--type} to signal the execution of
+unreachable code; this happens when we know that a function call must raise an exception, but it for
+some erroneous reason it does not.  We can instantiate this type and also derive new types from it.
+To catch this exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_unreachable(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_unreachable_t, C, cce_condition(L));
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+
+@deftp {Struct Typedef} cctests_descriptor_unreachable_t
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_failure_ptr},
+@ref{conditions failure, Signalling test failure}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_unreachable_t
+Type of data structure representing the exceptional--condition object.  It has the following public
+fields:
+
+@table @code
+@item cctests_condition_failure_t failure
+The condition object's base values.
+
+@item char const * filename
+Pointer to a statically allocated @asciiz{} string representing the pathname of the source file in
+which the unreachable code is located.  This value is meant to be generated with the preprocessor
+macro @code{__FILE__}.
+
+@item char const * funcname
+Pointer to a statically allocated @asciiz{} string representing the name of the function in which
+the unreachable code is located.  This value is meant to be generated with the preprocessor macro
+@code{__func__}.
+
+@item int linenum
+The line number in the source file in which the unreachable code is located.  This value is meant to
+be generated with the preprocessor macro @code{__LINE__}.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_unreachable_t const * const} cctests_descriptor_unreachable_ptr
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun void cctests_condition_init_unreachable (cctests_condition_unreachable_t * @var{C}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_unreachable_t}.
+@end deftypefun
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_unreachable (cce_destination_t @var{L}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
+Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
+an exception by performing a non--local exit to @var{L}.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_unreachable (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_unreachable_t}; otherwise return
+@cfalse{}.
+@end deftypefun
+
+
+@deftypefn {Preprocessor Macro} cctests_raise_unreachable (cce_destination_t @var{L})
+Raise an exceptional condition of type @objtype{cctests_condition_unreachable_t} by expanding into:
+
+@example
+cce_raise((L), cctests_condition_new_unreachable((L), __FILE__, __func__, __LINE__))
+@end example
+@end deftypefn
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_unreachable_t} we can copy the code in the
+files:
+
+@example
+condition-unreachable-subtype.c
+condition-unreachable-subtype-headear.h
+condition-unreachable-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_unreachable_subtype_t}.
 
 @c page
 @node conditions regex

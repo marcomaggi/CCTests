@@ -201,6 +201,68 @@ cctests_condition_new_assertion (cce_destination_t L,
 
 
 /** --------------------------------------------------------------------
+ ** Exceptional condition descriptor: unreachable code.
+ ** ----------------------------------------------------------------- */
+
+static cce_condition_static_message_fun_t	cctests_condition_static_message_unreachable;
+static cce_condition_delete_fun_t		cctests_condition_delete_unreachable;
+
+static cctests_descriptor_unreachable_t const cctests_descriptor_unreachable_stru = {
+  .descriptor.parent		= &cctests_descriptor_failure_stru.descriptor,
+  .descriptor.delete		= cctests_condition_delete_unreachable,
+  .descriptor.final		= NULL,
+  .descriptor.static_message	= cctests_condition_static_message_unreachable
+};
+
+cctests_descriptor_unreachable_t const * const cctests_descriptor_unreachable_ptr = &cctests_descriptor_unreachable_stru;
+
+/* ------------------------------------------------------------------ */
+
+void
+cctests_condition_delete_unreachable (cce_condition_t * C)
+{
+  free(C);
+}
+
+char const *
+cctests_condition_static_message_unreachable (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests unreachable code was executed";
+}
+
+/* ------------------------------------------------------------------ */
+
+void
+cctests_condition_init_unreachable (cctests_condition_unreachable_t * C,
+				    char const * const filename,
+				    char const * const funcname,
+				    int const linenum)
+{
+  /* Initialise the parent type. */
+  cctests_condition_init_failure(&(C->failure));
+
+  /* Initialise the fields of this type. */
+  C->filename			= filename;
+  C->funcname			= funcname;
+  C->linenum			= linenum;
+}
+
+cce_condition_t const *
+cctests_condition_new_unreachable (cce_destination_t L,
+				   char const * const filename, char const * const funcname, int const linenum)
+{
+  cctests_condition_unreachable_t *	C = cctests_sys_malloc(L, sizeof(cctests_condition_unreachable_t));
+
+  /* Initialise the basic condition fields. */
+  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_unreachable_stru.descriptor);
+
+  cctests_condition_init_unreachable(C, filename, funcname, linenum);
+
+  return (cce_condition_t const *)C;
+}
+
+
+/** --------------------------------------------------------------------
  ** Exceptional condition descriptor: signal.
  ** ----------------------------------------------------------------- */
 

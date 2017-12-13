@@ -110,6 +110,7 @@ CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_base_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_success_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_failure_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_assertion_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_unreachable_t);
 
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_signal_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_signal_1_t);
@@ -125,6 +126,7 @@ CCTESTS_STRUCT_TYPEDEF(cctests_condition_base_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_success_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_failure_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_assertion_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_unreachable_t);
 
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_signal_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_signal_1_t);
@@ -281,13 +283,53 @@ cctests_decl cce_condition_t const * cctests_condition_new_assertion (cce_destin
 								      char const * const filename,
 								      char const * const funcname,
 								      int const linenum)
-  __attribute__((__nonnull__(1,2,3),__returns_nonnull__));
+  __attribute__((__nonnull__(1,2,3,4),__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
 cctests_condition_is_assertion (cce_condition_t const * C)
 {
   return cce_is_condition(C, &(cctests_descriptor_assertion_ptr->descriptor));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Condition objects: unreachable code.
+ ** ----------------------------------------------------------------- */
+
+struct cctests_descriptor_unreachable_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_unreachable_t {
+  cctests_condition_failure_t	failure;
+  char const *			filename;
+  char const *			funcname;
+  int				linenum;
+};
+
+cctests_decl cctests_descriptor_unreachable_t const * const cctests_descriptor_unreachable_ptr;
+
+cctests_decl void cctests_condition_init_unreachable (cctests_condition_unreachable_t * C,
+						    char const * const filename,
+						    char const * const funcname,
+						    int const linenum)
+  __attribute__((__nonnull__(1,2,3)));
+
+cctests_decl cce_condition_t const * cctests_condition_new_unreachable (cce_destination_t L,
+									char const * const filename,
+									char const * const funcname,
+									int const linenum)
+  __attribute__((__nonnull__(1,2,3),__returns_nonnull__));
+
+#define cctests_raise_unreachable(L)		\
+  cce_raise((L), cctests_condition_new_unreachable((L), __FILE__, __func__, __LINE__))
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_unreachable (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_unreachable_ptr->descriptor));
 }
 
 
