@@ -2,7 +2,7 @@
 
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/XXX/badge)](https://bestpractices.coreinfrastructure.org/projects/XXX)
 [![Build Status](https://travis-ci.org/marcomaggi/cctests.svg?branch=master)](https://travis-ci.org/marcomaggi/cctests)
-[![Coverity passed](https://scan.coverity.com/projects/12801/badge.svg)](https://scan.coverity.com/projects/marcomaggi-cctests)
+[![Coverity passed](https://scan.coverity.com/projects/14619/badge.svg)](https://scan.coverity.com/projects/marcomaggi-cctests)
 [![codecov](https://codecov.io/gh/marcomaggi/cctests/branch/master/graph/badge.svg)](https://codecov.io/gh/marcomaggi/cctests)
 
 
