@@ -189,7 +189,7 @@ Travis CI is  a hosted, distributed continuous  integration service used
 to build and test software projects  hosted at GitHub.  We can find this
 project's dashboard at:
 
-	       <https://travis-ci.org/marcomaggi/cctests>
+	       <https://travis-ci.org/marcomaggi/CCTests>
 
   Usage of this service is configured through the file ".travis.yml" and
 the scripts under the directory "meta/travis-ci".
