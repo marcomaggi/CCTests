@@ -71,7 +71,7 @@ check_PROGRAMS	= \
 TESTS				= $(check_PROGRAMS)
 
 cctests_tests_cppflags		= -I$(srcdir)/src -I$(srcdir)/tests $(CCEXCEPTIONS_CFLAGS)
-cctests_tests_ldadd		= libcctests.la
+cctests_tests_ldadd		= $(CCEXCEPTIONS_LIBS) libcctests.la
 
 ## --------------------------------------------------------------------
 
