@@ -7,7 +7,7 @@
 # We assume the script is run from the top directory of the build tree.
 
 PROGNAME=install-ccexceptions.sh
-VERSION=0.6.3-devel.0
+VERSION=v0.6.3-devel.0
 STEM="ccexceptions-${VERSION}"
 ARCHIVE="${STEM}.tar.gz"
 SOURCE_URI="https://github.com/marcomaggi/ccexceptions/archive/${VERSION}.tar.gz"
