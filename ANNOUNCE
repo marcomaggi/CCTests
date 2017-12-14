@@ -1,5 +1,5 @@
 -*- coding: utf-8-unix -*-
-Subject: [announce] Cctests revision 0.1.0-devel.0
+Subject: [announce] Cctests revision 0.1.0-devel.1
 
 				CCTests
 				=======
@@ -31,6 +31,11 @@ and as backup at:
 the documentation is available online:
 
 	    <https://marcomaggi.github.io/docs/cctests.html>
+
+
+Notes for revision 0.1.0-devel.1
+--------------------------------
+
 
 
 Notes for revision 0.1.0-devel.0
