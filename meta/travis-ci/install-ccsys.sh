@@ -3,15 +3,15 @@
 # Installation script to run from the Travis CI config file before
 # attempting a build.
 #
-# Install CCExceptions  under the directory "/tmp/mine".   We assume the
-# script is run from the top directory of the build tree.
+# Install CCSys under  the directory "/tmp/mine".  We  assume the script
+# is run from the top directory of the build tree.
 
-PROGNAME=install-ccexceptions.sh
-VERSION=0.6.4-devel.3
+PROGNAME=install-ccsys.sh
+VERSION=0.1.0-devel.0
 TAG="v${VERSION}"
-STEM="ccexceptions-${VERSION}"
+STEM="ccsys-${VERSION}"
 ARCHIVE="${STEM}.tar.gz"
-SOURCE_URI="https://github.com/marcomaggi/ccexceptions/archive/${TAG}.tar.gz"
+SOURCE_URI="https://github.com/marcomaggi/ccsys/archive/${TAG}.tar.gz"
 LOCAL_ARCHIVE="/tmp/${ARCHIVE}"
 TOP_SRCDIR="/tmp/${STEM}"
 
