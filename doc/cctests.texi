@@ -38,6 +38,7 @@
 @c ------------------------------------------------------------
 
 @set CCEXCEPTIONS_REQUIRED_VERSION      0.6.2
+@set CCSYS_REQUIRED_VERSION             0.1.0
 
 @c ------------------------------------------------------------
 
@@ -55,9 +56,10 @@
 This document describes version @value{VERSION} of @value{PACKAGE}, a C11 language library
 implementing a framework to organise test suites.  The library targets @posix{} platforms.
 
-The package depends upon the external package CCExceptions at least version
-@value{CCEXCEPTIONS_REQUIRED_VERSION}, and relies on @command{pkg-config} to find it installed on
-the system.
+This package depends upon the external packages:
+CCExceptions at least version @value{CCEXCEPTIONS_REQUIRED_VERSION};
+CCSys at least version @value{CCSYS_REQUIRED_VERSION};
+This package relies on @command{pkg-config} to find the dependency packages installed on the system.
 
 The package is distributed under the terms of the @gnu{} Lesser General Public License (@lgpl{}).
 
@@ -161,9 +163,10 @@ Indexes
 This document describes version @value{VERSION} of @value{PACKAGE}, a C11 language library
 implementing a framework to organise test suites.  The library targets @posix{} platforms.
 
-The package depends upon the external package CCExceptions at least version
-@value{CCEXCEPTIONS_REQUIRED_VERSION}, and relies on @command{pkg-config} to find it installed on
-the system.
+This package depends upon the external packages:
+CCExceptions at least version @value{CCEXCEPTIONS_REQUIRED_VERSION};
+CCSys at least version @value{CCSYS_REQUIRED_VERSION};
+This package relies on @command{pkg-config} to find the dependency packages installed on the system.
 
 @value{PACKAGE} installs the single header file @file{cctests.h}.  All the function names in the
 @api{} are prefixed with @code{cctests_}; all the preprocessor symbol names are prefixed with
