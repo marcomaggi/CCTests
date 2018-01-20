@@ -7,7 +7,7 @@ AC_INIT([CCTests],[0.1.0-devel.1],
   [cctests],[http://marcomaggi.github.com/cctests])
 dnl This is the revision number of this configure.ac
 AC_REVISION([0.1])
-AC_COPYRIGHT([Copyright (c) 2017 Marco Maggi <marco.maggi-ipsu@poste.it>
+AC_COPYRIGHT([Copyright (c) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
 
 This program is free software: you  can redistribute it and/or modify it
 under the terms of the GNU Lesser General Public License as published by
@@ -89,6 +89,7 @@ dnl page
 #### external libraries
 
 PKG_CHECK_MODULES([CCEXCEPTIONS],[ccexceptions >= 0.6.2])
+PKG_CHECK_MODULES([CCSYS],[ccexceptions >= 0.1.0])
 
 AC_CACHE_SAVE
 

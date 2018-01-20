@@ -33,7 +33,7 @@
 
 @c To be used as @value{COPYRIGHT_YEARS} whenever we need to include the
 @c list of copyright years.
-@set COPYRIGHT_YEARS            2017
+@set COPYRIGHT_YEARS            2017, 2018
 
 @c ------------------------------------------------------------
 
@@ -132,6 +132,7 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 * groups::                      Test groups.
 * funcs::                       Test functions.
 * assertions::                  Verifying assertions.
+* process::                     Running processes.
 * conditions::                  Condition object types.
 * system::                      System interface.
 * utils::                       Utility definitions.
@@ -531,6 +532,30 @@ test_1_5 (cce_destination_t upper_L)
 @}
 @end example
 @end deftypefn
+
+@c page
+@node process
+@chapter Running processes
+
+
+@deftypefn {Function Prototype} void cctests_child_process_function_t (cce_destination_t @var{L})
+Type of function to call in a subprocess.
+@end deftypefn
+
+
+@deftypefun void cctests_call_in_forked_process (cce_destination_t @var{L}, cctests_child_process_function_t * @var{child_function})
+Fork a process:
+
+@itemize
+@item
+In the child: call @var{child_function}; exit successfully if the function returns; exit with
+failure if the function raises an exception.
+
+@item
+In the parent: wait for the child termination; assert that the child process terminated
+successfully.
+@end itemize
+@end deftypefun
 
 @c page
 @node conditions
