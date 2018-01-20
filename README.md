@@ -21,7 +21,7 @@ Travis CI, on both Ubuntu GNU+Linux systems and OS X systems.
 
 ## License
 
-Copyright (c) 2017 Marco Maggi <marco.maggi-ipsu@poste.it><br/>
+Copyright (c) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it><br/>
 All rights reserved.
 
 This program is free software: you  can redistribute it and/or modify it
