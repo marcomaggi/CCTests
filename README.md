@@ -1,6 +1,5 @@
 # cctests
 
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1470/badge)](https://bestpractices.coreinfrastructure.org/projects/1470)
 [![Build Status](https://travis-ci.org/marcomaggi/CCTests.svg?branch=master)](https://travis-ci.org/marcomaggi/CCTests)
 [![Coverity passed](https://scan.coverity.com/projects/14619/badge.svg)](https://scan.coverity.com/projects/marcomaggi-cctests)
 [![codecov](https://codecov.io/gh/marcomaggi/cctests/branch/master/graph/badge.svg)](https://codecov.io/gh/marcomaggi/cctests)
@@ -172,16 +171,6 @@ we can find the package CCExceptions at:
 
 
 ## Badges and static analysis
-
-### CII Best Practices
-
-The  Linux  Foundation's  Core   Infrastructure  Initiative  (CII)  Best
-Practices badge is a way for Free/Libre and Open Source Software (FLOSS)
-projects to show that they follow  best practices.  We can find the self
-certification at:
-
-[https://bestpractices.coreinfrastructure.org/projects/1470/](https://bestpractices.coreinfrastructure.org/projects/1470/)
-
 
 ### Travis CI
 
