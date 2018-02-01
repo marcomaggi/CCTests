@@ -46,7 +46,8 @@ libcctests_la_SOURCES	= \
 	src/cctests-system.c			\
 	src/cctests-driver.c			\
 	src/cctests-assertions.c		\
-	src/cctests-process.c
+	src/cctests-process.c			\
+	src/cctests-helpers.c
 
 #page
 #### tests

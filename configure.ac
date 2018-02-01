@@ -69,7 +69,7 @@ AC_SUBST(AX_CFLAGS)
 AM_PROG_AS
 AM_PROG_CC_C_O
 AC_HEADER_STDC
-AC_CHECK_HEADERS([regex.h])
+AC_CHECK_HEADERS([regex.h unistd.h])
 dnl AC_CHECK_SIZEOF(void *)
 
 AC_CACHE_SAVE
@@ -81,7 +81,7 @@ dnl AC_FUNC_MALLOC
 dnl AC_FUNC_MEMCMP
 dnl AC_CHECK_FUNCS([memmove memset strerror])
 dnl AC_CHECK_FUNCS([mmap munmap msync mremap madvise mlock munlock mlockall munlockall mprotect])
-AC_CHECK_FUNCS([getenv])
+AC_CHECK_FUNCS([getenv isatty])
 
 AC_CACHE_SAVE
 
