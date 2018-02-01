@@ -36,6 +36,7 @@ the documentation is available online:
 Notes for revision 0.1.0-devel.1
 --------------------------------
 
+* Added colourisation of output when the output device is a terminal.
 
 
 Notes for revision 0.1.0-devel.0

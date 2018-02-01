@@ -6,6 +6,8 @@
 Revision 0.1.0-devel.1
 ----------------------
 
+* Added colourisation of output when the output device is a terminal.
+
 
 Revision 0.1.0-devel.0
 ----------------------
