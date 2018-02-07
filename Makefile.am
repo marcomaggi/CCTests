@@ -59,6 +59,7 @@ check_PROGRAMS	= \
 	tests/assert-conditions					\
 	tests/condition-base-subtyping				\
 	tests/condition-success-subtyping			\
+	tests/condition-skipped-subtyping			\
 	tests/condition-failure-subtyping			\
 	tests/condition-assertion-subtyping			\
 	tests/condition-unreachable-subtyping			\
@@ -104,6 +105,15 @@ tests_condition_success_subtyping_SOURCES	= \
 	tests/condition-success-subtyping.c		\
 	tests/condition-success-subtyping-body.c	\
 	tests/condition-success-subtyping-header.h
+
+## --------------------------------------------------------------------
+
+tests_condition_skipped_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_condition_skipped_subtyping_LDADD		= $(cctests_tests_ldadd)
+tests_condition_skipped_subtyping_SOURCES	= \
+	tests/condition-skipped-subtyping.c		\
+	tests/condition-skipped-subtyping-body.c	\
+	tests/condition-skipped-subtyping-header.h
 
 ## --------------------------------------------------------------------
 

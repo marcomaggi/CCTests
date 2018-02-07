@@ -465,6 +465,25 @@ considered failed with a hard error.
 Return @ctrue{} if the latest test function has completed successfully; otherwise return @cfalse{}.
 @end deftypefun
 
+
+@deftypefun void cctests_skip (void)
+Raise an exception of type @objtype{cctests_condition_skipped_t} to signal that this test function
+skips its test.  This is useful, for example, if a test function is written for a testee function
+that may not exist on the underlying platform; so we can write a test like this:
+
+@example
+void
+test_1_1 (cce_destination_t upper_L)
+@{
+#ifdef HAVE_TESTEE_FUNCTION
+  ...
+#else
+  cctests_skip();
+#endif
+@}
+@end example
+@end deftypefun
+
 @c page
 @node assertions
 @chapter Verifying assertions
@@ -588,6 +607,7 @@ if (cce_location(L)) @{
 @menu
 * conditions base::             Base condition object.
 * conditions success::          Signalling test success.
+* conditions skipped::          Signalling a skipped test.
 * conditions failure::          Signalling test failure.
 * conditions assertion::        Signalling failed assertions.
 * conditions unreachable::      Signalling execution of unreachable code.
@@ -786,6 +806,99 @@ condition-success-subtype-body.c
 @noindent
 under the @file{tests} directory of the source distribution; the code defines a new
 condition--object type @objtype{my_condition_success_subtype_t}.
+
+@c page
+@node conditions skipped
+@section Signalling test skipped
+
+
+@cindex Test skipped, exceptional condition
+@cindex Exceptional conditions, test skipped
+
+
+The @dfn{skipped exceptional--condition object--type} can be used to signal a skipped test
+execution; a skipped test is not a failed test.  We can instantiate this type and also derive new
+types from it.  To catch this exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_skipped(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_skipped_t, C, cce_condition(L));
+    do_something_with(C);
+    cce_run_cleanup_handlers_final(L);
+  @} else @{
+    cce_run_error_handlers_final(L);
+  @}
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+
+@deftp {Struct Typedef} cctests_descriptor_skipped_t
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_base_ptr},
+@ref{conditions base, Base condition object}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_skipped_t
+Type of data structure representing the condition object.  It has the following public fields:
+
+@table @code
+@item cctests_condition_base_t base
+The condition object's base values.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_skipped_t const * const} cctests_descriptor_skipped_ptr
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun void cctests_condition_init_skipped (cctests_condition_skipped_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_skipped_t}.
+@end deftypefun
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_skipped (void)
+Return a pointer to exceptional--condition object.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_skipped (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_skipped_t}; otherwise return
+@cfalse{}.
+@end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_skipped_t} we can copy the code in the files:
+
+@example
+condition-skipped-subtype.c
+condition-skipped-subtype-headear.h
+condition-skipped-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_skipped_subtype_t}.
 
 @c page
 @node conditions failure

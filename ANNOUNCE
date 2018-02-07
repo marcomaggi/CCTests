@@ -38,6 +38,8 @@ Notes for revision 0.1.0-devel.1
 
 * Added colourisation of output when the output device is a terminal.
 
+* Added support for "cctests_condition_skipped_t".
+
 
 Notes for revision 0.1.0-devel.0
 --------------------------------
