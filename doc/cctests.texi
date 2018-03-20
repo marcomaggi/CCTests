@@ -38,7 +38,6 @@
 @c ------------------------------------------------------------
 
 @set CCEXCEPTIONS_REQUIRED_VERSION      0.6.2
-@set CCSYS_REQUIRED_VERSION             0.1.0
 
 @c ------------------------------------------------------------
 
@@ -56,10 +55,9 @@
 This document describes version @value{VERSION} of @value{PACKAGE}, a C11 language library
 implementing a framework to organise test suites.  The library targets @posix{} platforms.
 
-This package depends upon the external packages:
-CCExceptions at least version @value{CCEXCEPTIONS_REQUIRED_VERSION};
-CCSys at least version @value{CCSYS_REQUIRED_VERSION};
-This package relies on @command{pkg-config} to find the dependency packages installed on the system.
+This package depends upon the external packages: CCExceptions at least version
+@value{CCEXCEPTIONS_REQUIRED_VERSION}; This package relies on @command{pkg-config} to find the
+dependency packages installed on the system.
 
 The package is distributed under the terms of the @gnu{} Lesser General Public License (@lgpl{}).
 
@@ -163,10 +161,9 @@ Indexes
 This document describes version @value{VERSION} of @value{PACKAGE}, a C11 language library
 implementing a framework to organise test suites.  The library targets @posix{} platforms.
 
-This package depends upon the external packages:
-CCExceptions at least version @value{CCEXCEPTIONS_REQUIRED_VERSION};
-CCSys at least version @value{CCSYS_REQUIRED_VERSION};
-This package relies on @command{pkg-config} to find the dependency packages installed on the system.
+This package depends upon the external packages: CCExceptions at least version
+@value{CCEXCEPTIONS_REQUIRED_VERSION}; This package relies on @command{pkg-config} to find the
+dependency packages installed on the system.
 
 @value{PACKAGE} installs the single header file @file{cctests.h}.  All the function names in the
 @api{} are prefixed with @code{cctests_}; all the preprocessor symbol names are prefixed with
@@ -489,20 +486,20 @@ test_1_1 (cce_destination_t upper_L)
 @chapter Verifying assertions
 
 
-@deftypefn {Preprocessor Macro} void cctests_assert (@var{expr})
-@deftypefnx {Preprocessor Macro} void cctests_assert (cce_destination_t @var{L}, @var{expr})
+@menu
+* assertions generic::          Generic assertions.
+* assertions strings::          Expecting strings.
+@end menu
+
+@c page
+@node assertions generic
+@section Generic assertions
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert (cce_destination_t @var{L}, @var{expr})
 Evaluate the expression @var{expr}; this macro is similar, but not equal, to the standard
 @cfunc{assert}.  If the expression evaluates to @ctrue{}: just return.  Otherwise raise an exception
-of type @objtype{cctests_condition_assertion_t} by performing a non--local exit:
-
-@itemize
-@item
-If the macro is applied to a single argument: the exit destination is a location internally selected
-by @value{PACKAGE}; this location is the same operand handed to the enclosing test function.
-
-@item
-If the macro is applied to two arguments: the exit destination is @var{L}.
-@end itemize
+of type @objtype{cctests_condition_assertion_t} by performing a non--local exit to @var{L}.
 
 Here are some usage examples:
 
@@ -510,13 +507,13 @@ Here are some usage examples:
 void
 test_1_1 (cce_destination_t L)
 @{
-  cctests_assert(true);   /* success */
+  cctests_assert(L, true);   /* success */
 @}
 
 void
 test_1_2 (cce_destination_t L)
 @{
-  cctests_assert(false);  /* failure */
+  cctests_assert(L, false);  /* failure */
 @}
 
 void
@@ -524,7 +521,7 @@ test_1_3 (cce_destination_t L)
 @{
   void *  P = malloc(16);
 
-  cctests_assert(NULL != P);
+  cctests_assert(L, NULL != P);
 @}
 
 void
@@ -533,7 +530,7 @@ test_1_4 (cce_destination_t L)
   char const *  A = "ciao";
   char const *  B = "hello";
 
-  cctests_assert(0 == strcmp(A, B));
+  cctests_assert(L, 0 == strcmp(A, B));
 @}
 
 void
@@ -556,8 +553,45 @@ test_1_5 (cce_destination_t upper_L)
 @end deftypefn
 
 @c page
+@node assertions strings
+@section Expecting strings
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_asciiz (cce_destination_t @var{L}, char const * @var{expected}, char const * @var{result})
+Assert that the @asciiz{} string @var{expected} equals the @asciiz{} string @var{result}; the
+comparison is performed with the standard function @cfunc{strcmp}.  If the strings are equal: just
+return.  Otherwise raise an exception of type @objtype{cctests_condition_assertion_t} by performing
+a non--local exit to @var{L}.
+@end deftypefn
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_ascii (cce_destination_t @var{L}, char const * @var{expected}, char const * @var{result}, size_t @var{result_len})
+Assert that the first @var{result_len} octets in the @ascii{} string @var{expected} equal the first
+@var{result_len} octets in the @ascii{} string @var{result}; the comparison is performed with the
+standard function @cfunc{strncmp}.  If the strings are equal: just return.  Otherwise raise an
+exception of type @objtype{cctests_condition_assertion_t} by performing a non--local exit to
+@var{L}.
+@end deftypefn
+
+
+Here some usage examples:
+
+@example
+void
+test_1_1 (cce_destination_t L)
+@{
+  cctests_assert_asciiz(L, "hello", "ciao");
+@}
+@end example
+
+@c page
 @node process
 @chapter Running processes
+
+
+@deftypefn {Function Prototype} void cctests_parent_process_function_t (cce_destination_t @var{L}, int64_t @var{child_pid})
+Type of function to call in a parent process.
+@end deftypefn
 
 
 @deftypefn {Function Prototype} void cctests_child_process_function_t (cce_destination_t @var{L})
@@ -576,6 +610,21 @@ failure if the function raises an exception.
 @item
 In the parent: wait for the child termination; assert that the child process terminated
 successfully.
+@end itemize
+@end deftypefun
+
+
+@deftypefun void cctests_with_parent_and_child_process (cce_destination_t @var{L}, cctests_parent_process_function_t * @var{parent_function}, cctests_child_process_function_t * @var{child_function})
+Fork a process:
+
+@itemize
+@item
+In the child: run @var{child_function}; exit successfully if the function returns; exit with failure
+if the child raises an exception.
+
+@item
+In the parent: run @var{parent_function}; wait for the child termination; assert that the child
+process terminated successfully; assert that the parent function returned successfully.
 @end itemize
 @end deftypefun
 

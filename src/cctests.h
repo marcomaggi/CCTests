@@ -605,23 +605,51 @@ cctests_skip (void)
   cce_raise(cctests_location, cctests_condition_new_skipped());
 }
 
-#define CCTESTS_GET_ASSERT_MACRO(_1,_2,NAME,...)	NAME
-#define cctests_assert(...)	CCTESTS_GET_ASSERT_MACRO(__VA_ARGS__,cctests_m_assert_ex,cctests_m_assert)(__VA_ARGS__)
-
-#define cctests_m_assert(EXPR)		cctests_p_assert(cctests_location, #EXPR, (EXPR), __FILE__, __func__, __LINE__)
-#define cctests_m_assert_ex(L,EXPR)	cctests_p_assert((L),              #EXPR, (EXPR), __FILE__, __func__, __LINE__)
+#define cctests_assert(L,EXPR)	cctests_p_assert((L), #EXPR, (EXPR), __FILE__, __func__, __LINE__)
 
 cctests_decl void cctests_p_assert (cce_destination_t L, char const * const expr, bool result,
 				    char const * const filename, char const * const funcname, int const linenum);
+
+/* ------------------------------------------------------------------ */
+
+cctests_decl void cctests_p_assert_asciiz (cce_destination_t L, char const * expected, char const * result,
+					   char const * expr,
+					   char const * filename, char const * funcname, int linenum)
+  __attribute__((__nonnull__(1,2,3,4,5,6)));
+
+
+#define cctests_assert_asciiz(L,EXPECTED,RESULT)			\
+  cctests_p_assert_asciiz(L, EXPECTED, RESULT,				\
+			  "cctests_assert_asciiz(" #L ", " #EXPECTED ", " #RESULT ")", \
+			  __FILE__, __func__, __LINE__)
+
+/* ------------------------------------------------------------------ */
+
+cctests_decl void cctests_p_assert_ascii (cce_destination_t L, char const * expected, char const * result, size_t result_len,
+					  char const * expr,
+					  char const * filename, char const * funcname, int linenum)
+  __attribute__((__nonnull__(1,2,3,5,6,7)));
+
+#define cctests_assert_ascii(L,EXPECTED,RESULT,RESULT_LEN)		\
+  cctests_p_assert_ascii(L, EXPECTED, RESULT, RESULT_LEN,		\
+			 "cctests_assert_ascii(" #L ", " #EXPECTED ", " #RESULT ", " #RESULT_LEN ")", \
+			 __FILE__, __func__, __LINE__)
 
 
 /** --------------------------------------------------------------------
  ** Calling a function in a subprocess.
  ** ----------------------------------------------------------------- */
 
+typedef void cctests_parent_process_function_t (cce_destination_t L, int64_t child_pid);
 typedef void cctests_child_process_function_t (cce_destination_t L);
 
-cctests_decl void cctests_call_in_forked_process (cce_destination_t L, cctests_child_process_function_t * child_function);
+cctests_decl void cctests_call_in_forked_process (cce_destination_t L, cctests_child_process_function_t * child_function)
+  __attribute__((__nonnull__(1,2)));
+
+cctests_decl void cctests_with_parent_and_child_process (cce_destination_t L,
+							 cctests_parent_process_function_t * parent_function,
+							 cctests_child_process_function_t * child_function)
+  __attribute__((__nonnull__(1,2,3)));
 
 
 /** --------------------------------------------------------------------

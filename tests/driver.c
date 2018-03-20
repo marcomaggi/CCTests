@@ -7,7 +7,7 @@
 
 	Test file for driver functions.
 
-  Copyright (C) 2017 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -30,13 +30,13 @@
 void
 test_fun_successful (cce_destination_t L CCTESTS_UNUSED)
 {
-  cctests_assert(true);
+  cctests_assert(L, true);
 }
 
 void
 test_fun_failing (cce_destination_t L CCTESTS_UNUSED)
 {
-  cctests_assert(false);
+  cctests_assert(L, false);
 }
 
 
