@@ -71,7 +71,8 @@ check_PROGRAMS	= \
 	tests/condition-regex-error-subtyping			\
 	tests/condition-regex-compilation-error-subtyping	\
 	tests/driver						\
-	tests/processes
+	tests/processes						\
+	tests/expected-failure
 
 TESTS				= $(check_PROGRAMS)
 
@@ -218,6 +219,11 @@ tests/driver.$(OBJEXT):		tests/test-utils.h
 
 tests_processes_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_processes_LDADD		= $(cctests_tests_ldadd)
+
+## --------------------------------------------------------------------
+
+tests_expected_failure_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_expected_failure_LDADD	= $(cctests_tests_ldadd)
 
 ## --------------------------------------------------------------------
 
