@@ -175,7 +175,7 @@ cctests_condition_new_skipped (void)
 
 
 /** --------------------------------------------------------------------
- ** Exceptional condition descriptor: child failure.
+ ** Exceptional condition descriptor: expected failure.
  ** ----------------------------------------------------------------- */
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_expected_failure;
