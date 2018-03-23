@@ -1,7 +1,6 @@
 # cctests
 
 [![Build Status](https://travis-ci.org/marcomaggi/cctests.svg?branch=master)](https://travis-ci.org/marcomaggi/cctests)
-[![Coverity passed](https://scan.coverity.com/projects/14619/badge.svg)](https://scan.coverity.com/projects/marcomaggi-cctests)
 [![codecov](https://codecov.io/gh/marcomaggi/cctests/branch/master/graph/badge.svg)](https://codecov.io/gh/marcomaggi/cctests)
 
 
@@ -182,18 +181,6 @@ project's dashboard at:
 
 Usage of this  service is configured through the  file `.travis.yml` and
 additional scripts are under the directory `meta/travis-ci`.
-
-
-### Coverity Scan
-
-Coverity Scan is  a service providing the results of  static analysis on
-open source coding projects.  We can find this project's dashboard at:
-
-[https://scan.coverity.com/projects/marcomaggi-cctests](https://scan.coverity.com/projects/marcomaggi-cctests)
-
-Usage of this  service is implemented with make rules;  see the relevant
-section in the file `Makefile.am`.  To access the service a unique token
-is needed: this token is private and is owned by the current maintainer.
 
 
 ### Clang's Static Analyzer
