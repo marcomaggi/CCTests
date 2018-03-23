@@ -589,9 +589,34 @@ test_1_1 (cce_destination_t L)
 @chapter Running processes
 
 
-@deftypefn {Function Prototype} void cctests_parent_process_function_t (cce_destination_t @var{L}, int64_t @var{child_pid})
-Type of function to call in a parent process.
-@end deftypefn
+@menu
+* process child only::          Running a test in a subprocess.
+* process parent child::        Tests in parent and child processes.
+@end menu
+
+@c page
+@node process child only
+@section Running a test in a subprocess
+
+
+The following @api{} allows us to run a test function in a subprocess.  Example:
+
+@example
+static cctests_child_process_function_t child_function;
+
+void
+test_1_1 (cce_destination_t upper_L)
+@{
+  cctests_call_in_forked_process(upper_L, child_function);
+@}
+
+void
+child_function (cce_destination_t L)
+/* This is run in a subprocess. */
+@{
+  cctests_assert(L, true);
+@}
+@end example
 
 
 @deftypefn {Function Prototype} void cctests_child_process_function_t (cce_destination_t @var{L})
@@ -605,13 +630,61 @@ Fork a process:
 @itemize
 @item
 In the child: call @var{child_function}; exit successfully if the function returns; exit with
-failure if the function raises an exception.
+failure if the function raises an exception.  The child process is terminated with a call to the
+standard function @cfunc{_exit}.  The child function might terminate the subprocess by itself.
 
 @item
 In the parent: wait for the child termination; assert that the child process terminated
 successfully.
 @end itemize
 @end deftypefun
+
+@c page
+@node process parent child
+@section Tests in parent and child processes
+
+
+The following @api{} allows us to run a test function in a child process and a test function in the
+parent process.  Example:
+
+@example
+static cctests_parent_process_function_t parent_function;
+static cctests_child_process_function_t  child_function;
+
+void
+test_1_1 (cce_destination_t upper_L)
+@{
+  cctests_with_parent_and_child_process(upper_L,
+     parent_function, child_function);
+@}
+
+static void
+parent_function (cce_destination_t L, int64_t child_pid)
+/* This runs in the parent. */
+@{
+  cctests_assert(L, true);
+@}
+
+static void
+child_function (cce_destination_t L)
+/* This runs in the child. */
+@{
+  cctests_assert(L, true);
+@}
+@end example
+
+This @api{} is especially useful when we want two processes to exchange messages through pipes or
+sockets, or to send interprocess signals to each other.
+
+
+@deftypefn {Function Prototype} void cctests_parent_process_function_t (cce_destination_t @var{L}, int64_t @var{child_pid})
+Type of function to call in a parent process.
+@end deftypefn
+
+
+@deftypefn {Function Prototype} void cctests_child_process_function_t (cce_destination_t @var{L})
+Type of function to call in a subprocess.
+@end deftypefn
 
 
 @deftypefun void cctests_with_parent_and_child_process (cce_destination_t @var{L}, cctests_parent_process_function_t * @var{parent_function}, cctests_child_process_function_t * @var{child_function})
@@ -620,7 +693,8 @@ Fork a process:
 @itemize
 @item
 In the child: run @var{child_function}; exit successfully if the function returns; exit with failure
-if the child raises an exception.
+if the child raises an exception.  The child process is terminated with a call to the standard
+function @cfunc{_exit}.  The child function might terminate the subprocess by itself.
 
 @item
 In the parent: run @var{parent_function}; wait for the child termination; assert that the child
@@ -661,6 +735,7 @@ if (cce_location(L)) @{
 * conditions assertion::        Signalling failed assertions.
 * conditions unreachable::      Signalling execution of unreachable code.
 * conditions regex::            Regular expression errors.
+* conditions child::            Child subprocess errors.
 
 Convenience condition types
 
@@ -1480,6 +1555,249 @@ condition-regex-compilation-error-subtype-body.c
 @noindent
 under the @file{tests} directory of the source distribution; the code defines a new
 condition--object type @objtype{my_condition_regex_compilation_error_subtype_t}.
+
+@c page
+@node conditions child
+@section Child subprocess errors
+
+
+@menu
+* conditions child failure::    Child failure.
+* conditions child abnormal::   Child abnormal termination.
+* conditions child status::     Child failure exit status.
+@end menu
+
+@c page
+@node conditions child failure
+@subsection Child failure
+
+
+@cindex Child failure, exceptional condition
+@cindex Exceptional conditions, child failure
+
+
+We can use the @dfn{child failure exceptional--condition object--type} to signal an error in the
+execution a child process.  We can instantiate this type and also derive new types from it.  To
+catch this exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_child_failure(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_child_failure_t, C, cce_condition(L));
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+
+@deftp {Struct Typedef} cctests_descriptor_child_failure_t
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_failure_ptr},
+@ref{conditions failure, Signalling test failure}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_child_failure_t
+Type of data structure representing the exceptional--condition object.  It has the following public
+fields:
+
+@table @code
+@item cctests_condition_failure_t failure
+The condition object's base values.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_child_failure_t const * const} cctests_descriptor_child_failure_ptr
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun void cctests_condition_init_child_failure (cctests_condition_child_failure_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_child_failure_t}.
+@end deftypefun
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_child_failure (cce_destination_t @var{L})
+Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
+an exception by performing a non--local exit to @var{L}.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_child_failure (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_child_failure_t}; otherwise return
+@cfalse{}.
+@end deftypefun
+
+@c page
+@node conditions child abnormal
+@subsection Child abnormal termination
+
+
+@cindex Child abnormal termination, exceptional condition
+@cindex Exceptional conditions, child abnormal termination
+
+
+We can use the @dfn{child abnormal termination exceptional--condition object--type} to signal an
+abnormal termination in the execution a child process; this happens when the process is @strong{not}
+terminated by a call to the @cfunc{exit} function or by simply returning from the @cfunc{main}
+function.  We can instantiate this type and also derive new types from it.  To catch this
+exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_child_abnormal_termination(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_child_abnormal_termination_t, C, cce_condition(L));
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+
+@deftp {Struct Typedef} cctests_descriptor_child_abnormal_termination_t
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by
+@code{cctests_descriptor_child_failure_ptr}, @ref{conditions child failure, Child failure}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_child_abnormal_termination_t
+Type of data structure representing the exceptional--condition object.  It has the following public
+fields:
+
+@table @code
+@item cctests_condition_child_failure_t child_failure
+The condition object's base values.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_child_abnormal_termination_t const * const} cctests_descriptor_child_abnormal_termination_ptr
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun void cctests_condition_init_child_abnormal_termination (cctests_condition_child_abnormal_termination_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_child_abnormal_termination_t}.
+@end deftypefun
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_child_abnormal_termination (cce_destination_t @var{L})
+Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
+an exception by performing a non--local exit to @var{L}.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_child_abnormal_termination (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_child_abnormal_termination_t};
+otherwise return @cfalse{}.
+@end deftypefun
+
+@c page
+@node conditions child status
+@subsection Child failure exit status
+
+
+@cindex Child failure exit status, exceptional condition
+@cindex Exceptional conditions, child failure exit status
+
+
+We can use the @dfn{child failure exit status exceptional--condition object--type} to signal the
+termination of a child process with a non--zero status; this happens when the process is terminated
+by a call to the @cfunc{exit} function with a non--zero argument or by simply returning non--zero
+from the @cfunc{main} function.  We can instantiate this type and also derive new types from it.  To
+catch this exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_child_failure_exit_status(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_child_failure_exit_status_t, C, cce_condition(L));
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+
+@deftp {Struct Typedef} cctests_descriptor_child_failure_exit_status_t
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by
+@code{cctests_descriptor_child_failure_ptr}, @ref{conditions child failure, Child failure}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_child_failure_exit_status_t
+Type of data structure representing the exceptional--condition object.  It has the following public
+fields:
+
+@table @code
+@item cctests_condition_child_failure_t child_failure
+The condition object's base values.
+@end table
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_child_failure_exit_status_t const * const} cctests_descriptor_child_failure_exit_status_ptr
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun void cctests_condition_init_child_failure_exit_status (cctests_condition_child_failure_exit_status_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_child_failure_exit_status_t}.
+@end deftypefun
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_child_failure_exit_status (cce_destination_t @var{L})
+Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
+an exception by performing a non--local exit to @var{L}.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_child_failure_exit_status (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_child_failure_exit_status_t};
+otherwise return @cfalse{}.
+@end deftypefun
 
 @c page
 @node conditions signal

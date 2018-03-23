@@ -121,6 +121,10 @@ CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_signal_3_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_regex_error_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_regex_compilation_error_t);
 
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_child_failure_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_child_abnormal_termination_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_child_failure_exit_status_t);
+
 /* ------------------------------------------------------------------ */
 
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_base_t);
@@ -137,6 +141,10 @@ CCTESTS_STRUCT_TYPEDEF(cctests_condition_signal_3_t);
 
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_regex_error_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_regex_compilation_error_t);
+
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_child_failure_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_child_abnormal_termination_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_child_failure_exit_status_t);
 
 
 /** --------------------------------------------------------------------
@@ -174,7 +182,7 @@ struct cctests_condition_base_t {
 
 cctests_decl cctests_descriptor_base_t const * const cctests_descriptor_base_ptr;
 
-__attribute__((__nonnull__((1)),,__always_inline__))
+__attribute__((__nonnull__(1),,__always_inline__))
 static inline void
 cctests_condition_init_base (cctests_condition_base_t * C)
 {
@@ -203,7 +211,7 @@ struct cctests_condition_success_t {
 
 cctests_decl cctests_descriptor_success_t const * const cctests_descriptor_success_ptr;
 
-__attribute__((__nonnull__((1)),,__always_inline__))
+__attribute__((__nonnull__(1),,__always_inline__))
 static inline void
 cctests_condition_init_success (cctests_condition_success_t * C)
 {
@@ -235,7 +243,7 @@ struct cctests_condition_skipped_t {
 
 cctests_decl cctests_descriptor_skipped_t const * const cctests_descriptor_skipped_ptr;
 
-__attribute__((__nonnull__((1)),,__always_inline__))
+__attribute__((__nonnull__(1),__always_inline__))
 static inline void
 cctests_condition_init_skipped (cctests_condition_skipped_t * C)
 {
@@ -267,7 +275,7 @@ struct cctests_condition_failure_t {
 
 cctests_decl cctests_descriptor_failure_t const * const cctests_descriptor_failure_ptr;
 
-__attribute__((__nonnull__((1)),,__always_inline__))
+__attribute__((__nonnull__(1),__always_inline__))
 static inline void
 cctests_condition_init_failure (cctests_condition_failure_t * C)
 {
@@ -379,7 +387,7 @@ struct cctests_condition_signal_t {
 
 cctests_decl cctests_descriptor_signal_t const * const cctests_descriptor_signal_ptr;
 
-__attribute__((__nonnull__((1)),,__always_inline__))
+__attribute__((__nonnull__(1),__always_inline__))
 static inline void
 cctests_condition_init_signal (cctests_condition_signal_t * C)
 {
@@ -411,7 +419,7 @@ struct cctests_condition_signal_1_t {
 
 cctests_decl cctests_descriptor_signal_1_t const * const cctests_descriptor_signal_1_ptr;
 
-__attribute__((__nonnull__((1)),,__always_inline__))
+__attribute__((__nonnull__(1),__always_inline__))
 static inline void
 cctests_condition_init_signal_1 (cctests_condition_signal_1_t * C)
 {
@@ -443,7 +451,7 @@ struct cctests_condition_signal_2_t {
 
 cctests_decl cctests_descriptor_signal_2_t const * const cctests_descriptor_signal_2_ptr;
 
-__attribute__((__nonnull__((1)),,__always_inline__))
+__attribute__((__nonnull__(1),__always_inline__))
 static inline void
 cctests_condition_init_signal_2 (cctests_condition_signal_2_t * C)
 {
@@ -475,7 +483,7 @@ struct cctests_condition_signal_3_t {
 
 cctests_decl cctests_descriptor_signal_3_t const * const cctests_descriptor_signal_3_ptr;
 
-__attribute__((__nonnull__((1)),,__always_inline__))
+__attribute__((__nonnull__(1),__always_inline__))
 static inline void
 cctests_condition_init_signal_3 (cctests_condition_signal_3_t * C)
 {
@@ -548,6 +556,90 @@ static inline bool
 cctests_condition_is_regex_compilation_error (cce_condition_t const * C)
 {
   return cce_is_condition(C, &(cctests_descriptor_regex_compilation_error_ptr->descriptor));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Condition objects: child process failure.
+ ** ----------------------------------------------------------------- */
+
+struct cctests_descriptor_child_failure_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_child_failure_t {
+  cctests_condition_failure_t	failure;
+};
+
+cctests_decl cctests_descriptor_child_failure_t const * const cctests_descriptor_child_failure_ptr;
+
+cctests_decl void cctests_condition_init_child_failure (cctests_condition_child_failure_t * C)
+  __attribute__((__nonnull__(1)));
+
+cctests_decl cce_condition_t const * cctests_condition_new_child_failure (void)
+  __attribute__((__returns_nonnull__));
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_child_failure (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_child_failure_ptr->descriptor));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Condition objects: child process abnormal termination.
+ ** ----------------------------------------------------------------- */
+
+struct cctests_descriptor_child_abnormal_termination_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_child_abnormal_termination_t {
+  cctests_condition_child_failure_t	child_failure;
+};
+
+cctests_decl cctests_descriptor_child_abnormal_termination_t const * const cctests_descriptor_child_abnormal_termination_ptr;
+
+cctests_decl void cctests_condition_init_child_abnormal_termination (cctests_condition_child_abnormal_termination_t * C)
+  __attribute__((__nonnull__(1)));
+
+cctests_decl cce_condition_t const * cctests_condition_new_child_abnormal_termination (void)
+  __attribute__((__returns_nonnull__));
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_child_abnormal_termination (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_child_abnormal_termination_ptr->descriptor));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Condition objects: child process abnormal termination.
+ ** ----------------------------------------------------------------- */
+
+struct cctests_descriptor_child_failure_exit_status_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_child_failure_exit_status_t {
+  cctests_condition_child_failure_t	child_failure;
+};
+
+cctests_decl cctests_descriptor_child_failure_exit_status_t const * const cctests_descriptor_child_failure_exit_status_ptr;
+
+cctests_decl void cctests_condition_init_child_failure_exit_status (cctests_condition_child_failure_exit_status_t * C)
+  __attribute__((__nonnull__(1)));
+
+cctests_decl cce_condition_t const * cctests_condition_new_child_failure_exit_status (void)
+  __attribute__((__returns_nonnull__));
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_child_failure_exit_status (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_child_failure_exit_status_ptr->descriptor));
 }
 
 

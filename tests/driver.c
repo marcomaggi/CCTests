@@ -88,12 +88,13 @@ int
 main (void)
 {
   cctests_init("driver");
+  {
+    if (1) { test_1_1(); }
+    if (1) { test_1_2(); }
+    if (1) { test_1_3(); }
 
-  if (1) { test_1_1(); }
-  if (1) { test_1_2(); }
-  if (1) { test_1_3(); }
-
-  ctests_reset_global_state();
+    ctests_reset_global_state();
+  }
   cctests_final();
 }
 
