@@ -14,8 +14,8 @@ This package depends  upon the external packages:  CCExceptions at least
 version  0.6.2.   This  package  relies  on  `pkg-config`  to  find  the
 dependency packages installed on the system.
 
-The package  makes use of  the GNU Autotools  and it is  tested, using
-Travis CI, on both Ubuntu GNU+Linux systems and OS X systems.
+The package uses the GNU Autotools and it is tested, using Travis CI, on
+both Ubuntu GNU+Linux systems and OS X systems.
 
 
 ## License
