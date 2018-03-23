@@ -254,6 +254,13 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	}
       } else if (cctests_condition_is_success(cce_condition(L))) {
 	cctests_successful_func = true;
+      } else if (cctests_condition_is_expected_failure(cce_condition(L))) {
+	cctests_successful_func = true;
+	if (cctests_log_stream_isatty()) {
+	  fprintf(cctests_log_stream, "CCTests: \033[32;1mexpected failure\033[0m in test function: %s\n", test_func_name);
+	} else {
+	  fprintf(cctests_log_stream, "CCTests: expected failure in test function: %s\n", test_func_name);
+	}
       } else if (cctests_condition_is_signal(cce_condition(L))) {
 	cctests_all_test_passed  = false;
 	cctests_successful_group = false;
@@ -296,6 +303,7 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	}
       }
     } else {
+      /* Run the test function, if it matches the selection. */
       if (test_func_matches_user_selection(L, test_func_name)) {
 	cctests_location = L;
 	fun(L);

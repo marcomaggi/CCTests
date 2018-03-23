@@ -175,6 +175,40 @@ cctests_condition_new_skipped (void)
 
 
 /** --------------------------------------------------------------------
+ ** Exceptional condition descriptor: child failure.
+ ** ----------------------------------------------------------------- */
+
+static cce_condition_static_message_fun_t	cctests_condition_static_message_expected_failure;
+
+static cctests_descriptor_expected_failure_t const cctests_descriptor_expected_failure_stru = {
+  .descriptor.parent		= &cctests_descriptor_failure_stru.descriptor,
+  .descriptor.delete		= NULL,
+  .descriptor.final		= NULL,
+  .descriptor.static_message	= cctests_condition_static_message_expected_failure
+};
+
+cctests_descriptor_expected_failure_t const * const cctests_descriptor_expected_failure_ptr = &cctests_descriptor_expected_failure_stru;
+
+/* This struct type has no dynamic fields, so there is only one instance
+   of this struct type.  We allocate it statically. */
+static cctests_condition_expected_failure_t const cctests_condition_expected_failure_stru = {
+  .failure.base.root.condition.descriptor	= &cctests_descriptor_expected_failure_stru.descriptor
+};
+
+cce_condition_t const *
+cctests_condition_new_expected_failure (void)
+{
+  return (cce_condition_t *)&cctests_condition_expected_failure_stru;
+}
+
+char const *
+cctests_condition_static_message_expected_failure (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests exception expected failure";
+}
+
+
+/** --------------------------------------------------------------------
  ** Exceptional condition descriptor: failed assertion.
  ** ----------------------------------------------------------------- */
 

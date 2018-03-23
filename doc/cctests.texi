@@ -732,6 +732,7 @@ if (cce_location(L)) @{
 * conditions success::          Signalling test success.
 * conditions skipped::          Signalling a skipped test.
 * conditions failure::          Signalling test failure.
+* conditions expected failure:: Signalling expected test failure.
 * conditions assertion::        Signalling failed assertions.
 * conditions unreachable::      Signalling execution of unreachable code.
 * conditions regex::            Regular expression errors.
@@ -1115,6 +1116,94 @@ condition-failure-subtype-body.c
 @noindent
 under the @file{tests} directory of the source distribution; the code defines a new
 condition--object type @objtype{my_condition_failure_subtype_t}.
+
+@c page
+@node conditions expected failure
+@section Signalling expected test failure
+
+
+@cindex Expected failure, exceptional condition
+@cindex Exceptional conditions, expected failure
+
+
+The @dfn{expected failure exceptional--condition object--type} is used by @value{PACKAGE} to signal
+an expected failure in a test function.  We can instantiate this type and also derive new types from
+it.  To catch this exceptional condition we can do:
+
+@smallexample
+cce_location_t        L[1];
+
+if (cce_location(L)) @{
+  if (cctests_condition_is_expected_failure(cce_condition(L))) @{
+    CCTESTS_PC(cctests_condition_expected_failure_t, C, cce_condition(L));
+    do_something_with(C);
+  @}
+  cce_run_error_handlers_final(L);
+@} else @{
+  do_something(L);
+  cce_run_cleanup_handlers(L);
+@}
+@end smallexample
+
+
+@deftp {Struct Typedef} cctests_descriptor_expected_failure_t
+Type of data structure representing the exceptional--condition descriptor.  It has the following
+public fields:
+
+@table @code
+@item cce_descriptor_t descriptor
+The condition descriptor's base values.
+@end table
+
+The parent of this type descriptor is the one referenced by @code{cctests_descriptor_failure_ptr},
+@ref{conditions failure, Signalling test failure}.
+@end deftp
+
+
+@deftp {Struct Typedef} cctests_condition_expected_failure_t
+Type of data structure representing the exceptional--condition object.
+@end deftp
+
+
+@deftypevr {Dynamic Constant} {cctests_descriptor_expected_failure_t const * const} cctests_descriptor_expected_failure_ptr
+Pointer to a statically allocated exceptional condition descriptor.
+@end deftypevr
+
+
+@deftypefun void cctests_condition_init_expected_failure (cctests_condition_expected_failure_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_expected_failure_t}.
+@end deftypefun
+
+
+@deftypefun {cce_condition_t const *} cctests_condition_new_expected_failure (cce_destination_t @var{L})
+Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
+an exception by performing a non--local exit to @var{L}.
+@end deftypefun
+
+
+@deftypefun bool cctests_condition_is_expected_failure (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_expected_failure_t}; otherwise
+return @cfalse{}.
+@end deftypefun
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_expected_failure_t} we can copy the code in the
+files:
+
+@example
+condition-expected-failure-subtype.c
+condition-expected-failure-subtype-headear.h
+condition-expected-failure-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_expected_failure_subtype_t}.
 
 @c page
 @node conditions assertion

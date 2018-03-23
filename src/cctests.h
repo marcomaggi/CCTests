@@ -110,6 +110,7 @@ CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_base_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_success_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_skipped_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_failure_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_expected_failure_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_assertion_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_descriptor_unreachable_t);
 
@@ -131,6 +132,7 @@ CCTESTS_STRUCT_TYPEDEF(cctests_condition_base_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_success_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_skipped_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_failure_t);
+CCTESTS_STRUCT_TYPEDEF(cctests_condition_expected_failure_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_assertion_t);
 CCTESTS_STRUCT_TYPEDEF(cctests_condition_unreachable_t);
 
@@ -290,6 +292,38 @@ static inline bool
 cctests_condition_is_failure (cce_condition_t const * C)
 {
   return cce_is_condition(C, &(cctests_descriptor_failure_ptr->descriptor));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Condition objects: test expected_failure.
+ ** ----------------------------------------------------------------- */
+
+struct cctests_descriptor_expected_failure_t {
+  cce_descriptor_t	descriptor;
+};
+
+struct cctests_condition_expected_failure_t {
+  cctests_condition_failure_t	failure;
+};
+
+cctests_decl cctests_descriptor_expected_failure_t const * const cctests_descriptor_expected_failure_ptr;
+
+__attribute__((__nonnull__(1),__always_inline__))
+static inline void
+cctests_condition_init_expected_failure (cctests_condition_expected_failure_t * C)
+{
+  cctests_condition_init_failure(&(C->failure));
+}
+
+cctests_decl cce_condition_t const * cctests_condition_new_expected_failure (void)
+  __attribute__((__const__,__pure__,__returns_nonnull__));
+
+__attribute__((__pure__,__nonnull__(1),__always_inline__))
+static inline bool
+cctests_condition_is_expected_failure (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_expected_failure_ptr->descriptor));
 }
 
 
