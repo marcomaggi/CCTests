@@ -335,10 +335,7 @@ cctests_condition_static_message_assertion_expected_value (cce_condition_t const
 void
 cctests_condition_print_assertion_expected_value_fun (cce_condition_t const * C)
 {
-  CCTESTS_PC(cctests_condition_assertion_t, K, C);
-
-  fprintf(cctests_log_stream, "CCTests: \033[35;1massertion failure\033[0m: %s: %s: line %d\n\tcall:     %s\n",
-	  K->filename, K->funcname, K->linenum, K->expr);
+  cctests_condition_print_assertion_fun(C);
 }
 
 /* ------------------------------------------------------------------ */
@@ -396,12 +393,7 @@ cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
   void									\
   cctests_condition_print_assertion_expected_ ## STEM ## _fun (cce_condition_t const * C) \
   {									\
-    {									\
-      CCTESTS_PC(cctests_condition_assertion_t, K, C);			\
-									\
-      fprintf(cctests_log_stream, "CCTests: \033[35;1massertion failure\033[0m: %s: %s: line %d\n\tcall:     %s\n", \
-	      K->filename, K->funcname, K->linenum, K->expr);		\
-    }									\
+    cctests_condition_print_assertion_fun(C);				\
     {									\
       CCTESTS_PC(cctests_condition_assertion_expected_ ## STEM ## _t, K, C); \
 									\
@@ -526,12 +518,7 @@ cctests_condition_static_message_assertion_expected_asciiz (cce_condition_t cons
 void
 cctests_condition_print_assertion_expected_asciiz_fun (cce_condition_t const * C)
 {
-  {
-    CCTESTS_PC(cctests_condition_assertion_t, K, C);
-
-    fprintf(cctests_log_stream, "CCTests: %s: %s: line %d: assertion failure\n\tcall:     %s\n",
-	    K->filename, K->funcname, K->linenum, K->expr);
-  }
+  cctests_condition_print_assertion_fun(C);
   {
     CCTESTS_PC(cctests_condition_assertion_expected_asciiz_t, K, C);
 
@@ -641,12 +628,7 @@ cctests_condition_static_message_assertion_expected_ascii (cce_condition_t const
 void
 cctests_condition_print_assertion_expected_ascii_fun (cce_condition_t const * C)
 {
-  {
-    CCTESTS_PC(cctests_condition_assertion_t, K, C);
-
-    fprintf(cctests_log_stream, "CCTests: %s: %s: line %d: assertion failure\n\tcall:     %s\n",
-	    K->filename, K->funcname, K->linenum, K->expr);
-  }
+  cctests_condition_print_assertion_fun(C);
   {
     CCTESTS_PC(cctests_condition_assertion_expected_ascii_t, K, C);
     size_t	expected_len = strlen(K->expected);
