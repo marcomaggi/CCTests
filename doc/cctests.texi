@@ -490,6 +490,7 @@ test_1_1 (cce_destination_t upper_L)
 @menu
 * assertions generic::          Generic assertions.
 * assertions strings::          Expecting strings.
+* assertions equality::         Expecting immediate values.
 @end menu
 
 @c page
@@ -561,8 +562,8 @@ test_1_5 (cce_destination_t upper_L)
 @deftypefn {Preprocessor Macro} void cctests_assert_asciiz (cce_destination_t @var{L}, char const * @var{expected}, char const * @var{result})
 Assert that the @asciiz{} string @var{expected} equals the @asciiz{} string @var{result}; the
 comparison is performed with the standard function @cfunc{strcmp}.  If the strings are equal: just
-return.  Otherwise raise an exception of type @objtype{cctests_condition_assertion_t} by performing
-a non--local exit to @var{L}.
+return.  Otherwise raise an exception of type
+@objtype{cctests_condition_assertion_expected_asciiz_t} by performing a non--local exit to @var{L}.
 @end deftypefn
 
 
@@ -570,8 +571,8 @@ a non--local exit to @var{L}.
 Assert that the first @var{result_len} octets in the @ascii{} string @var{expected} equal the first
 @var{result_len} octets in the @ascii{} string @var{result}; the comparison is performed with the
 standard function @cfunc{strncmp}.  If the strings are equal: just return.  Otherwise raise an
-exception of type @objtype{cctests_condition_assertion_t} by performing a non--local exit to
-@var{L}.
+exception of type @objtype{cctests_condition_assertion_expected_ascii_t} by performing a non--local
+exit to @var{L}.
 @end deftypefn
 
 
@@ -584,6 +585,52 @@ test_1_1 (cce_destination_t L)
   cctests_assert_asciiz(L, "hello", "ciao");
 @}
 @end example
+
+@c page
+@node assertions equality
+@section Expecting immediate values
+
+
+@menu
+* assertions equality chars::   Expecting characters.
+* assertions equality shorts::  Expecting short integers.
+@end menu
+
+@c page
+@node assertions equality chars
+@subsection Expecting characters
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_char (cce_destination_t @var{L}, signed char @var{expected}, signed char @var{result})
+Assert that @var{expected} equals.  If the values are equal: just return.  Otherwise raise an
+exception of type @objtype{cctests_condition_assertion_expected_char_t} by performing a non--local
+exit to @var{L}.
+@end deftypefn
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_uchar (cce_destination_t @var{L}, unsigned char @var{expected}, unsigned char @var{result})
+Assert that @var{expected} equals.  If the values are equal: just return.  Otherwise raise an
+exception of type @objtype{cctests_condition_assertion_expected_uchar_t} by performing a non--local
+exit to @var{L}.
+@end deftypefn
+
+@c page
+@node assertions equality shorts
+@subsection Expecting short integers
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_short (cce_destination_t @var{L}, signed short @var{expected}, signed short @var{result})
+Assert that @var{expected} equals.  If the values are equal: just return.  Otherwise raise an
+exception of type @objtype{cctests_condition_assertion_expected_short_t} by performing a non--local
+exit to @var{L}.
+@end deftypefn
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_ushort (cce_destination_t @var{L}, unsigned short @var{expected}, unsigned short @var{result})
+Assert that @var{expected} equals.  If the values are equal: just return.  Otherwise raise an
+exception of type @objtype{cctests_condition_assertion_expected_ushort_t} by performing a
+non--local exit to @var{L}.
+@end deftypefn
 
 @c page
 @node process

@@ -95,20 +95,30 @@ test_3_2 (cce_destination_t L)
 
 /* ------------------------------------------------------------------ */
 
-DECLARE_IMMEDIATE_TEST_SUCC(test_4_1_1_1, cctests_assert_equal_char_signed,   'A')
-DECLARE_IMMEDIATE_TEST_FAIL(test_4_1_1_2, cctests_assert_equal_char_signed,   'A', 'B', false)
-DECLARE_IMMEDIATE_TEST_SUCC(test_4_1_2_1, cctests_assert_equal_char_unsigned, 'A')
-DECLARE_IMMEDIATE_TEST_FAIL(test_4_1_2_2, cctests_assert_equal_char_unsigned, 'A', 'B', false)
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_1_1_1, cctests_assert_equal_char,  'A')
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_1_1_2, cctests_assert_equal_char,  'A', 'B', false)
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_1_2_1, cctests_assert_equal_uchar, 'A')
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_1_2_2, cctests_assert_equal_uchar, 'A', 'B', false)
 
-DECLARE_IMMEDIATE_TEST_SUCC(test_4_2_1_1, cctests_assert_equal_int_signed,   123)
-DECLARE_IMMEDIATE_TEST_FAIL(test_4_2_1_2, cctests_assert_equal_int_signed,   123, 456, false)
-DECLARE_IMMEDIATE_TEST_SUCC(test_4_2_2_1, cctests_assert_equal_int_unsigned, 123)
-DECLARE_IMMEDIATE_TEST_FAIL(test_4_2_2_2, cctests_assert_equal_int_unsigned, 123, 456, false)
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_2_1_1, cctests_assert_equal_int,  123)
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_2_1_2, cctests_assert_equal_int,  123, 456, false)
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_2_2_1, cctests_assert_equal_uint, 123)
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_2_2_2, cctests_assert_equal_uint, 123, 456, false)
 
-DECLARE_IMMEDIATE_TEST_SUCC(test_4_3_1_1, cctests_assert_equal_long_signed,   (CCTESTS_LONG_MAX - 123))
-DECLARE_IMMEDIATE_TEST_FAIL(test_4_3_1_2, cctests_assert_equal_long_signed,   (CCTESTS_LONG_MAX - 123), (CCTESTS_LONG_MAX - 456), false)
-DECLARE_IMMEDIATE_TEST_SUCC(test_4_3_2_1, cctests_assert_equal_long_unsigned, (CCTESTS_LONG_MAX - 123))
-DECLARE_IMMEDIATE_TEST_FAIL(test_4_3_2_2, cctests_assert_equal_long_unsigned, (CCTESTS_LONG_MAX - 123), (CCTESTS_LONG_MAX - 456), false)
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_14_1_1, cctests_assert_equal_short,  123)
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_14_1_2, cctests_assert_equal_short,  123, 456, false)
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_14_2_1, cctests_assert_equal_ushort, 123)
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_14_2_2, cctests_assert_equal_ushort, 123, 456, false)
+
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_3_1_1, cctests_assert_equal_long,  (CCTESTS_LONG_MAX - 123))
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_3_1_2, cctests_assert_equal_long,  (CCTESTS_LONG_MAX - 123), (CCTESTS_LONG_MAX - 456), false)
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_3_2_1, cctests_assert_equal_ulong, (CCTESTS_ULONG_MAX - 123))
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_3_2_2, cctests_assert_equal_ulong, (CCTESTS_ULONG_MAX - 123), (CCTESTS_ULONG_MAX - 456), false)
+
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_15_1_1, cctests_assert_equal_llong,  (CCTESTS_LLONG_MAX - 123))
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_15_1_2, cctests_assert_equal_llong,  (CCTESTS_LLONG_MAX - 123), (CCTESTS_LLONG_MAX - 456), false)
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_15_2_1, cctests_assert_equal_ullong, (CCTESTS_ULLONG_MAX - 123))
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_15_2_2, cctests_assert_equal_ullong, (CCTESTS_ULLONG_MAX - 123), (CCTESTS_ULLONG_MAX - 456), false)
 
 /* ------------------------------------------------------------------ */
 
@@ -263,6 +273,16 @@ main (void)
       cctests_run(test_4_13_1_2);
       cctests_run(test_4_13_2_1);
       cctests_run(test_4_13_2_2);
+
+      cctests_run(test_4_14_1_1);
+      cctests_run(test_4_14_1_2);
+      cctests_run(test_4_14_2_1);
+      cctests_run(test_4_14_2_2);
+
+      cctests_run(test_4_15_1_1);
+      cctests_run(test_4_15_1_2);
+      cctests_run(test_4_15_2_1);
+      cctests_run(test_4_15_2_2);
     }
     cctests_end_group();
   }

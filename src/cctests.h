@@ -493,27 +493,33 @@ cctests_decl bool cctests_condition_is_assertion_expected_value (cce_condition_t
 
 /* ------------------------------------------------------------------ */
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(char_signed,	signed char)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(char_unsigned,	unsigned char)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(char,	signed char)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uchar,	unsigned char)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int_signed,	signed int)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int_unsigned,	unsigned int)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int,	signed int)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint,	unsigned int)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(long_signed,	signed long)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(long_unsigned,	unsigned long)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(short,	signed short)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ushort,	unsigned short)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int8,		int8_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int16,		int16_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int32,		int32_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int64,		int64_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(long,	signed long)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ulong,	unsigned long)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint8,		uint8_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint16,		uint16_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint32,		uint32_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,		uint64_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(llong,	signed long long)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ullong,	unsigned long long)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(float,		float)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(double,		double)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int8,	int8_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int16,	int16_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int32,	int32_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int64,	int64_t)
+
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint8,	uint8_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint16,	uint16_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint32,	uint32_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,	uint64_t)
+
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(float,	float)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(double,	double)
 
 
 /** --------------------------------------------------------------------
@@ -1001,69 +1007,113 @@ cctests_decl void cctests_p_assert_ascii (cce_destination_t L, char const * expe
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_char_signed (cce_destination_t L, signed char expected, signed char result,
-						      char const * expr,
-						      char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_equal_char (cce_destination_t L, signed char expected, signed char result,
+					       char const * expr,
+					       char const * filename, char const * funcname, int linenum)
   __attribute__((__nonnull__(1,4,5,6)));
 
-cctests_decl void cctests_p_assert_equal_char_unsigned (cce_destination_t L, unsigned char expected, unsigned char result,
-							char const * expr,
-							char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_equal_uchar (cce_destination_t L, unsigned char expected, unsigned char result,
+						char const * expr,
+						char const * filename, char const * funcname, int linenum)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_char_signed(L,EXPECTED,RESULT)		\
-  cctests_p_assert_equal_char_signed(L, EXPECTED, RESULT,		\
-				     "cctests_assert_equal_char_signed(" #L ", " #EXPECTED ", " #RESULT ")", \
-				     __FILE__, __func__, __LINE__)
+#define cctests_assert_equal_char(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_char(L, EXPECTED, RESULT,			\
+			      "cctests_assert_equal_char(" #L ", " #EXPECTED ", " #RESULT ")", \
+			      __FILE__, __func__, __LINE__)
 
-#define cctests_assert_equal_char_unsigned(L,EXPECTED,RESULT)		\
-  cctests_p_assert_equal_char_unsigned(L, EXPECTED, RESULT,		\
-				       "cctests_assert_equal_char_unsigned(" #L ", " #EXPECTED ", " #RESULT ")", \
-				       __FILE__, __func__, __LINE__)
+#define cctests_assert_equal_uchar(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_uchar(L, EXPECTED, RESULT,			\
+			       "cctests_assert_equal_uchar(" #L ", " #EXPECTED ", " #RESULT ")", \
+			       __FILE__, __func__, __LINE__)
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_int_signed (cce_destination_t L, int expected, int result,
-						     char const * expr,
-						     char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_equal_short (cce_destination_t L, short expected, short result,
+						char const * expr,
+						char const * filename, char const * funcname, int linenum)
+__attribute__((__nonnull__(1,4,5,6)));
+
+cctests_decl void cctests_p_assert_equal_ushort (cce_destination_t L, unsigned short expected, unsigned short result,
+						 char const * expr,
+						 char const * filename, char const * funcname, int linenum)
   __attribute__((__nonnull__(1,4,5,6)));
 
-cctests_decl void cctests_p_assert_equal_int_unsigned (cce_destination_t L, unsigned int expected, unsigned int result,
-						       char const * expr,
-						       char const * filename, char const * funcname, int linenum)
-  __attribute__((__nonnull__(1,4,5,6)));
+#define cctests_assert_equal_short(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_short(L, EXPECTED, RESULT,			\
+			       "cctests_assert_equal_short(" #L ", " #EXPECTED ", " #RESULT ")", \
+			       __FILE__, __func__, __LINE__)
 
-#define cctests_assert_equal_int_signed(L,EXPECTED,RESULT)		\
-  cctests_p_assert_equal_int_signed(L, EXPECTED, RESULT,		\
-				    "cctests_assert_equal_int_signed(" #L ", " #EXPECTED ", " #RESULT ")", \
-				    __FILE__, __func__, __LINE__)
-
-#define cctests_assert_equal_int_unsigned(L,EXPECTED,RESULT)		\
-  cctests_p_assert_equal_int_unsigned(L, EXPECTED, RESULT,		\
-				      "cctests_assert_equal_int_unsigned(" #L ", " #EXPECTED ", " #RESULT ")", \
-				      __FILE__, __func__, __LINE__)
+#define cctests_assert_equal_ushort(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_ushort(L, EXPECTED, RESULT,			\
+				"cctests_assert_equal_ushort(" #L ", " #EXPECTED ", " #RESULT ")", \
+				__FILE__, __func__, __LINE__)
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_long_signed (cce_destination_t L, long expected, long result,
-						      char const * expr,
-						      char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_equal_int (cce_destination_t L, int expected, int result,
+					      char const * expr,
+					      char const * filename, char const * funcname, int linenum)
+__attribute__((__nonnull__(1,4,5,6)));
+
+cctests_decl void cctests_p_assert_equal_uint (cce_destination_t L, unsigned int expected, unsigned int result,
+					       char const * expr,
+					       char const * filename, char const * funcname, int linenum)
   __attribute__((__nonnull__(1,4,5,6)));
 
-cctests_decl void cctests_p_assert_equal_long_unsigned (cce_destination_t L, unsigned long expected, unsigned long result,
-							char const * expr,
-							char const * filename, char const * funcname, int linenum)
+#define cctests_assert_equal_int(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_int(L, EXPECTED, RESULT,			\
+			     "cctests_assert_equal_int(" #L ", " #EXPECTED ", " #RESULT ")", \
+			     __FILE__, __func__, __LINE__)
+
+#define cctests_assert_equal_uint(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_uint(L, EXPECTED, RESULT,			\
+			      "cctests_assert_equal_uint(" #L ", " #EXPECTED ", " #RESULT ")", \
+			      __FILE__, __func__, __LINE__)
+
+/* ------------------------------------------------------------------ */
+
+cctests_decl void cctests_p_assert_equal_long (cce_destination_t L, long expected, long result,
+					       char const * expr,
+					       char const * filename, char const * funcname, int linenum)
+__attribute__((__nonnull__(1,4,5,6)));
+
+cctests_decl void cctests_p_assert_equal_ulong (cce_destination_t L, unsigned long expected, unsigned long result,
+						char const * expr,
+						char const * filename, char const * funcname, int linenum)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_long_signed(L,EXPECTED,RESULT)		\
-  cctests_p_assert_equal_long_signed(L, EXPECTED, RESULT,		\
-				     "cctests_assert_equal_long_signed(" #L ", " #EXPECTED ", " #RESULT ")", \
-				     __FILE__, __func__, __LINE__)
+#define cctests_assert_equal_long(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_long(L, EXPECTED, RESULT,			\
+			      "cctests_assert_equal_long(" #L ", " #EXPECTED ", " #RESULT ")", \
+			      __FILE__, __func__, __LINE__)
 
-#define cctests_assert_equal_long_unsigned(L,EXPECTED,RESULT)		\
-  cctests_p_assert_equal_long_unsigned(L, EXPECTED, RESULT,		\
-				       "cctests_assert_equal_long_unsigned(" #L ", " #EXPECTED ", " #RESULT ")", \
-				       __FILE__, __func__, __LINE__)
+#define cctests_assert_equal_ulong(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_ulong(L, EXPECTED, RESULT,			\
+			       "cctests_assert_equal_ulong(" #L ", " #EXPECTED ", " #RESULT ")", \
+			       __FILE__, __func__, __LINE__)
+
+/* ------------------------------------------------------------------ */
+
+cctests_decl void cctests_p_assert_equal_llong (cce_destination_t L, long long expected, long long result,
+					       char const * expr,
+					       char const * filename, char const * funcname, int linenum)
+__attribute__((__nonnull__(1,4,5,6)));
+
+cctests_decl void cctests_p_assert_equal_ullong (cce_destination_t L, unsigned long long expected, unsigned long long result,
+						char const * expr,
+						char const * filename, char const * funcname, int linenum)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+#define cctests_assert_equal_llong(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_llong(L, EXPECTED, RESULT,			\
+			      "cctests_assert_equal_llong(" #L ", " #EXPECTED ", " #RESULT ")", \
+			      __FILE__, __func__, __LINE__)
+
+#define cctests_assert_equal_ullong(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_ullong(L, EXPECTED, RESULT,			\
+			       "cctests_assert_equal_ullong(" #L ", " #EXPECTED ", " #RESULT ")", \
+			       __FILE__, __func__, __LINE__)
 
 /* ------------------------------------------------------------------ */
 
@@ -1092,7 +1142,7 @@ cctests_decl void cctests_p_assert_equal_uint8 (cce_destination_t L, uint8_t exp
 cctests_decl void cctests_p_assert_equal_int16 (cce_destination_t L, int16_t expected, int16_t result,
 						char const * expr,
 						char const * filename, char const * funcname, int linenum)
-  __attribute__((__nonnull__(1,4,5,6)));
+__attribute__((__nonnull__(1,4,5,6)));
 
 cctests_decl void cctests_p_assert_equal_uint16 (cce_destination_t L, uint16_t expected, uint16_t result,
 						 char const * expr,
@@ -1114,7 +1164,7 @@ cctests_decl void cctests_p_assert_equal_uint16 (cce_destination_t L, uint16_t e
 cctests_decl void cctests_p_assert_equal_int32 (cce_destination_t L, int32_t expected, int32_t result,
 						char const * expr,
 						char const * filename, char const * funcname, int linenum)
-  __attribute__((__nonnull__(1,4,5,6)));
+__attribute__((__nonnull__(1,4,5,6)));
 
 cctests_decl void cctests_p_assert_equal_uint32 (cce_destination_t L, uint32_t expected, uint32_t result,
 						 char const * expr,
@@ -1136,7 +1186,7 @@ cctests_decl void cctests_p_assert_equal_uint32 (cce_destination_t L, uint32_t e
 cctests_decl void cctests_p_assert_equal_int64 (cce_destination_t L, int64_t expected, int64_t result,
 						char const * expr,
 						char const * filename, char const * funcname, int linenum)
-  __attribute__((__nonnull__(1,4,5,6)));
+__attribute__((__nonnull__(1,4,5,6)));
 
 cctests_decl void cctests_p_assert_equal_uint64 (cce_destination_t L, uint64_t expected, uint64_t result,
 						 char const * expr,
@@ -1158,7 +1208,7 @@ cctests_decl void cctests_p_assert_equal_uint64 (cce_destination_t L, uint64_t e
 cctests_decl void cctests_p_assert_equal_float (cce_destination_t L, float expected, float result,
 						char const * expr,
 						char const * filename, char const * funcname, int linenum)
-  __attribute__((__nonnull__(1,4,5,6)));
+__attribute__((__nonnull__(1,4,5,6)));
 
 cctests_decl void cctests_p_assert_equal_double (cce_destination_t L, double expected, double result,
 						 char const * expr,
@@ -1174,36 +1224,6 @@ cctests_decl void cctests_p_assert_equal_double (cce_destination_t L, double exp
   cctests_p_assert_equal_double(L, EXPECTED, RESULT,			\
 				"cctests_assert_equal_double(" #L ", " #EXPECTED ", " #RESULT ")", \
 				__FILE__, __func__, __LINE__)
-
-/* ------------------------------------------------------------------ */
-
-#define cctests_assert_equal(LOCATION,EXPECTED,RESULT)			\
-  _Generic((EXPECTED),							\
-	   signed char:		cctests_p_assert_equal_char_signed,	\
-	   unsigned char:	cctests_p_assert_equal_char_unsigned,	\
-									\
-	   signed int:		cctests_p_assert_equal_int_signed,	\
-	   unsigned int:	cctests_p_assert_equal_int_unsigned,	\
-									\
-	   signed long:		cctests_p_assert_equal_long_signed,	\
-	   unsigned long:	cctests_p_assert_equal_long_unsigned,	\
-									\
-	   int8_t:		cctests_p_assert_equal_int8,		\
-	   uint8_t:		cctests_p_assert_equal_uint8,		\
-									\
-	   int16_t:		cctests_p_assert_equal_int16,		\
-	   uint16_t:		cctests_p_assert_equal_uint16,		\
-									\
-	   int32_t:		cctests_p_assert_equal_int32,		\
-	   uint32_t:		cctests_p_assert_equal_uint32,		\
-									\
-	   int64_t:		cctests_p_assert_equal_int64,		\
-	   uint64_t:		cctests_p_assert_equal_uint64,		\
-									\
-	   float:		cctests_p_assert_equal_float,		\
-	   double:		cctests_p_assert_equal_double)(L, EXPECTED, RESULT,	\
-							       "cctests_assert_equal(" #LOCATION ", " #EXPECTED ", " #RESULT ")", \
-							       __FILE__, __func__, __LINE__)
 
 
 /** --------------------------------------------------------------------
