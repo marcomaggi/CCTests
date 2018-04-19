@@ -136,6 +136,7 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 * conditions::                  Condition object types.
 * system::                      System interface.
 * utils::                       Utility definitions.
+* constants::                   Useful constants.
 * automake::                    Interfacing with @gnu{} Automake.
 
 Appendices
@@ -2366,6 +2367,248 @@ __attribute__((__unused__))
 @noindent
 otherwise the expansion is the empty string.
 @end defmac
+
+@c page
+@node constants
+@chapter Useful constants.
+
+
+@menu
+* constants limits::            Limits of known integer types.
+@end menu
+
+@c page
+@node constants limits
+@section Limits of known integer types
+
+
+@menu
+* constants limits chars::      Character limits.
+* constants limits shorts::     Short integers limits.
+* constants limits ints::       Integers limits.
+* constants limits long::       Long limits.
+* constants limits llong::      Long long limits.
+* constants limits int8::       8-bit integers limits.
+* constants limits int16::      16-bit integers limits.
+* constants limits int32::      32-bit integers limits.
+* constants limits int64::      64-bit integers limits.
+@end menu
+
+@c page
+@node constants limits chars
+@subsection Character limits
+
+
+@deftypevr Constant {unsigned char const} CCTESTS_UNSIGNED_CHAR_MAX
+Maximum value representable by the type @objtype{unsigned char}.
+@end deftypevr
+
+
+@deftypevr Constant {unsigned char const} CCTESTS_UNSIGNED_CHAR_MIN
+Minimum value representable by the type @objtype{unsigned char}.
+@end deftypevr
+
+
+@deftypevr Constant {signed char const} CCTESTS_SIGNED_CHAR_MAX
+Maximum value representable by the type @objtype{signed char}.
+@end deftypevr
+
+
+@deftypevr Constant {signed char const} CCTESTS_SIGNED_CHAR_MIN
+Minimum value representable by the type @objtype{signed char}.
+@end deftypevr
+
+@c page
+@node constants limits shorts
+@subsection Short integers limits
+
+
+@deftypevr Constant {unsigned short const} CCTESTS_UNSIGNED_SHORT_MAX
+Maximum value representable by the type @objtype{unsigned short}.
+@end deftypevr
+
+
+@deftypevr Constant {unsigned short const} CCTESTS_UNSIGNED_SHORT_MIN
+Minimum value representable by the type @objtype{unsigned short}.
+@end deftypevr
+
+
+@deftypevr Constant {signed short const} CCTESTS_SIGNED_SHORT_MAX
+Maximum value representable by the type @objtype{signed short}.
+@end deftypevr
+
+
+@deftypevr Constant {signed short const} CCTESTS_SIGNED_SHORT_MIN
+Minimum value representable by the type @objtype{signed short}.
+@end deftypevr
+
+@c page
+@node constants limits ints
+@subsection Integers limits
+
+
+@deftypevr Constant {unsigned int const} CCTESTS_UNSIGNED_INT_MAX
+Maximum value representable by the type @objtype{unsigned int}.
+@end deftypevr
+
+
+@deftypevr Constant {unsigned int const} CCTESTS_UNSIGNED_INT_MIN
+Minimum value representable by the type @objtype{unsigned int}.
+@end deftypevr
+
+
+@deftypevr Constant {signed int const} CCTESTS_SIGNED_INT_MAX
+Maximum value representable by the type @objtype{signed int}.
+@end deftypevr
+
+
+@deftypevr Constant {signed int const} CCTESTS_SIGNED_INT_MIN
+Minimum value representable by the type @objtype{signed int}.
+@end deftypevr
+
+@c page
+@node constants limits long
+@subsection Long limits
+
+
+@deftypevr Constant {unsigned long const} CCTESTS_UNSIGNED_LONG_MAX
+Maximum value representable by the type @objtype{unsigned long}.
+@end deftypevr
+
+
+@deftypevr Constant {unsigned long const} CCTESTS_UNSIGNED_LONG_MIN
+Minimum value representable by the type @objtype{unsigned long}.
+@end deftypevr
+
+
+@deftypevr Constant {signed long const} CCTESTS_SIGNED_LONG_MAX
+Maximum value representable by the type @objtype{signed long}.
+@end deftypevr
+
+
+@deftypevr Constant {signed long const} CCTESTS_SIGNED_LONG_MIN
+Minimum value representable by the type @objtype{signed long}.
+@end deftypevr
+
+@c page
+@node constants limits llong
+@subsection Long long limits
+
+
+@deftypevr Constant {unsigned long long const} CCTESTS_UNSIGNED_LONG_LONG_MAX
+Maximum value representable by the type @objtype{unsigned long long}.
+@end deftypevr
+
+
+@deftypevr Constant {unsigned long long const} CCTESTS_UNSIGNED_LONG_LONG_MIN
+Minimum value representable by the type @objtype{unsigned long long}.
+@end deftypevr
+
+
+@deftypevr Constant {signed long long const} CCTESTS_SIGNED_LONG_LONG_MAX
+Maximum value representable by the type @objtype{signed long long}.
+@end deftypevr
+
+
+@deftypevr Constant {signed long long const} CCTESTS_SIGNED_LONG_LONG_MIN
+Minimum value representable by the type @objtype{signed long long}.
+@end deftypevr
+
+@c page
+@node constants limits int8
+@subsection 8-bit integers limits
+
+
+@deftypevr Constant {uint8_t const} CCTESTS_UINT8_MAX
+Maximum value representable by the type @objtype{uint8_t}.
+@end deftypevr
+
+
+@deftypevr Constant {uint8_t const} CCTESTS_UINT8_MIN
+Minimum value representable by the type @objtype{uint8_t}.
+@end deftypevr
+
+
+@deftypevr Constant {int8_t const} CCTESTS_INT8_MAX
+Maximum value representable by the type @objtype{int8_t}.
+@end deftypevr
+
+
+@deftypevr Constant {int8_t const} CCTESTS_INT8_MIN
+Minimum value representable by the type @objtype{int8_t}.
+@end deftypevr
+
+@c page
+@node constants limits int16
+@subsection 16-bit integers limits
+
+
+@deftypevr Constant {uint16_t const} CCTESTS_UINT16_MAX
+Maximum value representable by the type @objtype{uint16_t}.
+@end deftypevr
+
+
+@deftypevr Constant {uint16_t const} CCTESTS_UINT16_MIN
+Minimum value representable by the type @objtype{uint16_t}.
+@end deftypevr
+
+
+@deftypevr Constant {int16_t const} CCTESTS_INT16_MAX
+Maximum value representable by the type @objtype{int16_t}.
+@end deftypevr
+
+
+@deftypevr Constant {int16_t const} CCTESTS_INT16_MIN
+Minimum value representable by the type @objtype{int16_t}.
+@end deftypevr
+
+@c page
+@node constants limits int32
+@subsection 32-bit integers limits
+
+
+@deftypevr Constant {uint32_t const} CCTESTS_UINT32_MAX
+Maximum value representable by the type @objtype{uint32_t}.
+@end deftypevr
+
+
+@deftypevr Constant {uint32_t const} CCTESTS_UINT32_MIN
+Minimum value representable by the type @objtype{uint32_t}.
+@end deftypevr
+
+
+@deftypevr Constant {int32_t const} CCTESTS_INT32_MAX
+Maximum value representable by the type @objtype{int32_t}.
+@end deftypevr
+
+
+@deftypevr Constant {int32_t const} CCTESTS_INT32_MIN
+Minimum value representable by the type @objtype{int32_t}.
+@end deftypevr
+
+@c page
+@node constants limits int64
+@subsection 64-bit integers limits
+
+
+@deftypevr Constant {uint64_t const} CCTESTS_UINT64_MAX
+Maximum value representable by the type @objtype{uint64_t}.
+@end deftypevr
+
+
+@deftypevr Constant {uint64_t const} CCTESTS_UINT64_MIN
+Minimum value representable by the type @objtype{uint64_t}.
+@end deftypevr
+
+
+@deftypevr Constant {int64_t const} CCTESTS_INT64_MAX
+Maximum value representable by the type @objtype{int64_t}.
+@end deftypevr
+
+
+@deftypevr Constant {int64_t const} CCTESTS_INT64_MIN
+Minimum value representable by the type @objtype{int64_t}.
+@end deftypevr
 
 @c page
 @node automake

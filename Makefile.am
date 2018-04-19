@@ -41,6 +41,7 @@ libcctests_la_SOURCES	= \
 	src/cctests.h				\
 	src/cctests-internals.h			\
 	src/cctests-version.c			\
+	src/cctests-constants.c			\
 	src/cctests-conditions.c		\
 	src/cctests-exception-handlers.c	\
 	src/cctests-system.c			\
@@ -71,10 +72,12 @@ check_PROGRAMS	= \
 	tests/condition-regex-error-subtyping			\
 	tests/condition-regex-compilation-error-subtyping	\
 	tests/driver						\
+	tests/assertions					\
 	tests/processes						\
 	tests/expected-failure
 
 TESTS				= $(check_PROGRAMS)
+XFAIL_TESTS			= tests/assertions
 
 cctests_tests_cppflags		= -I$(srcdir)/src -I$(srcdir)/tests $(CCEXCEPTIONS_CFLAGS)
 cctests_tests_ldadd		= $(CCEXCEPTIONS_LIBS) libcctests.la
@@ -214,6 +217,11 @@ tests_driver_CPPFLAGS		= $(cctests_tests_cppflags)
 tests_driver_LDADD		= $(cctests_tests_ldadd)
 
 tests/driver.$(OBJEXT):		tests/test-utils.h
+
+## --------------------------------------------------------------------
+
+tests_assertions_CPPFLAGS	= $(cctests_tests_cppflags)
+tests_assertions_LDADD		= $(cctests_tests_ldadd)
 
 ## --------------------------------------------------------------------
 

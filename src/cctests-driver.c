@@ -245,6 +245,7 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
     cce_location_t	L[1];
 
     if (cce_location(L)) {
+      /* Handle an exception raised by the body below. */
       if (cctests_condition_is_skipped(cce_condition(L))) {
 	cctests_successful_func = true;
 	if (cctests_log_stream_isatty()) {
@@ -291,6 +292,14 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 		    "unreachable code was executed in file=%s, function=%s, line number=%u\n",
 		    test_func_name, C->filename, C->funcname, C->linenum);
 	  }
+	}
+      } else if (cctests_condition_is_assertion(cce_condition(L))) {
+	cctests_all_test_passed  = false;
+	cctests_successful_group = false;
+	cctests_successful_func  = false;
+	{
+	  /* CCTESTS_PC(cctests_condition_assertion_t, C, cce_condition(L)); */
+	  cctests_condition_print_assertion(cce_condition(L));
 	}
       } else {
 	cctests_all_test_passed  = false;
