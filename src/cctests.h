@@ -96,30 +96,30 @@ extern "C" {
 #define CCTESTS_PC(POINTER_TYPE, POINTER_NAME, EXPRESSION)	\
   POINTER_TYPE * POINTER_NAME = (POINTER_TYPE *) (EXPRESSION)
 
-cctests_decl unsigned char const	CCTESTS_UNSIGNED_CHAR_MAX;
-cctests_decl unsigned char const	CCTESTS_UNSIGNED_CHAR_MIN;
-cctests_decl signed char const		CCTESTS_SIGNED_CHAR_MAX;
-cctests_decl signed char const		CCTESTS_SIGNED_CHAR_MIN;
+cctests_decl unsigned char const	CCTESTS_UCHAR_MAX;
+cctests_decl unsigned char const	CCTESTS_UCHAR_MIN;
+cctests_decl signed char const		CCTESTS_CHAR_MAX;
+cctests_decl signed char const		CCTESTS_CHAR_MIN;
 
-cctests_decl unsigned short const	CCTESTS_UNSIGNED_SHORT_MAX;
-cctests_decl unsigned short const	CCTESTS_UNSIGNED_SHORT_MIN;
-cctests_decl signed short const		CCTESTS_SIGNED_SHORT_MAX;
-cctests_decl signed short const		CCTESTS_SIGNED_SHORT_MIN;
+cctests_decl unsigned short const	CCTESTS_USHORT_MAX;
+cctests_decl unsigned short const	CCTESTS_USHORT_MIN;
+cctests_decl signed short const		CCTESTS_SHORT_MAX;
+cctests_decl signed short const		CCTESTS_SHORT_MIN;
 
-cctests_decl unsigned int const		CCTESTS_UNSIGNED_INT_MAX;
-cctests_decl unsigned int const		CCTESTS_UNSIGNED_INT_MIN;
-cctests_decl signed int const		CCTESTS_SIGNED_INT_MAX;
-cctests_decl signed int const		CCTESTS_SIGNED_INT_MIN;
+cctests_decl unsigned int const		CCTESTS_UINT_MAX;
+cctests_decl unsigned int const		CCTESTS_UINT_MIN;
+cctests_decl signed int const		CCTESTS_INT_MAX;
+cctests_decl signed int const		CCTESTS_INT_MIN;
 
-cctests_decl unsigned long const	CCTESTS_UNSIGNED_LONG_MAX;
-cctests_decl unsigned long const	CCTESTS_UNSIGNED_LONG_MIN;
-cctests_decl signed long const		CCTESTS_SIGNED_LONG_MAX;
-cctests_decl signed long const		CCTESTS_SIGNED_LONG_MIN;
+cctests_decl unsigned long const	CCTESTS_ULONG_MAX;
+cctests_decl unsigned long const	CCTESTS_ULONG_MIN;
+cctests_decl signed long const		CCTESTS_LONG_MAX;
+cctests_decl signed long const		CCTESTS_LONG_MIN;
 
-cctests_decl unsigned long long const	CCTESTS_UNSIGNED_LONG_LONG_MAX;
-cctests_decl unsigned long long const	CCTESTS_UNSIGNED_LONG_LONG_MIN;
-cctests_decl signed long long const	CCTESTS_SIGNED_LONG_LONG_MAX;
-cctests_decl signed long long const	CCTESTS_SIGNED_LONG_LONG_MIN;
+cctests_decl unsigned long long const	CCTESTS_ULLONG_MAX;
+cctests_decl unsigned long long const	CCTESTS_ULLONG_MIN;
+cctests_decl signed long long const	CCTESTS_LLONG_MAX;
+cctests_decl signed long long const	CCTESTS_LLONG_MIN;
 
 cctests_decl uint8_t const		CCTESTS_UINT8_MAX;
 cctests_decl uint8_t const		CCTESTS_UINT8_MIN;

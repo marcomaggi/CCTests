@@ -105,10 +105,10 @@ DECLARE_IMMEDIATE_TEST_FAIL(test_4_2_1_2, cctests_assert_equal_int_signed,   123
 DECLARE_IMMEDIATE_TEST_SUCC(test_4_2_2_1, cctests_assert_equal_int_unsigned, 123)
 DECLARE_IMMEDIATE_TEST_FAIL(test_4_2_2_2, cctests_assert_equal_int_unsigned, 123, 456, false)
 
-DECLARE_IMMEDIATE_TEST_SUCC(test_4_3_1_1, cctests_assert_equal_long_signed,   (LONG_MAX - 123))
-DECLARE_IMMEDIATE_TEST_FAIL(test_4_3_1_2, cctests_assert_equal_long_signed,   (LONG_MAX - 123), (LONG_MAX - 456), false)
-DECLARE_IMMEDIATE_TEST_SUCC(test_4_3_2_1, cctests_assert_equal_long_unsigned, (LONG_MAX - 123))
-DECLARE_IMMEDIATE_TEST_FAIL(test_4_3_2_2, cctests_assert_equal_long_unsigned, (LONG_MAX - 123), (LONG_MAX - 456), false)
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_3_1_1, cctests_assert_equal_long_signed,   (CCTESTS_LONG_MAX - 123))
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_3_1_2, cctests_assert_equal_long_signed,   (CCTESTS_LONG_MAX - 123), (CCTESTS_LONG_MAX - 456), false)
+DECLARE_IMMEDIATE_TEST_SUCC(test_4_3_2_1, cctests_assert_equal_long_unsigned, (CCTESTS_LONG_MAX - 123))
+DECLARE_IMMEDIATE_TEST_FAIL(test_4_3_2_2, cctests_assert_equal_long_unsigned, (CCTESTS_LONG_MAX - 123), (CCTESTS_LONG_MAX - 456), false)
 
 /* ------------------------------------------------------------------ */
 
