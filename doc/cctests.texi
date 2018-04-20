@@ -1454,12 +1454,16 @@ Initialisation function for the condition object.  This function is meant to be 
 initialisation function of sub--types of @objtype{cctests_condition_assertion_expected_\TYPENAME\_t}.
 If an error occurs building the instance: raise an exception by performing a non--local exit to
 @var{L}.
+
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.
 @end deftypefun
 
 
 @deftypefun void cctests_condition_new_assertion_expected_\TYPENAME\ (cce_destination_t @var{L}, cctests_condition_assertion_expected_\TYPENAME\_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, \TYPE\ @var{expected}, \TYPE\ @var{result})
 Build and return a new exceptional condition object.  If an error occurs building the instance:
 raise an exception by performing a non--local exit to @var{L}.
+
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.
 @end deftypefun
 
 
@@ -1548,12 +1552,16 @@ Pointer to a statically allocated exceptional condition descriptor.
 @deftypefun void cctests_condition_init_assertion (cctests_condition_assertion_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_assertion_t}.
+
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.
 @end deftypefun
 
 
 @deftypefun {cce_condition_t const *} cctests_condition_new_assertion (cce_destination_t @var{L}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
 Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
 an exception by performing a non--local exit to @var{L}.
+
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.
 @end deftypefun
 
 
@@ -1642,6 +1650,9 @@ Pointer to a statically allocated exceptional condition descriptor.
 @deftypefun void cctests_condition_init_assertion_expected_value (cctests_condition_assertion_expected_value_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_assertion_expected_value_t}.
+
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
+strings referenced by @var{expected} and @var{result} are duplicated.
 @end deftypefun
 
 
@@ -1704,10 +1715,12 @@ fields:
 The base value.
 
 @item char * expected
-A copy of the expected value, an @asciiz{} string.
+A copy of the expected value, an @asciiz{} string.  This object is responsible for the memory
+allocation.
 
 @item char * result
-A copy of the resulting value, an @asciiz{} string.
+A copy of the resulting value, an @asciiz{} string.  This object is responsible for the memory
+allocation.
 @end table
 @end deftp
 
@@ -1722,12 +1735,18 @@ Initialisation function for the condition object.  This function is meant to be 
 initialisation function of sub--types of @objtype{cctests_condition_assertion_expected_asciiz_t}.
 If an error occurs building the instance: raise an exception by performing a non--local exit to
 @var{L}.
+
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
+strings referenced by @var{expected} and @var{result} are duplicated.
 @end deftypefun
 
 
 @deftypefun void cctests_condition_new_assertion_expected_asciiz (cce_destination_t @var{L}, cctests_condition_assertion_expected_asciiz_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{expected}, char const * @var{result})
 Build and return a new exceptional condition object.  If an error occurs building the instance:
 raise an exception by performing a non--local exit to @var{L}.
+
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
+strings referenced by @var{expected} and @var{result} are duplicated.
 @end deftypefun
 
 
@@ -1790,10 +1809,12 @@ fields:
 The base value.
 
 @item char * expected
-A copy of the expected value, an @asciiz{} string.
+A copy of the expected value, an @asciiz{} string.  This object is responsible for the memory
+allocation.
 
 @item char * result
-A copy of the resulting value, an @ascii{} string.
+A copy of the resulting value, an @ascii{} string.  This object is responsible for the memory
+allocation.
 
 @item size_t result_len
 The number of characters in the string referenced by @var{result}.
@@ -1811,12 +1832,18 @@ Initialisation function for the condition object.  This function is meant to be 
 initialisation function of sub--types of @objtype{cctests_condition_assertion_expected_ascii_t}.
 If an error occurs building the instance: raise an exception by performing a non--local exit to
 @var{L}.
+
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
+strings referenced by @var{expected} and @var{result} are duplicated.
 @end deftypefun
 
 
 @deftypefun void cctests_condition_new_assertion_expected_ascii (cce_destination_t @var{L}, cctests_condition_assertion_expected_ascii_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{expected}, char const * @var{result}, size_t @var{result_len})
 Build and return a new exceptional condition object.  If an error occurs building the instance:
 raise an exception by performing a non--local exit to @var{L}.
+
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
+strings referenced by @var{expected} and @var{result} are duplicated.
 @end deftypefun
 
 
