@@ -348,7 +348,7 @@ cctests_condition_is_failure (cce_condition_t const * C)
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: test expected_failure.
+ ** Condition objects: test expected failure.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_expected_failure_t {
