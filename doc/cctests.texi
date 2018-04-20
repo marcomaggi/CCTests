@@ -1350,7 +1350,38 @@ condition--object type @objtype{my_condition_expected_failure_subtype_t}.
 * conditions assertion asciiz::    Expected @asciiz{} assertions.
 * conditions assertion ascii::     Expected @ascii{} assertions.
 * conditions assertion chars::     Expected characters assertions.
-* conditions assertion uchars::    Expected unsigned characters assertions.
+* conditions assertion uchars::    Expected unsigned characters
+                                   assertions.
+* conditions assertion shorts::    Expected signed short integers
+                                   assertions.
+* conditions assertion ushorts::   Expected unsigned short integers
+                                   assertions.
+* conditions assertion ints::      Expected signed integers assertions.
+* conditions assertion uints::     Expected unsigned integers assertions.
+* conditions assertion longs::     Expected signed long integers assertions.
+* conditions assertion ulongs::    Expected unsigned long integers assertions.
+* conditions assertion llongs::    Expected signed long long integers
+                                   assertions.
+* conditions assertion ullongs::   Expected unsigned long long integers
+                                   assertions.
+* conditions assertion int8::      Expected signed 8-bit integers assertions.
+* conditions assertion uint8::     Expected unsigned 8-bit integers
+                                   assertions.
+* conditions assertion int16::     Expected signed 16-bit integers
+                                   assertions.
+* conditions assertion uint16::    Expected unsigned 16-bit integers
+                                   assertions.
+* conditions assertion int32::     Expected signed 32-bit integers
+                                   assertions.
+* conditions assertion uint32::    Expected unsigned 32-bit integers
+                                   assertions.
+* conditions assertion int64::     Expected signed 64-bit integers
+                                   assertions.
+* conditions assertion uint64::    Expected unsigned 64-bit integers assertions.
+* conditions assertion float::     Expected single--precision floating point
+                                   assertions.
+* conditions assertion double::    Expected double--precision floating point
+                                   assertions.
 @end menu
 
 @c ------------------------------------------------------------------------
@@ -1801,12 +1832,157 @@ otherwise return @cfalse{}.
 
 @ConditionAssertionExpected{signed char, char, signed character}
 
-@c page
+@c ------------------------------------------------------------------------
+
 @node conditions assertion uchars
 @subsection Expected unsigned characters assertions
 
 
 @ConditionAssertionExpected{unsigned char, uchar, unsigned character}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion shorts
+@subsection Expected signed short integers assertions
+
+
+@ConditionAssertionExpected{signed short int, short, signed short integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion ushorts
+@subsection Expected unsigned short integers assertions
+
+
+@ConditionAssertionExpected{unsigned short int, ushort, unsigned short integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion ints
+@subsection Expected signed integers assertions
+
+
+@ConditionAssertionExpected{signed int, int, signed integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion uints
+@subsection Expected unsigned integers assertions
+
+
+@ConditionAssertionExpected{unsigned int, uint, unsigned integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion longs
+@subsection Expected signed long integers assertions
+
+
+@ConditionAssertionExpected{signed long, long, signed long integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion ulongs
+@subsection Expected unsigned long integers assertions
+
+
+@ConditionAssertionExpected{unsigned long int, ulong, unsigned long integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion llongs
+@subsection Expected signed long long integers assertions
+
+
+@ConditionAssertionExpected{signed long long int, llong, signed long long integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion ullongs
+@subsection Expected unsigned long long integers assertions
+
+
+@ConditionAssertionExpected{unsigned long long int, ullong, unsigned long long integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion int8
+@subsection Expected signed 8-bit integers assertions
+
+
+@ConditionAssertionExpected{int8_t, int8, signed 8-bit integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion uint8
+@subsection Expected unsigned 8-bit integers assertions
+
+
+@ConditionAssertionExpected{uint8_t, uint8, unsigned 8-bit integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion int16
+@subsection Expected signed 16-bit integers assertions
+
+
+@ConditionAssertionExpected{int16_t, int16, signed 16-bit integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion uint16
+@subsection Expected unsigned 16-bit integers assertions
+
+
+@ConditionAssertionExpected{uint16_t, uint16, unsigned 16-bit integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion int32
+@subsection Expected signed 32-bit integers assertions
+
+
+@ConditionAssertionExpected{int32_t, int32, signed 32-bit integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion uint32
+@subsection Expected unsigned 32-bit integers assertions
+
+
+@ConditionAssertionExpected{uint32_t, uint32, unsigned 32-bit integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion int64
+@subsection Expected signed 64-bit integers assertions
+
+
+@ConditionAssertionExpected{int64_t, int64, signed 64-bit integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion uint64
+@subsection Expected unsigned 64-bit integers assertions
+
+
+@ConditionAssertionExpected{uint64_t, uint64, unsigned 64-bit integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion float
+@subsection Expected single--precision floating point assertions
+
+
+@ConditionAssertionExpected{float, float, single--precision floating point}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion double
+@subsection Expected double--precision floating point assertions
+
+
+@ConditionAssertionExpected{double, double, double--precision floating point}
 
 @c page
 @node conditions unreachable
