@@ -7,7 +7,7 @@
 
 
 
-  Copyright (C) 2017 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   This program is  free software: you can redistribute  it and/or modify
   it  under the  terms  of  the GNU  Lesser  General  Public License  as
@@ -44,11 +44,11 @@ cce_handler_malloc_function (cce_condition_t const * C CCE_UNUSED, cce_handler_t
 }
 
 void
-cctests_sys_cleanup_handler_malloc_init (cce_location_t * L, cce_handler_t * H, void * pointer)
+cctests_sys_clean_handler_malloc_init (cce_location_t * L, cce_handler_t * H, void * pointer)
 {
   H->function	= cce_handler_malloc_function;
   H->pointer	= pointer;
-  cce_register_cleanup_handler(L, H);
+  cce_register_clean_handler(L, H);
 }
 
 void

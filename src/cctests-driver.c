@@ -141,10 +141,10 @@ cctests_init (char const * const test_program_name)
       } else {
 	if (test_file_matches_user_selection(L, test_program_name)) {
 	  fprintf(cctests_log_stream, "CCTests: enter test program: %s\n\n", test_program_name);
-	  cce_run_cleanup_handlers(L);
+	  cce_run_clean_handlers(L);
 	} else {
 	  fprintf(cctests_log_stream, "CCTests: skip test program: %s\n", test_program_name);
-	  cce_run_cleanup_handlers(L);
+	  cce_run_clean_handlers(L);
 	  exit(CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_SKIP_TEST);
 	}
       }
@@ -211,7 +211,7 @@ cctests_begin_group (char const * const test_group_name)
       }
       run_tests_in_group	= false;
     }
-    cce_run_cleanup_handlers(L);
+    cce_run_clean_handlers(L);
   }
 }
 
@@ -331,7 +331,7 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	}
       }
     }
-    cce_run_cleanup_handlers(L);
+    cce_run_clean_handlers(L);
   }
 }
 
@@ -383,7 +383,7 @@ acquire_environment_test_file (cce_destination_t upper_L)
     if (0 != rv) {
       cce_raise(L, cctests_condition_new_regex_compilation_error(L, rv));
     }
-    cce_run_cleanup_handlers(L);
+    cce_run_clean_handlers(L);
   }
 }
 
@@ -425,7 +425,7 @@ acquire_environment_test_group (cce_destination_t upper_L)
     if (0 != rv) {
       cce_raise(L, cctests_condition_new_regex_compilation_error(L, rv));
     }
-    cce_run_cleanup_handlers(L);
+    cce_run_clean_handlers(L);
   }
 }
 
@@ -467,7 +467,7 @@ acquire_environment_test_name (cce_destination_t upper_L)
     if (0 != rv) {
       cce_raise(L, cctests_condition_new_regex_compilation_error(L, rv));
     }
-    cce_run_cleanup_handlers(L);
+    cce_run_clean_handlers(L);
   }
 }
 

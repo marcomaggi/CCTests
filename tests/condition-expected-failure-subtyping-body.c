@@ -131,7 +131,7 @@ my_condition_new_expected_failure_subtype (cce_destination_t upper_L,
     cce_condition_init((cce_condition_t *) C, &(my_descriptor_expected_failure_subtype_ptr->descriptor));
     my_condition_init_expected_failure_subtype(L, C, the_data);
 
-    cce_run_cleanup_handlers(L);
+    cce_run_clean_handlers(L);
     if (1) { fprintf(stderr, "%s: constructed %p\n", __func__, (void*)C); }
     return (cce_condition_t const *) C;
   }

@@ -67,7 +67,7 @@ main (void)
       cce_run_error_handlers_final(L);
     } else {
       cce_raise(L, my_condition_new_skipped_subtype(L, 123));
-      cce_run_cleanup_handlers(L);
+      cce_run_clean_handlers(L);
     }
   }
 

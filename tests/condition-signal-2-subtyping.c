@@ -7,7 +7,7 @@
 
 	Test file for subtyping of "test signal-2" conditions.
 
-  Copyright (C) 2017 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -74,7 +74,7 @@ main (void)
       cce_run_error_handlers_final(L);
     } else {
       cce_raise(L, my_condition_new_signal_2_subtype(L, 123));
-      cce_run_cleanup_handlers(L);
+      cce_run_clean_handlers(L);
     }
   }
 

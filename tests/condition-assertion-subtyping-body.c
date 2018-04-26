@@ -7,7 +7,7 @@
 
 	Body definitions of a subtype of "test assertion".
 
-  Copyright (C) 2017 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -139,7 +139,7 @@ my_condition_new_assertion_subtype (cce_destination_t upper_L,
     cce_condition_init((cce_condition_t *) C, &(my_descriptor_assertion_subtype_ptr->descriptor));
     my_condition_init_assertion_subtype(L, C, expr, filename, funcname, linenum, the_data);
 
-    cce_run_cleanup_handlers(L);
+    cce_run_clean_handlers(L);
     if (1) { fprintf(stderr, "%s: constructed %p\n", __func__, (void*)C); }
     return (cce_condition_t const *) C;
   }

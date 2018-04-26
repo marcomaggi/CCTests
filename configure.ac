@@ -2,7 +2,7 @@ dnl @configure_input@
 dnl
 
 AC_PREREQ([2.69])
-AC_INIT([CCTests],[0.1.0-devel.2],
+AC_INIT([CCTests],[0.2.0-devel.0],
   [marco.maggi-ipsu@poste.it],
   [cctests],[http://marcomaggi.github.com/cctests])
 dnl This is the revision number of this configure.ac
@@ -43,13 +43,13 @@ LT_INIT
 dnl page
 #### libraries interface version
 
-AS_VAR_SET([SLACKSTUFF_PACKAGE_VERSION],[0.1d0.1])
+AS_VAR_SET([SLACKSTUFF_PACKAGE_VERSION],[0.2d0.0])
 AC_SUBST([SLACKSTUFF_PACKAGE_VERSION])
 
 dnl This is the version stored in the pkg-config data file.
-AC_SUBST([CCTESTS_PKG_CONFIG_VERSION],[0.1.0])
+AC_SUBST([CCTESTS_PKG_CONFIG_VERSION],[0.2.0])
 
-MM_LIBTOOL_LIBRARY_VERSIONS([cctests],1,0,0)
+MM_LIBTOOL_LIBRARY_VERSIONS([cctests],2,0,0)
 
 dnl page
 #### basic system inspection
@@ -84,7 +84,7 @@ AC_CACHE_SAVE
 dnl page
 #### external libraries
 
-PKG_CHECK_MODULES([CCEXCEPTIONS],[ccexceptions >= 0.6.2])
+PKG_CHECK_MODULES([CCEXCEPTIONS],[ccexceptions >= 0.7.2])
 
 AC_CACHE_SAVE
 

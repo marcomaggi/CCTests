@@ -61,7 +61,7 @@ test_1_2 (cce_destination_t upper_L)
     }
   } else {
     cctests_call_in_forked_process(L, test_1_2_child_function);
-    cce_run_cleanup_handlers(L);
+    cce_run_clean_handlers(L);
   }
 }
 
@@ -119,7 +119,7 @@ test_2_2 (cce_destination_t upper_L)
     }
   } else {
     cctests_with_parent_and_child_process(L, test_2_2_parent_function, test_2_2_child_function);
-    cce_run_cleanup_handlers(L);
+    cce_run_clean_handlers(L);
   }
 }
 

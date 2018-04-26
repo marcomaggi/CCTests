@@ -7,7 +7,7 @@
 
 	Body definitions of a subtype of "regex compilation error".
 
-  Copyright (C) 2017 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -130,7 +130,7 @@ my_condition_new_regex_compilation_error_subtype (cce_destination_t upper_L, int
     cce_condition_init((cce_condition_t *) C, &(my_descriptor_regex_compilation_error_subtype_ptr->descriptor));
     my_condition_init_regex_compilation_error_subtype(L, C, errcode, the_data);
 
-    cce_run_cleanup_handlers(L);
+    cce_run_clean_handlers(L);
     if (1) { fprintf(stderr, "%s: constructed %p\n", __func__, (void*)C); }
     return (cce_condition_t const *) C;
   }
