@@ -100,7 +100,7 @@ cctests_p_assert_ascii (cce_destination_t L, char const * expected, char const *
  ** Immediate values comparisons.
  ** ----------------------------------------------------------------- */
 
-#define DECLARE_IMMEDIATE_ASSERT(STEM,TYPE,PRINTF_FORMAT)		\
+#define DECLARE_IMMEDIATE_ASSERT(STEM,TYPE)				\
   void									\
   cctests_p_assert_equal_ ## STEM (cce_destination_t L, TYPE const expected, TYPE const result, \
 				   char const * const expr,		\
@@ -111,35 +111,38 @@ cctests_p_assert_ascii (cce_destination_t L, char const * expected, char const *
     }									\
   }
 
-DECLARE_IMMEDIATE_ASSERT(char,	signed	char,	"%c")
-DECLARE_IMMEDIATE_ASSERT(uchar,	unsigned char,	"%c")
+DECLARE_IMMEDIATE_ASSERT(char,	signed	char)
+DECLARE_IMMEDIATE_ASSERT(uchar,	unsigned char)
 
-DECLARE_IMMEDIATE_ASSERT(int,	signed   int,	"%d")
-DECLARE_IMMEDIATE_ASSERT(uint,	unsigned int,	"%u")
+DECLARE_IMMEDIATE_ASSERT(int,	signed   int)
+DECLARE_IMMEDIATE_ASSERT(uint,	unsigned int)
 
-DECLARE_IMMEDIATE_ASSERT(short,	signed   short,	"%d")
-DECLARE_IMMEDIATE_ASSERT(ushort,unsigned short,	"%u")
+DECLARE_IMMEDIATE_ASSERT(short,	signed   short)
+DECLARE_IMMEDIATE_ASSERT(ushort,unsigned short)
 
-DECLARE_IMMEDIATE_ASSERT(long,	signed   long,	"%ld")
-DECLARE_IMMEDIATE_ASSERT(ulong,	unsigned long,	"%lu")
+DECLARE_IMMEDIATE_ASSERT(long,	signed   long)
+DECLARE_IMMEDIATE_ASSERT(ulong,	unsigned long)
 
-DECLARE_IMMEDIATE_ASSERT(llong,	signed   long long,	"%lld")
-DECLARE_IMMEDIATE_ASSERT(ullong,unsigned long long,	"%llu")
+DECLARE_IMMEDIATE_ASSERT(llong,	signed   long long)
+DECLARE_IMMEDIATE_ASSERT(ullong,unsigned long long)
 
-DECLARE_IMMEDIATE_ASSERT(int8,	int8_t,		"%" PRId8)
-DECLARE_IMMEDIATE_ASSERT(uint8,	uint8_t,	"%" PRIu8)
+DECLARE_IMMEDIATE_ASSERT(int8,	int8_t)
+DECLARE_IMMEDIATE_ASSERT(uint8,	uint8_t)
 
-DECLARE_IMMEDIATE_ASSERT(int16,	int16_t,	"%" PRId16)
-DECLARE_IMMEDIATE_ASSERT(uint16,uint16_t,	"%" PRIu16)
+DECLARE_IMMEDIATE_ASSERT(int16,	int16_t)
+DECLARE_IMMEDIATE_ASSERT(uint16,uint16_t)
 
-DECLARE_IMMEDIATE_ASSERT(int32,	int32_t,	"%" PRId32)
-DECLARE_IMMEDIATE_ASSERT(uint32,uint32_t,	"%" PRIu32)
+DECLARE_IMMEDIATE_ASSERT(int32,	int32_t)
+DECLARE_IMMEDIATE_ASSERT(uint32,uint32_t)
 
-DECLARE_IMMEDIATE_ASSERT(int64,	int64_t,	"%" PRId64)
-DECLARE_IMMEDIATE_ASSERT(uint64,uint64_t,	"%" PRIu64)
+DECLARE_IMMEDIATE_ASSERT(int64,	int64_t)
+DECLARE_IMMEDIATE_ASSERT(uint64,uint64_t)
 
-DECLARE_IMMEDIATE_ASSERT(float,	float,		"%f")
-DECLARE_IMMEDIATE_ASSERT(double,double,		"%f")
+DECLARE_IMMEDIATE_ASSERT(float,	float)
+DECLARE_IMMEDIATE_ASSERT(double,double)
+
+DECLARE_IMMEDIATE_ASSERT(size_t,  size_t)
+DECLARE_IMMEDIATE_ASSERT(ssize_t, ssize_t)
 
 /* ------------------------------------------------------------------ */
 

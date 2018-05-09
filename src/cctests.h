@@ -521,6 +521,9 @@ CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,	uint64_t)
 CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(float,	float)
 CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(double,	double)
 
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(size_t,	size_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ssize_t,	ssize_t)
+
 CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(pointer,	void *)
 
 
@@ -1237,6 +1240,30 @@ cctests_decl void cctests_p_assert_equal_pointer (cce_destination_t L, void * ex
 #define cctests_assert_equal_pointer(L,EXPECTED,RESULT)			\
   cctests_p_assert_equal_pointer(L, EXPECTED, RESULT,			\
 				 "cctests_assert_equal_pointer(" #L ", " #EXPECTED ", " #RESULT ")", \
+				 __FILE__, __func__, __LINE__)
+
+/* ------------------------------------------------------------------ */
+
+cctests_decl void cctests_p_assert_equal_size_t (cce_destination_t L, size_t expected, size_t result,
+						 char const * expr,
+						 char const * filename, char const * funcname, int linenum)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+#define cctests_assert_equal_size_t(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_size_t(L, EXPECTED, RESULT,			\
+				"cctests_assert_equal_size_t(" #L ", " #EXPECTED ", " #RESULT ")", \
+				__FILE__, __func__, __LINE__)
+
+/* ------------------------------------------------------------------ */
+
+cctests_decl void cctests_p_assert_equal_ssize_t (cce_destination_t L, ssize_t expected, ssize_t result,
+						  char const * expr,
+						  char const * filename, char const * funcname, int linenum)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+#define cctests_assert_equal_ssize_t(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_ssize_t(L, EXPECTED, RESULT,			\
+				 "cctests_assert_equal_ssize_t(" #L ", " #EXPECTED ", " #RESULT ")", \
 				 __FILE__, __func__, __LINE__)
 
 

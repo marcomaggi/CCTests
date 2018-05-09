@@ -71,6 +71,24 @@ AM_PROG_CC_C_O
 AC_HEADER_STDC
 AC_CHECK_HEADERS([regex.h unistd.h sys/types.h sys/wait.h])
 
+AC_DEFUN([CCTESTS_SIZEOF_TEST],
+  [CCTESTS_SIZEOF_$1=0
+   AC_CACHE_CHECK([the size of '$2'],
+     [cctests_cv_sizeof_$1],
+     [AC_COMPUTE_INT([cctests_cv_sizeof_$1],
+        [sizeof($2)],
+        [
+#include <stdlib.h>
+#include <stddef.h>
+#include <stdint.h>
+        ],
+        [cctests_cv_sizeof_$1=0])])
+    CCTESTS_SIZEOF_$1="$cctests_cv_sizeof_$1"
+    AC_DEFINE([CCTESTS_SIZEOF_$1],$CCTESTS_SIZEOF_$1,[the size of $2])])
+
+CCTESTS_SIZEOF_TEST([SIZE_T],  [size_t])
+CCTESTS_SIZEOF_TEST([SSIZE_T], [ssize_t])
+
 AC_CACHE_SAVE
 
 dnl page
