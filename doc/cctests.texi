@@ -601,6 +601,9 @@ test_1_1 (cce_destination_t L)
 * assertions equality int16::   Expecting 16-bit integers.
 * assertions equality int32::   Expecting 32-bit integers.
 * assertions equality int64::   Expecting 64-bit integers.
+* assertions equality float::   Expecting single-precision floating-point numbers
+* assertions equality double::  Expecting double-precision floating-point numbers
+* assertions equality pointer:: Expecting pointers.
 @end menu
 
 @c ------------------------------------------------------------------------
@@ -717,6 +720,39 @@ performing a non--local exit to @var{L}.
 
 
 @AssertionEqualityBitIntFunctions{int64, int64_t}
+
+@c page
+@node assertions equality float
+@subsection Expecting single-precision floating-point numbers
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_float (cce_destination_t @var{L}, float @var{expected}, float @var{result})
+Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
+raise an exception of type @objtype{cctests_condition_assertion_expected_float_t} by performing a
+non--local exit to @var{L}.
+@end deftypefn
+
+@c page
+@node assertions equality double
+@subsection Expecting double-precision floating-point numbers
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_double (cce_destination_t @var{L}, double @var{expected}, double @var{result})
+Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
+raise an exception of type @objtype{cctests_condition_assertion_expected_double_t} by performing a
+non--local exit to @var{L}.
+@end deftypefn
+
+@c page
+@node assertions equality pointer
+@subsection Expecting pointers
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_pointer (cce_destination_t @var{L}, void * @var{expected}, void * @var{result})
+Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
+raise an exception of type @objtype{cctests_condition_assertion_expected_pointer_t} by performing a
+non--local exit to @var{L}.
+@end deftypefn
 
 @c page
 @node process
@@ -1382,6 +1418,7 @@ condition--object type @objtype{my_condition_expected_failure_subtype_t}.
                                    assertions.
 * conditions assertion double::    Expected double--precision floating point
                                    assertions.
+* conditions assertion pointer::   Expected pointer.
 @end menu
 
 @c ------------------------------------------------------------------------
@@ -2010,6 +2047,11 @@ otherwise return @cfalse{}.
 
 
 @ConditionAssertionExpected{double, double, double--precision floating point}
+
+@node conditions assertion pointer
+@subsection Expected pointer
+
+@ConditionAssertionExpected{void *, pointer, pointer}
 
 @c page
 @node conditions unreachable

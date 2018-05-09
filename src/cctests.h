@@ -273,7 +273,7 @@ cctests_condition_init_success (cctests_condition_success_t * C)
 }
 
 cctests_decl cce_condition_t const * cctests_condition_new_success (void)
-  __attribute__((__const__,__pure__,__returns_nonnull__));
+  __attribute__((__const__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
@@ -305,7 +305,7 @@ cctests_condition_init_skipped (cctests_condition_skipped_t * C)
 }
 
 cctests_decl cce_condition_t const * cctests_condition_new_skipped (void)
-  __attribute__((__const__,__pure__,__returns_nonnull__));
+  __attribute__((__const__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
@@ -337,7 +337,7 @@ cctests_condition_init_failure (cctests_condition_failure_t * C)
 }
 
 cctests_decl cce_condition_t const * cctests_condition_new_failure (void)
-  __attribute__((__const__,__pure__,__returns_nonnull__));
+  __attribute__((__const__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
@@ -369,7 +369,7 @@ cctests_condition_init_expected_failure (cctests_condition_expected_failure_t * 
 }
 
 cctests_decl cce_condition_t const * cctests_condition_new_expected_failure (void)
-  __attribute__((__const__,__pure__,__returns_nonnull__));
+  __attribute__((__const__,__returns_nonnull__));
 
 __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
@@ -520,6 +520,8 @@ CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,	uint64_t)
 
 CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(float,	float)
 CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(double,	double)
+
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(pointer,	void *)
 
 
 /** --------------------------------------------------------------------
@@ -1224,6 +1226,18 @@ cctests_decl void cctests_p_assert_equal_double (cce_destination_t L, double exp
   cctests_p_assert_equal_double(L, EXPECTED, RESULT,			\
 				"cctests_assert_equal_double(" #L ", " #EXPECTED ", " #RESULT ")", \
 				__FILE__, __func__, __LINE__)
+
+/* ------------------------------------------------------------------ */
+
+cctests_decl void cctests_p_assert_equal_pointer (cce_destination_t L, void * expected, void * result,
+						  char const * expr,
+						  char const * filename, char const * funcname, int linenum)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+#define cctests_assert_equal_pointer(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_pointer(L, EXPECTED, RESULT,			\
+				 "cctests_assert_equal_pointer(" #L ", " #EXPECTED ", " #RESULT ")", \
+				 __FILE__, __func__, __LINE__)
 
 
 /** --------------------------------------------------------------------

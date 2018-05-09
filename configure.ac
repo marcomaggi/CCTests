@@ -2,7 +2,7 @@ dnl @configure_input@
 dnl
 
 AC_PREREQ([2.69])
-AC_INIT([CCTests],[0.2.0-devel.0],
+AC_INIT([CCTests],[0.2.0-devel.1],
   [marco.maggi-ipsu@poste.it],
   [cctests],[http://marcomaggi.github.com/cctests])
 dnl This is the revision number of this configure.ac
@@ -43,7 +43,7 @@ LT_INIT
 dnl page
 #### libraries interface version
 
-AS_VAR_SET([SLACKSTUFF_PACKAGE_VERSION],[0.2d0.0])
+AS_VAR_SET([SLACKSTUFF_PACKAGE_VERSION],[0.2d0.1])
 AC_SUBST([SLACKSTUFF_PACKAGE_VERSION])
 
 dnl This is the version stored in the pkg-config data file.

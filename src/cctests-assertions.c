@@ -141,4 +141,16 @@ DECLARE_IMMEDIATE_ASSERT(uint64,uint64_t,	"%" PRIu64)
 DECLARE_IMMEDIATE_ASSERT(float,	float,		"%f")
 DECLARE_IMMEDIATE_ASSERT(double,double,		"%f")
 
+/* ------------------------------------------------------------------ */
+
+void
+cctests_p_assert_equal_pointer (cce_destination_t L, void * expected, void * result,
+				char const * const expr,
+				char const * const filename, char const * const funcname, int const linenum)
+{
+  if (expected != result) {
+    cce_raise(L, cctests_condition_new_assertion_expected_pointer(L, expr, filename, funcname, linenum, expected, result));
+  }
+}
+
 /* end of file */

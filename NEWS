@@ -3,6 +3,14 @@
 			News file for CCTests
 			=====================
 
+Revision 0.2.0-devel.1
+----------------------
+
+* More documentation.
+
+* More equality assertions: pointers.
+
+
 Revision 0.2.0-devel.0
 ----------------------
 

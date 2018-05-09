@@ -477,6 +477,8 @@ DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,	uint64_t,	PRIu64)
 DECLARE_CONDITION_ASSERTION_EXPECTED(float,	float,		"f")
 DECLARE_CONDITION_ASSERTION_EXPECTED(double,	double,		"f")
 
+DECLARE_CONDITION_ASSERTION_EXPECTED(pointer,	void *,		"p")
+
 
 /** --------------------------------------------------------------------
  ** Exceptional condition descriptor: failed assertion, expected ASCIIZ.
