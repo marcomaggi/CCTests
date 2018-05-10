@@ -11,6 +11,16 @@ dnl
 dnl Define the  preprocessor macro "MMUX_SIZEOF_$STEM" to  the number of
 dnl bytes.
 dnl
+dnl Example, to determine the size of "size_t":
+dnl
+dnl   MMUX_DETERMINE_SIZEOF([SIZE_T],[size_t],[
+dnl   #ifdef HAVE_STDDEF_H
+dnl   #  include <stddef.h>
+dnl   #endif
+dnl   ])
+dnl
+dnl Arguments:
+dnl
 dnl $1 - A stem used to build variable names.
 dnl $2 - The C language type of which we want to determine the size.
 dnl $3 - The preprocessor include directives we need to include the required headers.
