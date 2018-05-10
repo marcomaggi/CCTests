@@ -43,27 +43,21 @@ LT_INIT
 dnl page
 #### libraries interface version
 
-AS_VAR_SET([SLACKSTUFF_PACKAGE_VERSION],[0.2d0.1])
-AC_SUBST([SLACKSTUFF_PACKAGE_VERSION])
+MMUX_LIBTOOL_LIBRARY_VERSIONS([cctests],2,0,0)
 
 dnl This is the version stored in the pkg-config data file.
 AC_SUBST([CCTESTS_PKG_CONFIG_VERSION],[0.2.0])
 
-MM_LIBTOOL_LIBRARY_VERSIONS([cctests],2,0,0)
+AS_VAR_SET([SLACKSTUFF_PACKAGE_VERSION],[0.2d0.1])
+AC_SUBST([SLACKSTUFF_PACKAGE_VERSION])
 
 dnl page
 #### basic system inspection
 
-AC_LANG([C])
-AC_PROG_CC_C99
-AX_CHECK_COMPILE_FLAG([-std=c11],[],[AC_MSG_ERROR([*** Compiler does not support -std=c11])],[-pedantic])
+MMUX_CHECK_TARGET_OS
 
-AS_VAR_SET(AX_CFLAGS,[-std=c11])
-AS_VAR_APPEND(AX_CFLAGS,[" -Wall -Wextra"])
-AX_GCC_VERSION
-AS_IF([test "x$GCC" = "xyes"],
-  [AS_CASE("$GCC_VERSION",
-     [7.*],[AS_VAR_APPEND(AX_CFLAGS,[" -pedantic -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wrestrict -Wnull-dereference -Wjump-misses-init -Wdouble-promotion -Wshadow -Wformat=2 -Wmisleading-indentation"])])])
+AC_LANG([C])
+MMUX_LANG_C11
 AC_SUBST(AX_CFLAGS)
 
 AM_PROG_AS
@@ -105,19 +99,6 @@ dnl page
 PKG_CHECK_MODULES([CCEXCEPTIONS],[ccexceptions >= 0.7.2])
 
 AC_CACHE_SAVE
-
-dnl page
-#### operating system specific configuration
-
-dnl AS_CASE("$target_os",
-dnl   [*linux*],[],
-dnl   [*bsd*],[],
-dnl   [*cygwin*],[],
-dnl   [*darwin*],[cctests_OS_DARWIN=yes])
-dnl AM_CONDITIONAL([WANT_LINUX], [test "x$cctests_OS_LINUX"  = xyes])
-dnl AM_CONDITIONAL([WANT_BSD],   [test "x$cctests_OS_BSD"    = xyes])
-dnl AM_CONDITIONAL([WANT_CYGWIN],[test "x$cctests_OS_CYGWIN" = xyes])
-dnl AM_CONDITIONAL([WANT_DARWIN],[test "x$cctests_OS_DARWIN" = xyes])
 
 dnl page
 #### finish
