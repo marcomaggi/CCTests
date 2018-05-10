@@ -62,12 +62,6 @@ cctests_p_assert_asciiz (cce_destination_t L, char const * expected, char const 
 /* Compare zero-terminated strings. */
 {
   if (0 != strcmp(expected, result)) {
-    if (0) {
-      fprintf(cctests_log_stream, "CCTests: %s: %s: line %d: assertion failure: %s\n",
-	      filename, funcname, linenum, expr);
-      fprintf(cctests_log_stream, "\texpected: %s\n", expected);
-      fprintf(cctests_log_stream, "\tresult:   %s\n", result);
-    }
     cce_raise(L, cctests_condition_new_assertion_expected_asciiz(L, expr, filename, funcname, linenum,
 								 expected, result));
   }
@@ -82,14 +76,6 @@ cctests_p_assert_ascii (cce_destination_t L, char const * expected, char const *
   size_t	expected_len = strlen(expected);
 
   if ((expected_len != result_len) || (0 != strncmp(expected, result, result_len))) {
-    if (0) {
-      fprintf(cctests_log_stream, "CCTests: %s: %s: line %d: assertion failure: %s\n",
-	      filename, funcname, linenum, expr);
-      fprintf(cctests_log_stream, "\texpected: %s (len=%lu)\n", expected, expected_len);
-      fprintf(cctests_log_stream, "\tresult:   ");
-      fwrite(result, sizeof(char), result_len, cctests_log_stream);
-      fprintf(cctests_log_stream, " (len=%lu)\n", result_len);
-    }
     cce_raise(L, cctests_condition_new_assertion_expected_ascii(L, expr, filename, funcname, linenum,
 								expected, result, result_len));
   }

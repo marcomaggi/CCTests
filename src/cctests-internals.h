@@ -65,6 +65,10 @@
  ** Library variables.
  ** ----------------------------------------------------------------- */
 
+/* While the code runs a test function: this variable holds a pointer to
+ * an ASCIIZ string representing the current test function name.
+ */
+cctests_private_decl char const *	cctests_test_func_name;
 
 
 /** --------------------------------------------------------------------

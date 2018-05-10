@@ -79,7 +79,7 @@ static char const *	cctests_test_group_name;
 /* While the code runs a test function: this variable holds a pointer to
  * an ASCIIZ string representing the current test function name.
  */
-static char const *	cctests_test_func_name;
+char const *	cctests_test_func_name;
 
 /* While the code runs the block:
  *

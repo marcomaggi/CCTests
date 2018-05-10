@@ -247,7 +247,8 @@ cctests_condition_print_assertion_fun (cce_condition_t const * C)
 {
   CCTESTS_PC(cctests_condition_assertion_t, K, C);
 
-  fprintf(cctests_log_stream, "CCTests: \033[35;1massertion failure\033[0m: %s: %s: line %d\n\tcall:     %s\n",
+  fprintf(cctests_log_stream, "CCTests: \033[35;1massertion failure\033[0m in test function %s: %s: %s: line %d\n\tcall:     %s\n",
+	  cctests_test_func_name,
 	  K->filename, K->funcname, K->linenum, K->expr);
 }
 
