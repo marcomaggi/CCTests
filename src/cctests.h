@@ -144,6 +144,21 @@ cctests_decl uint64_t const		CCTESTS_UINT64_MIN;
 cctests_decl int64_t const		CCTESTS_INT64_MAX;
 cctests_decl int64_t const		CCTESTS_INT64_MIN;
 
+cctests_decl size_t const		CCTESTS_SIZE_MIN;
+cctests_decl size_t const		CCTESTS_SIZE_MAX;
+
+cctests_decl ssize_t const		CCTESTS_SSIZE_MIN;
+cctests_decl ssize_t const		CCTESTS_SSIZE_MAX;
+
+cctests_decl ptrdiff_t const		CCTESTS_PTRDIFF_MIN;
+cctests_decl ptrdiff_t const		CCTESTS_PTRDIFF_MAX;
+
+cctests_decl intptr_t const		CCTESTS_INTPTR_MIN;
+cctests_decl intptr_t const		CCTESTS_INTPTR_MAX;
+
+cctests_decl uintptr_t const		CCTESTS_UINTPTR_MIN;
+cctests_decl uintptr_t const		CCTESTS_UINTPTR_MAX;
+
 
 /** --------------------------------------------------------------------
  ** Type definitions.

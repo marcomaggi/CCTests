@@ -3231,6 +3231,11 @@ otherwise the expansion is the empty string.
 * constants limits int16::      16-bit integers limits.
 * constants limits int32::      32-bit integers limits.
 * constants limits int64::      64-bit integers limits.
+* constants limits ssize::      Signed integer size limits.
+* constants limits usize::      Unsigned integer size limits.
+* constants limits ptrdiff::    Pointer difference integers limits.
+* constants limits intptr::     Pointer signed integer limits.
+* constants limits uintptr::    Pointer unsigned integer limits.
 @end menu
 
 @c page
@@ -3447,6 +3452,76 @@ Maximum value representable by the type @objtype{int64_t}.
 
 @deftypevr Constant {int64_t const} CCTESTS_INT64_MIN
 Minimum value representable by the type @objtype{int64_t}.
+@end deftypevr
+
+@c page
+@node constants limits ssize
+@subsection Signed integer size limits
+
+
+@deftypevr Constant {ssize_t const} CCTESTS_SSIZE_MAX
+Maximum value representable by the type @objtype{ssize_t}.
+@end deftypevr
+
+
+@deftypevr Constant {ssize_t const} CCTESTS_SSIZE_MIN
+Minimum value representable by the type @objtype{ssize_t}.
+@end deftypevr
+
+@c page
+@node constants limits usize
+@subsection Unsigned integer size limits
+
+
+@deftypevr Constant {size_t const} CCTESTS_SIZE_MAX
+Maximum value representable by the type @objtype{size_t}.
+@end deftypevr
+
+
+@deftypevr Constant {size_t const} CCTESTS_SIZE_MIN
+Minimum value representable by the type @objtype{size_t}.
+@end deftypevr
+
+@c page
+@node constants limits ptrdiff
+@subsection Pointer difference integers limits
+
+
+@deftypevr Constant {ptrdiff_t const} CCTESTS_PTRDIFF_MAX
+Maximum value representable by the type @objtype{ptrdiff_t}.
+@end deftypevr
+
+
+@deftypevr Constant {ptrdiff_t const} CCTESTS_PTRDIFF_MIN
+Minimum value representable by the type @objtype{ptrdiff_t}.
+@end deftypevr
+
+@c page
+@node constants limits intptr
+@subsection Pointer signed integer limits
+
+
+@deftypevr Constant {intptr_t const} CCTESTS_INTPTR_MAX
+Maximum value representable by the type @objtype{intptr_t}.
+@end deftypevr
+
+
+@deftypevr Constant {intptr_t const} CCTESTS_INTPTR_MIN
+Minimum value representable by the type @objtype{intptr_t}.
+@end deftypevr
+
+@c page
+@node constants limits uintptr
+@subsection Pointer unsigned integer limits
+
+
+@deftypevr Constant {uintptr_t const} CCTESTS_UINTPTR_MAX
+Maximum value representable by the type @objtype{uintptr_t}.
+@end deftypevr
+
+
+@deftypevr Constant {uintptr_t const} CCTESTS_UINTPTR_MIN
+Minimum value representable by the type @objtype{uintptr_t}.
 @end deftypevr
 
 @c page

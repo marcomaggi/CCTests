@@ -76,6 +76,22 @@ MMUX_DETERMINE_SIZEOF([SSIZE_T], [ssize_t], [
 #endif
 ])
 
+MMUX_DETERMINE_SIZEOF([PTRDIFF_T], [ptrdiff_t], [
+#ifdef HAVE_STDINT_H
+#  include <stdint.h>
+#endif
+])
+MMUX_DETERMINE_SIZEOF([INTPTR_T], [intptr_t], [
+#ifdef HAVE_STDINT_H
+#  include <stdint.h>
+#endif
+])
+MMUX_DETERMINE_SIZEOF([UINTPTR_T], [uintptr_t], [
+#ifdef HAVE_STDINT_H
+#  include <stdint.h>
+#endif
+])
+
 AC_CACHE_SAVE
 
 dnl page
