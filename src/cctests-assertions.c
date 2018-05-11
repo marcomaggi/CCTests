@@ -127,8 +127,12 @@ DECLARE_IMMEDIATE_ASSERT(uint64,uint64_t)
 DECLARE_IMMEDIATE_ASSERT(float,	float)
 DECLARE_IMMEDIATE_ASSERT(double,double)
 
-DECLARE_IMMEDIATE_ASSERT(size_t,  size_t)
-DECLARE_IMMEDIATE_ASSERT(ssize_t, ssize_t)
+DECLARE_IMMEDIATE_ASSERT(size,  size_t)
+DECLARE_IMMEDIATE_ASSERT(ssize, ssize_t)
+
+DECLARE_IMMEDIATE_ASSERT(ptrdiff, ptrdiff_t)
+DECLARE_IMMEDIATE_ASSERT(intptr,  intptr_t)
+DECLARE_IMMEDIATE_ASSERT(uintptr, uintptr_t)
 
 /* ------------------------------------------------------------------ */
 

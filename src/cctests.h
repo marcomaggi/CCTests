@@ -5,7 +5,9 @@
 
   Abstract
 
-
+	This is the public header file for the library CCTests.  It must
+	be included  in all the source  files using the features  of the
+	library.
 
   Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
 
@@ -85,6 +87,7 @@ extern "C" {
  ** ----------------------------------------------------------------- */
 
 #include <ccexceptions.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -521,10 +524,13 @@ CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,	uint64_t)
 CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(float,	float)
 CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(double,	double)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(size_t,	size_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ssize_t,	ssize_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(size,	size_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ssize,	ssize_t)
 
 CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(pointer,	void *)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ptrdiff,	ptrdiff_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(intptr,	intptr_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uintptr,	uintptr_t)
 
 
 /** --------------------------------------------------------------------
@@ -1244,26 +1250,62 @@ cctests_decl void cctests_p_assert_equal_pointer (cce_destination_t L, void * ex
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_size_t (cce_destination_t L, size_t expected, size_t result,
-						 char const * expr,
-						 char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_equal_size (cce_destination_t L, size_t expected, size_t result,
+					       char const * expr,
+					       char const * filename, char const * funcname, int linenum)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_size_t(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_size_t(L, EXPECTED, RESULT,			\
-				"cctests_assert_equal_size_t(" #L ", " #EXPECTED ", " #RESULT ")", \
-				__FILE__, __func__, __LINE__)
+#define cctests_assert_equal_size(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_size(L, EXPECTED, RESULT,			\
+			      "cctests_assert_equal_size(" #L ", " #EXPECTED ", " #RESULT ")", \
+			      __FILE__, __func__, __LINE__)
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_ssize_t (cce_destination_t L, ssize_t expected, ssize_t result,
+cctests_decl void cctests_p_assert_equal_ssize (cce_destination_t L, ssize_t expected, ssize_t result,
+						char const * expr,
+						char const * filename, char const * funcname, int linenum)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+#define cctests_assert_equal_ssize(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_ssize(L, EXPECTED, RESULT,			\
+			       "cctests_assert_equal_ssize(" #L ", " #EXPECTED ", " #RESULT ")", \
+			       __FILE__, __func__, __LINE__)
+
+/* ------------------------------------------------------------------ */
+
+cctests_decl void cctests_p_assert_equal_ptrdiff (cce_destination_t L, ptrdiff_t expected, ptrdiff_t result,
 						  char const * expr,
 						  char const * filename, char const * funcname, int linenum)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_ssize_t(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_ssize_t(L, EXPECTED, RESULT,			\
-				 "cctests_assert_equal_ssize_t(" #L ", " #EXPECTED ", " #RESULT ")", \
+#define cctests_assert_equal_ptrdiff(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_ptrdiff(L, EXPECTED, RESULT,			\
+				 "cctests_assert_equal_ptrdiff(" #L ", " #EXPECTED ", " #RESULT ")", \
+				 __FILE__, __func__, __LINE__)
+
+/* ------------------------------------------------------------------ */
+
+cctests_decl void cctests_p_assert_equal_intptr (cce_destination_t L, intptr_t expected, intptr_t result,
+						 char const * expr,
+						 char const * filename, char const * funcname, int linenum)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+#define cctests_assert_equal_intptr(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_intptr(L, EXPECTED, RESULT,			\
+				"cctests_assert_equal_intptr(" #L ", " #EXPECTED ", " #RESULT ")", \
+				__FILE__, __func__, __LINE__)
+
+/* ------------------------------------------------------------------ */
+
+cctests_decl void cctests_p_assert_equal_uintptr (cce_destination_t L, uintptr_t expected, uintptr_t result,
+						  char const * expr,
+						  char const * filename, char const * funcname, int linenum)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+#define cctests_assert_equal_uintptr(L,EXPECTED,RESULT)			\
+  cctests_p_assert_equal_uintptr(L, EXPECTED, RESULT,			\
+				 "cctests_assert_equal_uintptr(" #L ", " #EXPECTED ", " #RESULT ")", \
 				 __FILE__, __func__, __LINE__)
 
 

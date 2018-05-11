@@ -603,7 +603,12 @@ test_1_1 (cce_destination_t L)
 * assertions equality int64::   Expecting 64-bit integers.
 * assertions equality float::   Expecting single-precision floating-point numbers
 * assertions equality double::  Expecting double-precision floating-point numbers
+* assertions equality ssize::   Expecting signed integer size.
+* assertions equality usize::   Expecting unsigned integer size.
 * assertions equality pointer:: Expecting pointers.
+* assertions equality ptrdiff:: Expecting pointer difference.
+* assertions equality intptr::  Expecting pointer signed integer.
+* assertions equality uintptr:: Expecting pointer unsigned integer.
 @end menu
 
 @c ------------------------------------------------------------------------
@@ -744,6 +749,28 @@ non--local exit to @var{L}.
 @end deftypefn
 
 @c page
+@node assertions equality ssize
+@subsection Expecting signed integer size
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_ssize (cce_destination_t @var{L}, ssize_t @var{expected}, ssize_t @var{result})
+Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
+raise an exception of type @objtype{cctests_condition_assertion_expected_ssize} by performing a
+non--local exit to @var{L}.
+@end deftypefn
+
+@c page
+@node assertions equality usize
+@subsection Expecting unsigned integer size
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_size (cce_destination_t @var{L}, size_t @var{expected}, size_t @var{result})
+Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
+raise an exception of type @objtype{cctests_condition_assertion_expected_size} by performing a
+non--local exit to @var{L}.
+@end deftypefn
+
+@c page
 @node assertions equality pointer
 @subsection Expecting pointers
 
@@ -751,6 +778,39 @@ non--local exit to @var{L}.
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_pointer (cce_destination_t @var{L}, void * @var{expected}, void * @var{result})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_pointer_t} by performing a
+non--local exit to @var{L}.
+@end deftypefn
+
+@c page
+@node assertions equality ptrdiff
+@subsection Expecting pointer difference
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_ptrdiff (cce_destination_t @var{L}, ptrdiff_t @var{expected}, ptrdiff_t @var{result})
+Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
+raise an exception of type @objtype{cctests_condition_assertion_expected_ptrdiff} by performing a
+non--local exit to @var{L}.
+@end deftypefn
+
+@c page
+@node assertions equality intptr
+@subsection Expecting pointer signed integer
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_intptr (cce_destination_t @var{L}, intptr_t @var{expected}, intptr_t @var{result})
+Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
+raise an exception of type @objtype{cctests_condition_assertion_expected_intptr} by performing a
+non--local exit to @var{L}.
+@end deftypefn
+
+@c page
+@node assertions equality uintptr
+@subsection Expecting pointer unsigned integer
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_equal_uintptr (cce_destination_t @var{L}, uintptr_t @var{expected}, uintptr_t @var{result})
+Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
+raise an exception of type @objtype{cctests_condition_assertion_expected_uintptr} by performing a
 non--local exit to @var{L}.
 @end deftypefn
 
@@ -1418,7 +1478,12 @@ condition--object type @objtype{my_condition_expected_failure_subtype_t}.
                                    assertions.
 * conditions assertion double::    Expected double--precision floating point
                                    assertions.
+* conditions assertion ssize::     Expected signed size integer.
+* conditions assertion usize::     Expected unsigned size integer.
 * conditions assertion pointer::   Expected pointer.
+* conditions assertion ptrdiff::   Expected pointer difference.
+* conditions assertion intptr::    Expected pointer signed integer.
+* conditions assertion uintptr::   Expected pointer unsigned integer.
 @end menu
 
 @c ------------------------------------------------------------------------
@@ -2048,10 +2113,47 @@ otherwise return @cfalse{}.
 
 @ConditionAssertionExpected{double, double, double--precision floating point}
 
+@c ------------------------------------------------------------------------
+
+@node conditions assertion ssize
+@subsection Expected signed size integer
+
+@ConditionAssertionExpected{ssize_t, ssize, signed integer size}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion usize
+@subsection Expected unsigned size integer
+
+@ConditionAssertionExpected{size_t, size, unsigned integer size}
+
+@c ------------------------------------------------------------------------
+
 @node conditions assertion pointer
 @subsection Expected pointer
 
 @ConditionAssertionExpected{void *, pointer, pointer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion ptrdiff
+@subsection Expected pointer difference
+
+@ConditionAssertionExpected{ptrdiff_t, ptrdiff, pointer difference}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion intptr
+@subsection Expected pointer signed integer
+
+@ConditionAssertionExpected{intptr_t, intptr, pointer signed integer}
+
+@c ------------------------------------------------------------------------
+
+@node conditions assertion uintptr
+@subsection Expected pointer unsigned integer
+
+@ConditionAssertionExpected{uintptr_t, uintptr, pointer unsigned integer}
 
 @c page
 @node conditions unreachable
