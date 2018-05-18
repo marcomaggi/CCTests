@@ -284,12 +284,12 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	  if (cctests_log_stream_isatty()) {
 	    fprintf(cctests_log_stream,
 		    "CCTests: \033[35;1merror\033[0m in test function %s: exception raised, "
-		    "unreachable code was executed in file=%s, function=%s, line number=%u\n",
+		    "unreachable code was executed in file=%s, function=%s, line number=%d\n",
 		    test_func_name, C->filename, C->funcname, C->linenum);
 	  } else {
 	    fprintf(cctests_log_stream,
 		    "CCTests: error in test function %s: exception raised, "
-		    "unreachable code was executed in file=%s, function=%s, line number=%u\n",
+		    "unreachable code was executed in file=%s, function=%s, line number=%d\n",
 		    test_func_name, C->filename, C->funcname, C->linenum);
 	  }
 	}
