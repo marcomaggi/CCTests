@@ -1,7 +1,8 @@
 # cctests
 
 [![Build Status](https://travis-ci.org/marcomaggi/cctests.svg?branch=master)](https://travis-ci.org/marcomaggi/cctests)
-
+[![codecov](https://codecov.io/gh/marcomaggi/cctests/branch/master/graph/badge.svg)](https://codecov.io/gh/marcomaggi/cctests)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b07b27b019014a2198d498e2e623ad5a)](https://www.codacy.com/app/marcomaggi/cctests?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=marcomaggi/cctests&amp;utm_campaign=Badge_Grade)
 
 ## Introduction
 
@@ -193,4 +194,25 @@ and we can find it at:
 Usage of this  service is implemented with make rules;  see the relevant
 section in the file `Makefile.am`.
 
+### Codecov
+
+Codecov is a service providing code  coverage reports.  We can find this
+project's dashboard at:
+
+[https://codecov.io/gh/marcomaggi/cctests](https://codecov.io/gh/marcomaggi/cctests)
+
+Usage of  this service is  implemented through direct  interface between
+GitHub and Codecov  sites; it configured through  the file `codecov.yml`
+and appropriate entries in Travis CI's matrix of builds.
+
+
+### Codacy
+
+Codacy is  an online service  providing code  review.  We can  find this
+project's dashboard at:
+
+[https://www.codacy.com/app/marcomaggi/cctests](https://www.codacy.com/app/marcomaggi/cctests)
+
+Usage of this service is  implemented through direct integration between
+GitHub and Codacy sites.
 
