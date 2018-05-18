@@ -24,7 +24,7 @@ This package installs a C11 language library implementing a framework to
 organise test suites.  The library targets POSIX systems.
 
   This package depends upon the external packages: CCExceptions at least
-version  0.7.2.   This  package  relies  on  "pkg-config"  to  find  the
+version  0.8.0.   This  package  relies  on  "pkg-config"  to  find  the
 dependency packages installed on the system.
 
   The package uses the GNU Autotools  and it is tested, using Travis CI,
