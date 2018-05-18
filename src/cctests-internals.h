@@ -59,6 +59,19 @@
  ** Constants.
  ** ----------------------------------------------------------------- */
 
+/* Define the "printf()" code to print "size_t" values. */
+#if (4 == MMUX_SIZEOF_SIZE_T)
+#  define PRIuSIZE	"u"
+#else
+#  define PRIuSIZE	"lu"
+#endif
+
+/* Define the "printf()" code to print "ssize_t" values. */
+#if (4 == MMUX_SIZEOF_SSIZE_T)
+#  define PRIdSIZE	"d"
+#else
+#  define PRIdSIZE	"ld"
+#endif
 
 
 /** --------------------------------------------------------------------

@@ -657,10 +657,10 @@ cctests_condition_print_assertion_expected_ascii_fun (cce_condition_t const * C)
     CCTESTS_PC(cctests_condition_assertion_expected_ascii_t, K, C);
     size_t	expected_len = strlen(K->expected);
 
-    fprintf(cctests_log_stream, "\texpected: '%s' (len=%lu)\n", K->expected, expected_len);
+    fprintf(cctests_log_stream, "\texpected: '%s' (len=%" PRIuSIZE ")\n", K->expected, expected_len);
     fprintf(cctests_log_stream, "\tresult:   '");
     fwrite(K->result, sizeof(char), K->result_len, cctests_log_stream);
-    fprintf(cctests_log_stream, "' (len=%lu)\n", K->result_len);
+    fprintf(cctests_log_stream, "' (len=%" PRIuSIZE ")\n", K->result_len);
   }
 }
 
