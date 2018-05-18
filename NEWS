@@ -3,6 +3,12 @@
 			News file for CCTests
 			=====================
 
+Revision 0.2.0-devel.3
+----------------------
+
+* Added correct "printf()" format codes for "size_t".
+
+
 Revision 0.2.0-devel.2
 ----------------------
 
