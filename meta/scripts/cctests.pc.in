@@ -21,8 +21,9 @@ sysconfdir=@sysconfdir@
 Name: @PACKAGE_NAME@
 Description: testing framework C11 library
 Version: @CCTESTS_PKG_CONFIG_VERSION@
-Libs: -L${libdir} -lcctests @CCEXCEPTIONS_LIBS@
-Cflags: -I${includedir} @CCEXCEPTIONS_CFLAGS@
+Requires: ccexceptions >= 0.8.0
+Libs: -L${libdir} -lcctests
+Cflags: -I${includedir}
 
 ### end of file
 # Local Variables:

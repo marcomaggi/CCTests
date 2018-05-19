@@ -3,6 +3,12 @@
 			News file for CCTests
 			=====================
 
+Revision 0.2.0-devel.4
+----------------------
+
+* Fixed data script for "pkg-config".
+
+
 Revision 0.2.0-devel.3
 ----------------------
 
