@@ -2,7 +2,7 @@ dnl @configure_input@
 dnl
 
 AC_PREREQ([2.69])
-AC_INIT([CCTests],[0.2.0-devel.3],
+AC_INIT([CCTests],[0.2.0-devel.4],
   [marco.maggi-ipsu@poste.it],
   [cctests],[http://marcomaggi.github.com/cctests])
 dnl This is the revision number of this configure.ac
@@ -48,7 +48,7 @@ MMUX_LIBTOOL_LIBRARY_VERSIONS([cctests],2,0,0)
 dnl This is the version stored in the pkg-config data file.
 AC_SUBST([CCTESTS_PKG_CONFIG_VERSION],[0.2.0])
 
-AS_VAR_SET([SLACKSTUFF_PACKAGE_VERSION],[0.2d0.3])
+AS_VAR_SET([SLACKSTUFF_PACKAGE_VERSION],[0.2d0.4])
 AC_SUBST([SLACKSTUFF_PACKAGE_VERSION])
 
 dnl page
