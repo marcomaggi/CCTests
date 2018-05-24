@@ -374,15 +374,11 @@ acquire_environment_test_file (cce_destination_t upper_L)
   } else {
     static int const	cflags = REG_NOSUB;
     char const *	file_str = getenv(CCTESTS_ENVIRONMENT_VARIABLE_FILE);
-    int			rv;
 
     if (NULL == file_str) {
       file_str = ".*";
     }
-    rv = regcomp(&cctests_test_program_selection, file_str, cflags);
-    if (0 != rv) {
-      cce_raise(L, cctests_condition_new_regex_compilation_error(L, rv));
-    }
+    cctests_sys_regcomp(L, &cctests_test_program_selection, file_str, cflags);
     cce_run_body_handlers(L);
   }
 }
@@ -415,16 +411,11 @@ acquire_environment_test_group (cce_destination_t upper_L)
   } else {
     static int const	cflags = REG_NOSUB;
     char const *	group_str = getenv(CCTESTS_ENVIRONMENT_VARIABLE_GROUP);
-    int			rv;
 
     if (NULL == group_str) {
       group_str = ".*";
     }
-
-    rv = regcomp(&cctests_test_group_selection, group_str, cflags);
-    if (0 != rv) {
-      cce_raise(L, cctests_condition_new_regex_compilation_error(L, rv));
-    }
+    cctests_sys_regcomp(L, &cctests_test_group_selection, group_str, cflags);
     cce_run_body_handlers(L);
   }
 }
@@ -457,16 +448,11 @@ acquire_environment_test_name (cce_destination_t upper_L)
   } else {
     static int const	cflags = REG_NOSUB;
     char const *	name_str = getenv(CCTESTS_ENVIRONMENT_VARIABLE_NAME);
-    int			rv;
 
     if (NULL == name_str) {
       name_str = ".*";
     }
-
-    rv = regcomp(&cctests_test_name_selection, name_str, cflags);
-    if (0 != rv) {
-      cce_raise(L, cctests_condition_new_regex_compilation_error(L, rv));
-    }
+    cctests_sys_regcomp(L, &cctests_test_name_selection, name_str, cflags);
     cce_run_body_handlers(L);
   }
 }

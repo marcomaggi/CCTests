@@ -134,7 +134,6 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 * assertions::                  Verifying assertions.
 * process::                     Running processes.
 * conditions::                  Condition object types.
-* system::                      System interface.
 * utils::                       Utility definitions.
 * constants::                   Useful constants.
 * automake::                    Interfacing with @gnu{} Automake.
@@ -307,7 +306,7 @@ parts we may not want (because they make it more complex to compose a regular ex
 matches).
 @end quotation
 
-The test program name is used as follows:
+The test file name is used as follows:
 
 @itemize
 @item
@@ -538,17 +537,18 @@ test_1_4 (cce_destination_t L)
 void
 test_1_5 (cce_destination_t upper_L)
 @{
-  cce_location_t  L[1];
-  cce_handler_t   P_H[1];
+  cce_location_t       L[1];
+  cce_clean_handler_t  P_H[1];
 
   if (cce_location(L)) @{
-    cce_run_error_handlers_raise(L, upper_L);
+    cce_run_catch_handlers_raise(L, upper_L);
   @} else @{
-    void *      P = cctests_sys_malloc(1024);
-    cctests_cleanup_handler_malloc_init(L, P_H, P);
+    void *      P = cce_sys_malloc_guarded(L, P_H, 1024);
 
     /* do something with P, then: */
     cctests_assert(L, some_predicate(P));
+
+    cce_run_body_handlers(L);
   @}
 @}
 @end example
@@ -950,10 +950,10 @@ cce_location_t  L[1];
 
 if (cce_location(L)) @{
   /* Handle errors here. */
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   /* Do something useful here. */
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end example
 
@@ -1002,10 +1002,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_base_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -1089,13 +1089,13 @@ if (cce_location(L)) @{
   if (cctests_condition_is_success(cce_condition(L))) @{
     CCTESTS_PC(cctests_condition_success_t, C, cce_condition(L));
     do_something_with(C);
-    cce_run_cleanup_handlers_final(L);
+    cce_run_body_handlers_final(L);
   @} else @{
-    cce_run_error_handlers_final(L);
+    cce_run_catch_handlers_final(L);
   @}
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -1182,13 +1182,13 @@ if (cce_location(L)) @{
   if (cctests_condition_is_skipped(cce_condition(L))) @{
     CCTESTS_PC(cctests_condition_skipped_t, C, cce_condition(L));
     do_something_with(C);
-    cce_run_cleanup_handlers_final(L);
+    cce_run_body_handlers_final(L);
   @} else @{
-    cce_run_error_handlers_final(L);
+    cce_run_catch_handlers_final(L);
   @}
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -1277,10 +1277,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_failure_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -1368,10 +1368,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_expected_failure_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -1506,10 +1506,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_assertion_expected_\TYPENAME\_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -1596,10 +1596,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_assertion_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -1711,10 +1711,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_assertion_expected_value_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -1785,10 +1785,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_assertion_expected_asciiz_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -1879,10 +1879,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_assertion_expected_ascii_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -2177,10 +2177,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_unreachable_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -2309,10 +2309,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_regex_error_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -2411,10 +2411,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -2517,10 +2517,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_child_failure_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -2595,10 +2595,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_child_abnormal_termination_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -2673,10 +2673,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_child_failure_exit_status_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -2749,10 +2749,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_signal_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -2845,10 +2845,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_signal_1_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -2937,10 +2937,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_signal_2_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -3029,10 +3029,10 @@ if (cce_location(L)) @{
     CCTESTS_PC(cctests_condition_signal_3_t, C, cce_condition(L));
     do_something_with(C);
   @}
-  cce_run_error_handlers_final(L);
+  cce_run_catch_handlers_final(L);
 @} else @{
   do_something(L);
-  cce_run_cleanup_handlers(L);
+  cce_run_body_handlers(L);
 @}
 @end smallexample
 
@@ -3099,72 +3099,6 @@ condition-signal-3-subtype-body.c
 @noindent
 under the @file{tests} directory of the source distribution; the code defines a new
 condition--object type @objtype{my_condition_signal_3_subtype_t}.
-
-@c page
-@node system
-@chapter System interface
-
-
-@value{PACKAGE} provides interfaces to some system primitives to facilitate writing tests without
-using external libraries; the interfaces are wrappers for some basic @posix{} system calls.  Each
-wrapper accepts a pointer to @objtype{cce_location_t} as argument and, in case of error, it will
-perform a non--local exit by jumping to the selected location.
-
-The wrapper functions accept the same arguments of the system calls and return the same return value
-of the system calls (if they complete successfully).
-
-All the wrappers reset @code{errno} to zero before performing the system call and reset it to zero
-before returning.  In case of error: the raised exceptional condition objects are of type
-@objtype{cce_condition_errno_t}.
-
-@menu
-* system memory::               Memory allocation interface.
-@end menu
-
-@c page
-@node system memory
-@section Memory allocation interface
-
-
-@deftypefun {void *} cctests_sys_malloc (cce_destination_t  @var{L}, size_t @var{size})
-Wrapper for @cfunc{malloc}.  This function never returns @cnull{}.
-@end deftypefun
-
-
-@deftypefun {void *} cctests_sys_realloc (cce_destination_t  @var{L}, void * @var{ptr}, size_t @var{newsize})
-Wrapper for @cfunc{realloc}.  This function never returns @cnull{}.
-@end deftypefun
-
-
-@deftypefun {void *} cctests_sys_calloc (cce_destination_t  @var{L}, size_t @var{count}, size_t @var{eltsize})
-Wrapper for @cfunc{calloc}.  This function never returns @cnull{}.
-@end deftypefun
-
-@c ------------------------------------------------------------------------
-
-@subsubheading Handler for allocated memory
-
-We can handle memory that must be released with the standard function @cfunc{free} as follows:
-
-@example
-cce_location_t  L[1];
-cce_handler_t   H[1];
-
-if (cce_location(L)) @{
-  cce_run_error_handlers_final(L);
-@} else @{
-  void *  P = cctests_sys_malloc(L, 4096);
-  cctests_cleanup_handler_malloc_init(L, H, P);
-  cce_run_cleanup_handlers(L);
-@}
-@end example
-
-
-@deftypefun void cctests_cleanup_handler_malloc_init (cce_destination_t  @var{L}, cce_handler_t * @var{H}, void * @var{P})
-@deftypefunx void cctests_error_handler_malloc_init (cce_destination_t  @var{L}, cce_handler_t * @var{H}, void * @var{P})
-Register @var{H} as cleanup or error handler in the context of @var{L}.  The handler function will
-release the memory block referenced by @var{P} using the standard function @cfunc{free}.
-@end deftypefun
 
 @c page
 @node utils

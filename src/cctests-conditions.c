@@ -275,7 +275,7 @@ cce_condition_t const *
 cctests_condition_new_assertion (cce_destination_t L,
 				 char const * const expr, char const * const filename, char const * const funcname, int const linenum)
 {
-  cctests_condition_assertion_t *	C = cctests_sys_malloc(L, sizeof(cctests_condition_assertion_t));
+  cctests_condition_assertion_t *	C = cce_sys_malloc(L, sizeof(cctests_condition_assertion_t));
 
   /* Initialise the basic condition fields. */
   cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_stru.descriptor);
@@ -432,7 +432,7 @@ cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
 						     TYPE expected, TYPE result) \
   {									\
     cctests_condition_assertion_expected_ ## STEM ## _t *	C =	\
-      cctests_sys_malloc(L, sizeof(cctests_condition_assertion_expected_ ## STEM ## _t)); \
+      cce_sys_malloc(L, sizeof(cctests_condition_assertion_expected_ ## STEM ## _t)); \
 									\
     /* Initialise the basic condition fields. */			\
     cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_ ## STEM ## _stru.descriptor); \
@@ -589,7 +589,7 @@ cctests_condition_new_assertion_expected_asciiz (cce_destination_t L,
 						 char const * expected, char const * result)
 {
   cctests_condition_assertion_expected_asciiz_t *	C =
-    cctests_sys_malloc(L, sizeof(cctests_condition_assertion_expected_asciiz_t));
+    cce_sys_malloc(L, sizeof(cctests_condition_assertion_expected_asciiz_t));
 
   /* Initialise the basic condition fields. */
   cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_asciiz_stru.descriptor);
@@ -702,7 +702,7 @@ cctests_condition_new_assertion_expected_ascii (cce_destination_t L,
 						char const * expected, char const * result, size_t result_len)
 {
   cctests_condition_assertion_expected_ascii_t *	C =
-    cctests_sys_malloc(L, sizeof(cctests_condition_assertion_expected_ascii_t));
+    cce_sys_malloc(L, sizeof(cctests_condition_assertion_expected_ascii_t));
 
   /* Initialise the basic condition fields. */
   cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_ascii_stru.descriptor);
@@ -770,7 +770,7 @@ cce_condition_t const *
 cctests_condition_new_unreachable (cce_destination_t L,
 				   char const * const filename, char const * const funcname, int const linenum)
 {
-  cctests_condition_unreachable_t *	C = cctests_sys_malloc(L, sizeof(cctests_condition_unreachable_t));
+  cctests_condition_unreachable_t *	C = cce_sys_malloc(L, sizeof(cctests_condition_unreachable_t));
 
   /* Initialise the basic condition fields. */
   cce_condition_init((cce_condition_t *)C, &cctests_descriptor_unreachable_stru.descriptor);
@@ -959,7 +959,7 @@ cctests_condition_init_regex_error (cctests_condition_regex_error_t * C, int err
 cce_condition_t const *
 cctests_condition_new_regex_error (cce_destination_t L, int errcode)
 {
-  cctests_condition_regex_error_t *	C = cctests_sys_malloc(L, sizeof(cctests_condition_regex_error_t));
+  cctests_condition_regex_error_t *	C = cce_sys_malloc(L, sizeof(cctests_condition_regex_error_t));
 
   cce_condition_init((cce_condition_t *)C, &cctests_descriptor_regex_error_stru.descriptor);
   cctests_condition_init_regex_error(C, errcode);
@@ -1003,7 +1003,7 @@ cce_condition_t const *
 cctests_condition_new_regex_compilation_error (cce_destination_t L, int errcode)
 {
   cctests_condition_regex_compilation_error_t *	C = \
-    cctests_sys_malloc(L, sizeof(cctests_condition_regex_compilation_error_t));
+    cce_sys_malloc(L, sizeof(cctests_condition_regex_compilation_error_t));
 
   cce_condition_init((cce_condition_t *)C, &cctests_descriptor_regex_compilation_error_stru.descriptor);
   cctests_condition_init_regex_compilation_error(C, errcode);

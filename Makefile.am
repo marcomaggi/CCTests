@@ -43,7 +43,6 @@ libcctests_la_SOURCES	= \
 	src/cctests-version.c			\
 	src/cctests-constants.c			\
 	src/cctests-conditions.c		\
-	src/cctests-exception-handlers.c	\
 	src/cctests-system.c			\
 	src/cctests-driver.c			\
 	src/cctests-assertions.c		\

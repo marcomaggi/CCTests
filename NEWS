@@ -3,10 +3,12 @@
 			News file for CCTests
 			=====================
 
-Revision 0.2.0-devel.5
+Revision 0.3.0-devel.0
 ----------------------
 
 * Updated code to CCExceptions revision 0.8.0-devel.2.
+
+* Removed useless system function interfaces.
 
 
 Revision 0.2.0-devel.4

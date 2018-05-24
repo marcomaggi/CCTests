@@ -7,7 +7,7 @@
 
 
 
-  Copyright (C) 2017 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   This program is  free software: you can redistribute  it and/or modify
   it  under the  terms  of  the GNU  Lesser  General  Public License  as
@@ -29,50 +29,6 @@
  ** ----------------------------------------------------------------- */
 
 #include "cctests-internals.h"
-
-
-/** --------------------------------------------------------------------
- ** System wrappers: memory allocation.
- ** ----------------------------------------------------------------- */
-
-void *
-cctests_sys_malloc (cce_destination_t  L, size_t size)
-{
-  void *	rv;
-  errno = 0;
-  rv = malloc (size);
-  if (NULL != rv) {
-    return rv;
-  } else {
-    cce_raise(L, cce_condition_new_errno_clear());
-  }
-}
-
-void *
-cctests_sys_realloc (cce_destination_t  L, void * ptr, size_t newsize)
-{
-  void *	rv;
-  errno = 0;
-  rv = realloc(ptr, newsize);
-  if (NULL != rv) {
-    return rv;
-  } else {
-    cce_raise(L, cce_condition_new_errno_clear());
-  }
-}
-
-void *
-cctests_sys_calloc (cce_destination_t  L, size_t count, size_t eltsize)
-{
-  void *	rv;
-  errno = 0;
-  rv = calloc(count, eltsize);
-  if (NULL != rv) {
-    return rv;
-  } else {
-    cce_raise(L, cce_condition_new_errno_clear());
-  }
-}
 
 
 /** --------------------------------------------------------------------
