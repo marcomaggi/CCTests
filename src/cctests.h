@@ -695,22 +695,14 @@ struct cctests_condition_signal_2_t {
 
 cctests_decl cctests_descriptor_signal_2_t const * const cctests_descriptor_signal_2_ptr;
 
-__attribute__((__nonnull__(1),__always_inline__))
-static inline void
-cctests_condition_init_signal_2 (cctests_condition_signal_2_t * C)
-{
-  cctests_condition_init_signal(&(C->signal));
-}
+cctests_decl void cctests_condition_init_signal_2 (cctests_condition_signal_2_t * C)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl cce_condition_t const * cctests_condition_new_signal_2 (void)
   __attribute__((__leaf__,__const__,__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_signal_2 (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_signal_2_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_signal_2 (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -727,22 +719,14 @@ struct cctests_condition_signal_3_t {
 
 cctests_decl cctests_descriptor_signal_3_t const * const cctests_descriptor_signal_3_ptr;
 
-__attribute__((__nonnull__(1),__always_inline__))
-static inline void
-cctests_condition_init_signal_3 (cctests_condition_signal_3_t * C)
-{
-  cctests_condition_init_signal(&(C->signal));
-}
+cctests_decl void cctests_condition_init_signal_3 (cctests_condition_signal_3_t * C)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl cce_condition_t const * cctests_condition_new_signal_3 (void)
   __attribute__((__leaf__,__const__,__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_signal_3 (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_signal_3_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_signal_3 (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -767,12 +751,8 @@ cctests_decl void cctests_condition_init_regex_error (cctests_condition_regex_er
 cctests_decl cce_condition_t const * cctests_condition_new_regex_error (cce_destination_t L, int errcode)
   __attribute__((__nonnull__(1),__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_regex_error (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_regex_error_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_regex_error (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -795,12 +775,8 @@ cctests_decl void cctests_condition_init_regex_compilation_error (cctests_condit
 cctests_decl cce_condition_t const * cctests_condition_new_regex_compilation_error (cce_destination_t L, int errcode)
   __attribute__((__nonnull__(1),__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_regex_compilation_error (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_regex_compilation_error_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_regex_compilation_error (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -823,12 +799,8 @@ cctests_decl void cctests_condition_init_child_failure (cctests_condition_child_
 cctests_decl cce_condition_t const * cctests_condition_new_child_failure (void)
   __attribute__((__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_child_failure (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_child_failure_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_child_failure (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -851,12 +823,8 @@ cctests_decl void cctests_condition_init_child_abnormal_termination (cctests_con
 cctests_decl cce_condition_t const * cctests_condition_new_child_abnormal_termination (void)
   __attribute__((__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_child_abnormal_termination (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_child_abnormal_termination_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_child_abnormal_termination (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -879,12 +847,8 @@ cctests_decl void cctests_condition_init_child_failure_exit_status (cctests_cond
 cctests_decl cce_condition_t const * cctests_condition_new_child_failure_exit_status (void)
   __attribute__((__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_child_failure_exit_status (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_child_failure_exit_status_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_child_failure_exit_status (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------

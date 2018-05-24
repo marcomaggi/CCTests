@@ -974,16 +974,32 @@ static cctests_condition_signal_2_t const cctests_condition_signal_2_stru = {
   .signal.base.root.condition.descriptor	= &cctests_descriptor_signal_2_stru.descriptor
 };
 
+/* ------------------------------------------------------------------ */
+
+char const *
+cctests_condition_static_message_signal_2 (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests exception signal 2";
+}
+
+/* ------------------------------------------------------------------ */
+
+void
+cctests_condition_init_signal_2 (cctests_condition_signal_2_t * C)
+{
+  cctests_condition_init_signal(&(C->signal));
+}
+
 cce_condition_t const *
 cctests_condition_new_signal_2 (void)
 {
   return (cce_condition_t *)&cctests_condition_signal_2_stru;
 }
 
-char const *
-cctests_condition_static_message_signal_2 (cce_condition_t const * C CCTESTS_UNUSED)
+bool
+cctests_condition_is_signal_2 (cce_condition_t const * C)
 {
-  return "CCTests exception signal 2";
+  return cce_is_condition(C, &(cctests_descriptor_signal_2_ptr->descriptor));
 }
 
 
@@ -1008,16 +1024,32 @@ static cctests_condition_signal_3_t const cctests_condition_signal_3_stru = {
   .signal.base.root.condition.descriptor	= &cctests_descriptor_signal_3_stru.descriptor
 };
 
+/* ------------------------------------------------------------------ */
+
+char const *
+cctests_condition_static_message_signal_3 (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests exception signal 3";
+}
+
+/* ------------------------------------------------------------------ */
+
+void
+cctests_condition_init_signal_3 (cctests_condition_signal_3_t * C)
+{
+  cctests_condition_init_signal(&(C->signal));
+}
+
 cce_condition_t const *
 cctests_condition_new_signal_3 (void)
 {
   return (cce_condition_t *)&cctests_condition_signal_3_stru;
 }
 
-char const *
-cctests_condition_static_message_signal_3 (cce_condition_t const * C CCTESTS_UNUSED)
+bool
+cctests_condition_is_signal_3 (cce_condition_t const * C)
 {
-  return "CCTests exception signal 2";
+  return cce_is_condition(C, &(cctests_descriptor_signal_3_ptr->descriptor));
 }
 
 
@@ -1070,6 +1102,12 @@ cctests_condition_new_regex_error (cce_destination_t L, int errcode)
   return (cce_condition_t *)C;
 }
 
+bool
+cctests_condition_is_regex_error (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_regex_error_ptr->descriptor));
+}
+
 
 /** --------------------------------------------------------------------
  ** Exceptional condition descriptor: regular expression compilation error.
@@ -1114,6 +1152,12 @@ cctests_condition_new_regex_compilation_error (cce_destination_t L, int errcode)
   return (cce_condition_t *)C;
 }
 
+bool
+cctests_condition_is_regex_compilation_error (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_regex_compilation_error_ptr->descriptor));
+}
+
 
 /** --------------------------------------------------------------------
  ** Exceptional condition descriptor: child failure.
@@ -1136,6 +1180,16 @@ static cctests_condition_child_failure_t const cctests_condition_child_failure_s
   .failure.base.root.condition.descriptor	= &cctests_descriptor_child_failure_stru.descriptor
 };
 
+/* ------------------------------------------------------------------ */
+
+char const *
+cctests_condition_static_message_child_failure (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests exception child failure";
+}
+
+/* ------------------------------------------------------------------ */
+
 void
 cctests_condition_init_child_failure (cctests_condition_child_failure_t * C)
 {
@@ -1148,10 +1202,10 @@ cctests_condition_new_child_failure (void)
   return (cce_condition_t *)&cctests_condition_child_failure_stru;
 }
 
-char const *
-cctests_condition_static_message_child_failure (cce_condition_t const * C CCTESTS_UNUSED)
+bool
+cctests_condition_is_child_failure (cce_condition_t const * C)
 {
-  return "CCTests exception child failure";
+  return cce_is_condition(C, &(cctests_descriptor_child_failure_ptr->descriptor));
 }
 
 
@@ -1177,6 +1231,16 @@ static cctests_condition_child_abnormal_termination_t const cctests_condition_ch
   .child_failure.failure.base.root.condition.descriptor	= &cctests_descriptor_child_abnormal_termination_stru.descriptor
 };
 
+/* ------------------------------------------------------------------ */
+
+char const *
+cctests_condition_static_message_child_abnormal_termination (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests exception child failure: abnormal termination";
+}
+
+/* ------------------------------------------------------------------ */
+
 void
 cctests_condition_init_child_abnormal_termination (cctests_condition_child_abnormal_termination_t * C)
 {
@@ -1189,10 +1253,10 @@ cctests_condition_new_child_abnormal_termination (void)
   return (cce_condition_t *)&cctests_condition_child_abnormal_termination_stru;
 }
 
-char const *
-cctests_condition_static_message_child_abnormal_termination (cce_condition_t const * C CCTESTS_UNUSED)
+bool
+cctests_condition_is_child_abnormal_termination (cce_condition_t const * C)
 {
-  return "CCTests exception child failure: abnormal termination";
+  return cce_is_condition(C, &(cctests_descriptor_child_abnormal_termination_ptr->descriptor));
 }
 
 
@@ -1218,6 +1282,16 @@ static cctests_condition_child_failure_exit_status_t const cctests_condition_chi
   .child_failure.failure.base.root.condition.descriptor	= &cctests_descriptor_child_failure_exit_status_stru.descriptor
 };
 
+/* ------------------------------------------------------------------ */
+
+char const *
+cctests_condition_static_message_child_failure_exit_status (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests exception child failure: failure exit status";
+}
+
+/* ------------------------------------------------------------------ */
+
 void
 cctests_condition_init_child_failure_exit_status (cctests_condition_child_failure_exit_status_t * C)
 {
@@ -1230,10 +1304,10 @@ cctests_condition_new_child_failure_exit_status (void)
   return (cce_condition_t *)&cctests_condition_child_failure_exit_status_stru;
 }
 
-char const *
-cctests_condition_static_message_child_failure_exit_status (cce_condition_t const * C CCTESTS_UNUSED)
+bool
+cctests_condition_is_child_failure_exit_status (cce_condition_t const * C)
 {
-  return "CCTests exception child failure: failure exit status";
+  return cce_is_condition(C, &(cctests_descriptor_child_failure_exit_status_ptr->descriptor));
 }
 
 
