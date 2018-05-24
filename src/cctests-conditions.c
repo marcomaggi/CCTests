@@ -61,42 +61,18 @@ cctests_condition_static_message_base (cce_condition_t const * C CCE_UNUSED)
   return "CCTests base exceptional condition";
 }
 
-
-/** --------------------------------------------------------------------
- ** Exceptional condition descriptor: test failure.
- ** ----------------------------------------------------------------- */
-
-static cce_condition_static_message_fun_t	cctests_condition_static_message_failure;
-
-static cctests_descriptor_failure_t const cctests_descriptor_failure_stru = {
-  .descriptor.parent		= &cctests_descriptor_base_stru.descriptor,
-  .descriptor.delete		= NULL,
-  .descriptor.final		= NULL,
-  .descriptor.static_message	= cctests_condition_static_message_failure
-};
-
-cctests_descriptor_failure_t const * const cctests_descriptor_failure_ptr = &cctests_descriptor_failure_stru;
-
-/* This struct type has no dynamic fields, so there is only one instance
-   of this struct type.  We allocate it statically. */
-static cctests_condition_failure_t const cctests_condition_failure_stru = {
-  .base.root.condition.descriptor	= &cctests_descriptor_failure_stru.descriptor
-};
-
 /* ------------------------------------------------------------------ */
 
-char const *
-cctests_condition_static_message_failure (cce_condition_t const * C CCTESTS_UNUSED)
+void
+cctests_condition_init_base (cctests_condition_base_t * C)
 {
-  return "CCTests test failure";
+  cce_condition_init_root(&(C->root));
 }
 
-/* ------------------------------------------------------------------ */
-
-cce_condition_t const *
-cctests_condition_new_failure (void)
+bool
+cctests_condition_is_base (cce_condition_t const * C)
 {
-  return (cce_condition_t *)&cctests_condition_failure_stru;
+  return cce_is_condition(C, &(cctests_descriptor_base_ptr->descriptor));
 }
 
 
@@ -131,10 +107,22 @@ cctests_condition_static_message_success (cce_condition_t const * C CCTESTS_UNUS
 
 /* ------------------------------------------------------------------ */
 
+void
+cctests_condition_init_success (cctests_condition_success_t * C)
+{
+  cctests_condition_init_base(&(C->base));
+}
+
 cce_condition_t const *
 cctests_condition_new_success (void)
 {
   return (cce_condition_t *)&cctests_condition_success_stru;
+}
+
+bool
+cctests_condition_is_success (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_success_ptr->descriptor));
 }
 
 
@@ -169,10 +157,72 @@ cctests_condition_static_message_skipped (cce_condition_t const * C CCTESTS_UNUS
 
 /* ------------------------------------------------------------------ */
 
+void
+cctests_condition_init_skipped (cctests_condition_skipped_t * C)
+{
+  cctests_condition_init_base(&(C->base));
+}
+
 cce_condition_t const *
 cctests_condition_new_skipped (void)
 {
   return (cce_condition_t *)&cctests_condition_skipped_stru;
+}
+
+bool
+cctests_condition_is_skipped (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_skipped_ptr->descriptor));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Exceptional condition descriptor: test failure.
+ ** ----------------------------------------------------------------- */
+
+static cce_condition_static_message_fun_t	cctests_condition_static_message_failure;
+
+static cctests_descriptor_failure_t const cctests_descriptor_failure_stru = {
+  .descriptor.parent		= &cctests_descriptor_base_stru.descriptor,
+  .descriptor.delete		= NULL,
+  .descriptor.final		= NULL,
+  .descriptor.static_message	= cctests_condition_static_message_failure
+};
+
+cctests_descriptor_failure_t const * const cctests_descriptor_failure_ptr = &cctests_descriptor_failure_stru;
+
+/* This struct type has no dynamic fields, so there is only one instance
+   of this struct type.  We allocate it statically. */
+static cctests_condition_failure_t const cctests_condition_failure_stru = {
+  .base.root.condition.descriptor	= &cctests_descriptor_failure_stru.descriptor
+};
+
+/* ------------------------------------------------------------------ */
+
+char const *
+cctests_condition_static_message_failure (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests test failure";
+}
+
+/* ------------------------------------------------------------------ */
+
+void
+cctests_condition_init_failure (cctests_condition_failure_t * C)
+{
+  cctests_condition_init_base(&(C->base));
+}
+
+cce_condition_t const *
+cctests_condition_new_failure (void)
+{
+  return (cce_condition_t *)&cctests_condition_failure_stru;
+}
+
+bool
+cctests_condition_is_failure (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_failure_ptr->descriptor));
 }
 
 
@@ -197,16 +247,32 @@ static cctests_condition_expected_failure_t const cctests_condition_expected_fai
   .failure.base.root.condition.descriptor	= &cctests_descriptor_expected_failure_stru.descriptor
 };
 
+/* ------------------------------------------------------------------ */
+
+char const *
+cctests_condition_static_message_expected_failure (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests exception expected failure";
+}
+
+/* ------------------------------------------------------------------ */
+
+void
+cctests_condition_init_expected_failure (cctests_condition_expected_failure_t * C)
+{
+  cctests_condition_init_failure(&(C->failure));
+}
+
 cce_condition_t const *
 cctests_condition_new_expected_failure (void)
 {
   return (cce_condition_t *)&cctests_condition_expected_failure_stru;
 }
 
-char const *
-cctests_condition_static_message_expected_failure (cce_condition_t const * C CCTESTS_UNUSED)
+bool
+cctests_condition_is_expected_failure (cce_condition_t const * C)
 {
-  return "CCTests exception expected failure";
+  return cce_is_condition(C, &(cctests_descriptor_expected_failure_ptr->descriptor));
 }
 
 
@@ -780,6 +846,12 @@ cctests_condition_new_unreachable (cce_destination_t L,
   return (cce_condition_t const *)C;
 }
 
+bool
+cctests_condition_is_unreachable (cce_condition_t const * C)
+{
+  return cce_is_condition(C, &(cctests_descriptor_unreachable_ptr->descriptor));
+}
+
 
 /** --------------------------------------------------------------------
  ** Exceptional condition descriptor: signal.
@@ -802,16 +874,32 @@ static cctests_condition_signal_t const cctests_condition_signal_stru = {
   .base.root.condition.descriptor	= &cctests_descriptor_signal_stru.descriptor
 };
 
+/* ------------------------------------------------------------------ */
+
+char const *
+cctests_condition_static_message_signal (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests exception signal";
+}
+
+/* ------------------------------------------------------------------ */
+
+void
+cctests_condition_init_signal (cctests_condition_signal_t * C)
+{
+  cctests_condition_init_base(&(C->base));
+}
+
 cce_condition_t const *
 cctests_condition_new_signal (void)
 {
   return (cce_condition_t *)&cctests_condition_signal_stru;
 }
 
-char const *
-cctests_condition_static_message_signal (cce_condition_t const * C CCTESTS_UNUSED)
+bool
+cctests_condition_is_signal (cce_condition_t const * C)
 {
-  return "CCTests exception signal";
+  return cce_is_condition(C, &(cctests_descriptor_signal_ptr->descriptor));
 }
 
 
@@ -836,16 +924,32 @@ static cctests_condition_signal_1_t const cctests_condition_signal_1_stru = {
   .signal.base.root.condition.descriptor	= &cctests_descriptor_signal_1_stru.descriptor
 };
 
+/* ------------------------------------------------------------------ */
+
+char const *
+cctests_condition_static_message_signal_1 (cce_condition_t const * C CCTESTS_UNUSED)
+{
+  return "CCTests exception signal 1";
+}
+
+/* ------------------------------------------------------------------ */
+
+void
+cctests_condition_init_signal_1 (cctests_condition_signal_1_t * C)
+{
+  cctests_condition_init_signal(&(C->signal));
+}
+
 cce_condition_t const *
 cctests_condition_new_signal_1 (void)
 {
   return (cce_condition_t *)&cctests_condition_signal_1_stru;
 }
 
-char const *
-cctests_condition_static_message_signal_1 (cce_condition_t const * C CCTESTS_UNUSED)
+bool
+cctests_condition_is_signal_1 (cce_condition_t const * C)
 {
-  return "CCTests exception signal 1";
+  return cce_is_condition(C, &(cctests_descriptor_signal_1_ptr->descriptor));
 }
 
 

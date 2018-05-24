@@ -254,19 +254,11 @@ struct cctests_condition_base_t {
 
 cctests_decl cctests_descriptor_base_t const * const cctests_descriptor_base_ptr;
 
-__attribute__((__nonnull__(1),,__always_inline__))
-static inline void
-cctests_condition_init_base (cctests_condition_base_t * C)
-{
-  cce_condition_init_root(&(C->root));
-}
+cctests_decl void cctests_condition_init_base (cctests_condition_base_t * C)
+  __attribute__((__nonnull__(1)));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_base (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_base_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_base (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -283,22 +275,14 @@ struct cctests_condition_success_t {
 
 cctests_decl cctests_descriptor_success_t const * const cctests_descriptor_success_ptr;
 
-__attribute__((__nonnull__(1),,__always_inline__))
-static inline void
-cctests_condition_init_success (cctests_condition_success_t * C)
-{
-  cctests_condition_init_base(&(C->base));
-}
+cctests_decl void cctests_condition_init_success (cctests_condition_success_t * C)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl cce_condition_t const * cctests_condition_new_success (void)
   __attribute__((__const__,__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_success (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_success_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_success (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -315,22 +299,14 @@ struct cctests_condition_skipped_t {
 
 cctests_decl cctests_descriptor_skipped_t const * const cctests_descriptor_skipped_ptr;
 
-__attribute__((__nonnull__(1),__always_inline__))
-static inline void
-cctests_condition_init_skipped (cctests_condition_skipped_t * C)
-{
-  cctests_condition_init_base(&(C->base));
-}
+cctests_decl void cctests_condition_init_skipped (cctests_condition_skipped_t * C)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl cce_condition_t const * cctests_condition_new_skipped (void)
   __attribute__((__const__,__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_skipped (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_skipped_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_skipped (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -347,22 +323,14 @@ struct cctests_condition_failure_t {
 
 cctests_decl cctests_descriptor_failure_t const * const cctests_descriptor_failure_ptr;
 
-__attribute__((__nonnull__(1),__always_inline__))
-static inline void
-cctests_condition_init_failure (cctests_condition_failure_t * C)
-{
-  cctests_condition_init_base(&(C->base));
-}
+cctests_decl void cctests_condition_init_failure (cctests_condition_failure_t * C)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl cce_condition_t const * cctests_condition_new_failure (void)
   __attribute__((__const__,__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_failure (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_failure_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_failure (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -379,22 +347,14 @@ struct cctests_condition_expected_failure_t {
 
 cctests_decl cctests_descriptor_expected_failure_t const * const cctests_descriptor_expected_failure_ptr;
 
-__attribute__((__nonnull__(1),__always_inline__))
-static inline void
-cctests_condition_init_expected_failure (cctests_condition_expected_failure_t * C)
-{
-  cctests_condition_init_failure(&(C->failure));
-}
+cctests_decl void cctests_condition_init_expected_failure (cctests_condition_expected_failure_t * C)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl cce_condition_t const * cctests_condition_new_expected_failure (void)
   __attribute__((__const__,__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_expected_failure (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_expected_failure_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_expected_failure (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -669,12 +629,8 @@ cctests_decl cce_condition_t const * cctests_condition_new_unreachable (cce_dest
 #define cctests_raise_unreachable(L)		\
   cce_raise((L), cctests_condition_new_unreachable((L), __FILE__, __func__, __LINE__))
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_unreachable (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_unreachable_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_unreachable (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -691,22 +647,14 @@ struct cctests_condition_signal_t {
 
 cctests_decl cctests_descriptor_signal_t const * const cctests_descriptor_signal_ptr;
 
-__attribute__((__nonnull__(1),__always_inline__))
-static inline void
-cctests_condition_init_signal (cctests_condition_signal_t * C)
-{
-  cctests_condition_init_base(&(C->base));
-}
+cctests_decl void cctests_condition_init_signal (cctests_condition_signal_t * C)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl cce_condition_t const * cctests_condition_new_signal (void)
   __attribute__((__leaf__,__const__,__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_signal (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_signal_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_signal (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
@@ -723,22 +671,14 @@ struct cctests_condition_signal_1_t {
 
 cctests_decl cctests_descriptor_signal_1_t const * const cctests_descriptor_signal_1_ptr;
 
-__attribute__((__nonnull__(1),__always_inline__))
-static inline void
-cctests_condition_init_signal_1 (cctests_condition_signal_1_t * C)
-{
-  cctests_condition_init_signal(&(C->signal));
-}
+cctests_decl void cctests_condition_init_signal_1 (cctests_condition_signal_1_t * C)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl cce_condition_t const * cctests_condition_new_signal_1 (void)
   __attribute__((__leaf__,__const__,__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-cctests_condition_is_signal_1 (cce_condition_t const * C)
-{
-  return cce_is_condition(C, &(cctests_descriptor_signal_1_ptr->descriptor));
-}
+cctests_decl bool cctests_condition_is_signal_1 (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
