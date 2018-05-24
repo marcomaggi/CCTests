@@ -74,11 +74,11 @@ cctests_call_in_forked_process (cce_destination_t L, cctests_child_process_funct
 
     if (cce_location(inner_L)) {
       status = EXIT_FAILURE;
-      cce_run_error_handlers_final(inner_L);
+      cce_run_catch_handlers_final(inner_L);
     } else {
       child_function(inner_L);
       status = EXIT_SUCCESS;
-      cce_run_clean_handlers(inner_L);
+      cce_run_body_handlers(inner_L);
     }
     /* Terminate the child process. */
     _exit(status);
@@ -123,10 +123,10 @@ cctests_with_parent_and_child_process (cce_destination_t upper_L,
 	int	wstatus = 0;
 
 	waitpid(pid, &wstatus, options);
-	cce_run_error_handlers_raise(L, upper_L);
+	cce_run_catch_handlers_raise(L, upper_L);
       } else {
 	parent_function(L, (int64_t)pid);
-	cce_run_clean_handlers(L);
+	cce_run_body_handlers(L);
       }
     }
 
@@ -151,11 +151,11 @@ cctests_with_parent_and_child_process (cce_destination_t upper_L,
 
     if (cce_location(inner_L)) {
       status = EXIT_FAILURE;
-      cce_run_error_handlers_final(inner_L);
+      cce_run_catch_handlers_final(inner_L);
     } else {
       child_function(inner_L);
       status = EXIT_SUCCESS;
-      cce_run_clean_handlers(inner_L);
+      cce_run_body_handlers(inner_L);
     }
     /* Terminate the child process. */
     _exit(status);

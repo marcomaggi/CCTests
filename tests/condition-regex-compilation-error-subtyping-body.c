@@ -122,7 +122,7 @@ my_condition_new_regex_compilation_error_subtype (cce_destination_t upper_L, int
   cce_handler_t		C_H[1];
 
   if (cce_location(L)) {
-    cce_run_error_handlers_raise(L, upper_L);
+    cce_run_catch_handlers_raise(L, upper_L);
   } else {
     my_condition_regex_compilation_error_subtype_t * C = cce_sys_malloc(L, sizeof(my_condition_regex_compilation_error_subtype_t));
     cce_error_handler_malloc_init(L, C_H, C);
@@ -130,7 +130,7 @@ my_condition_new_regex_compilation_error_subtype (cce_destination_t upper_L, int
     cce_condition_init((cce_condition_t *) C, &(my_descriptor_regex_compilation_error_subtype_ptr->descriptor));
     my_condition_init_regex_compilation_error_subtype(L, C, errcode, the_data);
 
-    cce_run_clean_handlers(L);
+    cce_run_body_handlers(L);
     if (1) { fprintf(stderr, "%s: constructed %p\n", __func__, (void*)C); }
     return (cce_condition_t const *) C;
   }

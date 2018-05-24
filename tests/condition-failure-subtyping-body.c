@@ -120,7 +120,7 @@ my_condition_new_failure_subtype (cce_destination_t upper_L, int the_data)
   cce_handler_t		C_H[1];
 
   if (cce_location(L)) {
-    cce_run_error_handlers_raise(L, upper_L);
+    cce_run_catch_handlers_raise(L, upper_L);
   } else {
     my_condition_failure_subtype_t * C = cce_sys_malloc(L, sizeof(my_condition_failure_subtype_t));
     cce_error_handler_malloc_init(L, C_H, C);
@@ -128,7 +128,7 @@ my_condition_new_failure_subtype (cce_destination_t upper_L, int the_data)
     cce_condition_init((cce_condition_t *) C, &(my_descriptor_failure_subtype_ptr->descriptor));
     my_condition_init_failure_subtype(L, C, the_data);
 
-    cce_run_clean_handlers(L);
+    cce_run_body_handlers(L);
     if (1) { fprintf(stderr, "%s: constructed %p\n", __func__, (void*)C); }
     return (cce_condition_t const *) C;
   }

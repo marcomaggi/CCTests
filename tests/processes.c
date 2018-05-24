@@ -55,13 +55,13 @@ test_1_2 (cce_destination_t upper_L)
 
   if (cce_location(L)) {
     if (cctests_condition_is_child_failure_exit_status(cce_condition(L))) {
-      cce_run_error_handlers_final(L);
+      cce_run_catch_handlers_final(L);
     } else {
-      cce_run_error_handlers_raise(L, upper_L);
+      cce_run_catch_handlers_raise(L, upper_L);
     }
   } else {
     cctests_call_in_forked_process(L, test_1_2_child_function);
-    cce_run_clean_handlers(L);
+    cce_run_body_handlers(L);
   }
 }
 
@@ -113,13 +113,13 @@ test_2_2 (cce_destination_t upper_L)
     if (0) { fprintf(stderr, "%s: %s\n", __func__, cce_condition_static_message(cce_condition(L))); };
 
     if (cctests_condition_is_child_failure_exit_status(cce_condition(L))) {
-      cce_run_error_handlers_final(L);
+      cce_run_catch_handlers_final(L);
     } else {
-      cce_run_error_handlers_raise(L, upper_L);
+      cce_run_catch_handlers_raise(L, upper_L);
     }
   } else {
     cctests_with_parent_and_child_process(L, test_2_2_parent_function, test_2_2_child_function);
-    cce_run_clean_handlers(L);
+    cce_run_body_handlers(L);
   }
 }
 
