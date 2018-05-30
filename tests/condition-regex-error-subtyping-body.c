@@ -118,7 +118,7 @@ my_condition_new_regex_error_subtype (cce_destination_t upper_L, int errcode, in
  */
 {
   cce_location_t	L[1];
-  cce_handler_t		C_H[1];
+  cce_error_handler_t	C_H[1];
 
   if (cce_location(L)) {
     cce_run_catch_handlers_raise(L, upper_L);
