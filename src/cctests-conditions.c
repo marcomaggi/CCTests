@@ -72,7 +72,7 @@ cctests_condition_init_base (cctests_condition_base_t * C)
 bool
 cctests_condition_is_base (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_base_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_base_ptr->descriptor));
 }
 
 
@@ -122,7 +122,7 @@ cctests_condition_new_success (void)
 bool
 cctests_condition_is_success (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_success_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_success_ptr->descriptor));
 }
 
 
@@ -172,7 +172,7 @@ cctests_condition_new_skipped (void)
 bool
 cctests_condition_is_skipped (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_skipped_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_skipped_ptr->descriptor));
 }
 
 
@@ -222,7 +222,7 @@ cctests_condition_new_failure (void)
 bool
 cctests_condition_is_failure (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_failure_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_failure_ptr->descriptor));
 }
 
 
@@ -272,7 +272,7 @@ cctests_condition_new_expected_failure (void)
 bool
 cctests_condition_is_expected_failure (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_expected_failure_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_expected_failure_ptr->descriptor));
 }
 
 
@@ -354,7 +354,7 @@ cctests_condition_new_assertion (cce_destination_t L,
 bool
 cctests_condition_is_assertion (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_assertion_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_assertion_ptr->descriptor));
 }
 
 void
@@ -421,7 +421,7 @@ cctests_condition_init_assertion_expected_value (cctests_condition_assertion_exp
 bool
 cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_assertion_expected_value_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_assertion_expected_value_ptr->descriptor));
 }
 
 
@@ -511,7 +511,7 @@ cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
   bool									\
   cctests_condition_is_assertion_expected_ ## STEM (cce_condition_t const * C) \
   {									\
-    return cce_is_condition(C, &(cctests_descriptor_assertion_expected_ ## STEM ## _ptr->descriptor)); \
+    return cce_condition_is(C, &(cctests_descriptor_assertion_expected_ ## STEM ## _ptr->descriptor)); \
   }
 
 /* ------------------------------------------------------------------ */
@@ -668,7 +668,7 @@ cctests_condition_new_assertion_expected_asciiz (cce_destination_t L,
 bool
 cctests_condition_is_assertion_expected_asciiz (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_assertion_expected_asciiz_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_assertion_expected_asciiz_ptr->descriptor));
 }
 
 
@@ -781,7 +781,7 @@ cctests_condition_new_assertion_expected_ascii (cce_destination_t L,
 bool
 cctests_condition_is_assertion_expected_ascii (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_assertion_expected_ascii_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_assertion_expected_ascii_ptr->descriptor));
 }
 
 
@@ -849,7 +849,7 @@ cctests_condition_new_unreachable (cce_destination_t L,
 bool
 cctests_condition_is_unreachable (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_unreachable_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_unreachable_ptr->descriptor));
 }
 
 
@@ -899,7 +899,7 @@ cctests_condition_new_signal (void)
 bool
 cctests_condition_is_signal (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_signal_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_signal_ptr->descriptor));
 }
 
 
@@ -949,7 +949,7 @@ cctests_condition_new_signal_1 (void)
 bool
 cctests_condition_is_signal_1 (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_signal_1_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_signal_1_ptr->descriptor));
 }
 
 
@@ -999,7 +999,7 @@ cctests_condition_new_signal_2 (void)
 bool
 cctests_condition_is_signal_2 (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_signal_2_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_signal_2_ptr->descriptor));
 }
 
 
@@ -1049,7 +1049,7 @@ cctests_condition_new_signal_3 (void)
 bool
 cctests_condition_is_signal_3 (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_signal_3_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_signal_3_ptr->descriptor));
 }
 
 
@@ -1105,7 +1105,7 @@ cctests_condition_new_regex_error (cce_destination_t L, int errcode)
 bool
 cctests_condition_is_regex_error (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_regex_error_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_regex_error_ptr->descriptor));
 }
 
 
@@ -1155,7 +1155,7 @@ cctests_condition_new_regex_compilation_error (cce_destination_t L, int errcode)
 bool
 cctests_condition_is_regex_compilation_error (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_regex_compilation_error_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_regex_compilation_error_ptr->descriptor));
 }
 
 
@@ -1205,7 +1205,7 @@ cctests_condition_new_child_failure (void)
 bool
 cctests_condition_is_child_failure (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_child_failure_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_child_failure_ptr->descriptor));
 }
 
 
@@ -1256,7 +1256,7 @@ cctests_condition_new_child_abnormal_termination (void)
 bool
 cctests_condition_is_child_abnormal_termination (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_child_abnormal_termination_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_child_abnormal_termination_ptr->descriptor));
 }
 
 
@@ -1307,7 +1307,7 @@ cctests_condition_new_child_failure_exit_status (void)
 bool
 cctests_condition_is_child_failure_exit_status (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(cctests_descriptor_child_failure_exit_status_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_child_failure_exit_status_ptr->descriptor));
 }
 
 

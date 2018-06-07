@@ -54,7 +54,7 @@ __attribute__((__pure__,__nonnull__(1),__always_inline__))
 static inline bool
 my_condition_is_expected_failure_subtype (cce_condition_t const * C)
 {
-  return cce_is_condition(C, &(my_descriptor_expected_failure_subtype_ptr->descriptor));
+  return cce_condition_is(C, &(my_descriptor_expected_failure_subtype_ptr->descriptor));
 }
 
 cctests_decl void condition_expected_failure_subtyping_init_module (void);

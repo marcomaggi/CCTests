@@ -122,8 +122,7 @@ my_condition_new_base_subtype (cce_destination_t upper_L, int the_data)
   if (cce_location(L)) {
     cce_run_catch_handlers_raise(L, upper_L);
   } else {
-    my_condition_base_subtype_t * C = cce_sys_malloc(L, sizeof(my_condition_base_subtype_t));
-    cce_error_handler_malloc_init(L, C_H, C);
+    my_condition_base_subtype_t * C = cce_sys_malloc_guarded(L, C_H, sizeof(my_condition_base_subtype_t));
 
     cce_condition_init((cce_condition_t *) C, &(my_descriptor_base_subtype_ptr->descriptor));
     my_condition_init_base_subtype(L, C, the_data);

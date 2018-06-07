@@ -123,8 +123,7 @@ my_condition_new_regex_error_subtype (cce_destination_t upper_L, int errcode, in
   if (cce_location(L)) {
     cce_run_catch_handlers_raise(L, upper_L);
   } else {
-    my_condition_regex_error_subtype_t * C = cce_sys_malloc(L, sizeof(my_condition_regex_error_subtype_t));
-    cce_error_handler_malloc_init(L, C_H, C);
+    my_condition_regex_error_subtype_t * C = cce_sys_malloc_guarded(L, C_H, sizeof(my_condition_regex_error_subtype_t));
 
     cce_condition_init((cce_condition_t *) C, &(my_descriptor_regex_error_subtype_ptr->descriptor));
     my_condition_init_regex_error_subtype(L, C, errcode, the_data);
