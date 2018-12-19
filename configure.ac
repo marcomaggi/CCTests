@@ -5,7 +5,7 @@ AC_PREREQ([2.69])
 MMUX_PKG_VERSIONS([0],[3],[0],[devel.3])
 AC_INIT([CCTests],[MMUX_PACKAGE_VERSION],
   [marco.maggi-ipsu@poste.it],
-  [cctests],[http://marcomaggi.github.com/cctests])
+  [cctests],[https://github.com/marcomaggi/cctests])
 MMUX_INIT
 MMUX_LIBTOOL_LIBRARY_VERSIONS([cctests],3,0,0)
 AC_REVISION([0.1])
