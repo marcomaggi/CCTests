@@ -329,6 +329,11 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	  fprintf(cctests_log_stream, "CCTests: error in test function: %s, exception raised\n", test_func_name);
 	}
       }
+
+      /* Release the raised condition object. */
+      if (cce_condition(L)) {
+	cce_condition_delete(cce_condition(L));
+      }
     } else {
       /* Run the test function, if it matches the selection. */
       if (test_func_matches_user_selection(L, test_func_name)) {
