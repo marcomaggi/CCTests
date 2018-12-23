@@ -28,13 +28,13 @@
  ** ----------------------------------------------------------------- */
 
 void
-test_fun_successful (cce_destination_t L CCTESTS_UNUSED)
+test_fun_successful (cce_destination_t L)
 {
   cctests_assert(L, true);
 }
 
 void
-test_fun_failing (cce_destination_t L CCTESTS_UNUSED)
+test_fun_failing (cce_destination_t L)
 {
   cctests_assert(L, false);
 }
@@ -80,6 +80,7 @@ test_1_3 (void)
     cctests_run(test_fun_failing);
   }
   cctests_end_group();
+
   test_assert(false == cctests_latest_group_completed_successfully());
 }
 
