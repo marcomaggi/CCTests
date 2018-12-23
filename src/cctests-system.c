@@ -46,4 +46,10 @@ cctests_sys_regcomp (cce_destination_t L, regex_t * rex, char const * pattern, i
   }
 }
 
+void
+cctests_sys_regfree (regex_t * rex)
+{
+  regfree(rex);
+}
+
 /* end of file */

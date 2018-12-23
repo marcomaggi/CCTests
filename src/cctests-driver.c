@@ -35,6 +35,10 @@ static regex_t	cctests_test_program_selection;
 static regex_t	cctests_test_group_selection;
 static regex_t	cctests_test_name_selection;
 
+static bool	cctests_test_program_selection_used;
+static bool	cctests_test_group_selection_used;
+static bool	cctests_test_name_selection_used;
+
 FILE *	cctests_log_stream;
 
 static bool test_file_matches_user_selection (cce_destination_t L, char const * const groupname);
@@ -110,6 +114,9 @@ cctests_init (char const * const test_program_name)
   if (to_be_initialised) {
     to_be_initialised  = false;
     cctests_log_stream = stderr;
+    cctests_test_program_selection_used = false;
+    cctests_test_group_selection_used   = false;
+    cctests_test_name_selection_used    = false;
     cctests_conditions_module_initialisation();
 
     cctests_test_program_name	= test_program_name;
@@ -168,6 +175,17 @@ cctests_final (void)
   } else {
     status = CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_FAILURE;
   }
+
+  if (cctests_test_program_selection_used) {
+    cctests_sys_regfree(&cctests_test_program_selection);
+  }
+  if (cctests_test_group_selection_used) {
+    cctests_sys_regfree(&cctests_test_group_selection);
+  }
+  if (cctests_test_name_selection_used) {
+    cctests_sys_regfree(&cctests_test_name_selection);
+  }
+
   exit(status);
 }
 
@@ -379,6 +397,7 @@ acquire_environment_test_file (cce_destination_t upper_L)
       file_str = ".*";
     }
     cctests_sys_regcomp(L, &cctests_test_program_selection, file_str, cflags);
+    cctests_test_program_selection_used = true;
     cce_run_body_handlers(L);
   }
 }
@@ -416,6 +435,7 @@ acquire_environment_test_group (cce_destination_t upper_L)
       group_str = ".*";
     }
     cctests_sys_regcomp(L, &cctests_test_group_selection, group_str, cflags);
+    cctests_test_group_selection_used = true;
     cce_run_body_handlers(L);
   }
 }
@@ -453,6 +473,7 @@ acquire_environment_test_name (cce_destination_t upper_L)
       name_str = ".*";
     }
     cctests_sys_regcomp(L, &cctests_test_name_selection, name_str, cflags);
+    cctests_test_name_selection_used = true;
     cce_run_body_handlers(L);
   }
 }

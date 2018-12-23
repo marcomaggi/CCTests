@@ -93,6 +93,9 @@ cctests_private_decl void cctests_conditions_module_initialisation (void);
 cctests_private_decl void cctests_sys_regcomp (cce_destination_t L, regex_t * rex, char const * pattern, int cflags)
   __attribute__((__nonnull__(1,2,3)));
 
+cctests_private_decl void cctests_sys_regfree (regex_t * rex)
+  __attribute__((__nonnull__(1)));
+
 
 /** --------------------------------------------------------------------
  ** Done.
