@@ -7,7 +7,7 @@
 
 	Test file for version functions.
 
-  Copyright (C) 2017 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -108,8 +108,10 @@ test_5_1 (void)
 /* Tests that "assertion" is a base condition. */
 {
   cce_location_t	L[1];
+  cce_condition_t *	C = cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__);
 
-  test_assert(true == cctests_condition_is_base(cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__)));
+  test_assert(true == cctests_condition_is_base(C));
+  cce_condition_delete(C);
 }
 
 void
@@ -117,8 +119,10 @@ test_5_2 (void)
 /* Tests that "assertion" is a "failure" condition. */
 {
   cce_location_t	L[1];
+  cce_condition_t *	C = cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__);
 
-  test_assert(true == cctests_condition_is_failure(cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__)));
+  test_assert(true == cctests_condition_is_failure(C));
+  cce_condition_delete(C);
 }
 
 void
@@ -126,8 +130,10 @@ test_5_3 (void)
 /* Tests that "assertion" is a "assertion" condition. */
 {
   cce_location_t	L[1];
+  cce_condition_t *	C = cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__);
 
-  test_assert(true == cctests_condition_is_assertion(cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__)));
+  test_assert(true == cctests_condition_is_assertion(C));
+  cce_condition_delete(C);
 }
 
 
