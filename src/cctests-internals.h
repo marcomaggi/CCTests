@@ -88,6 +88,8 @@ cctests_private_decl char const *	cctests_test_func_name;
  ** Function prototypes.
  ** ----------------------------------------------------------------- */
 
+cctests_private_decl void cctests_release_resources (void);
+
 cctests_private_decl void cctests_conditions_module_initialisation (void);
 
 cctests_private_decl void cctests_sys_regcomp (cce_destination_t L, regex_t * rex, char const * pattern, int cflags)

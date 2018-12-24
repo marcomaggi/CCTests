@@ -165,6 +165,20 @@ cctests_init (char const * const test_program_name)
  ** ----------------------------------------------------------------- */
 
 void
+cctests_release_resources (void)
+{
+  if (cctests_test_program_selection_used) {
+    cctests_sys_regfree(&cctests_test_program_selection);
+  }
+  if (cctests_test_group_selection_used) {
+    cctests_sys_regfree(&cctests_test_group_selection);
+  }
+  if (cctests_test_name_selection_used) {
+    cctests_sys_regfree(&cctests_test_name_selection);
+  }
+}
+
+void
 cctests_final (void)
 {
   int	status;
@@ -176,16 +190,7 @@ cctests_final (void)
     status = CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_FAILURE;
   }
 
-  if (cctests_test_program_selection_used) {
-    cctests_sys_regfree(&cctests_test_program_selection);
-  }
-  if (cctests_test_group_selection_used) {
-    cctests_sys_regfree(&cctests_test_group_selection);
-  }
-  if (cctests_test_name_selection_used) {
-    cctests_sys_regfree(&cctests_test_name_selection);
-  }
-
+  cctests_release_resources();
   exit(status);
 }
 

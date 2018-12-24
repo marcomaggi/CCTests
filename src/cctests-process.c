@@ -81,6 +81,7 @@ cctests_call_in_forked_process (cce_destination_t L, cctests_child_process_funct
       cce_run_body_handlers(inner_L);
     }
     /* Terminate the child process. */
+    cctests_release_resources();
     _exit(status);
   }
 #endif
@@ -158,6 +159,7 @@ cctests_with_parent_and_child_process (cce_destination_t upper_L,
       cce_run_body_handlers(inner_L);
     }
     /* Terminate the child process. */
+    cctests_release_resources();
     _exit(status);
   }
 #endif
