@@ -56,6 +56,7 @@ AC_HEADER_STDC
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([stddef.h regex.h unistd.h sys/types.h sys/wait.h])
 
+MMUX_DETERMINE_SIZEOF([LONG],  [long])
 MMUX_DETERMINE_SIZEOF([SIZE_T],  [size_t],  [
 #ifdef HAVE_STDDEF_H
 #  include <stddef.h>
