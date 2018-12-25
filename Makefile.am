@@ -235,6 +235,13 @@ tests_expected_failure_LDADD	= $(cctests_tests_ldadd)
 
 ## --------------------------------------------------------------------
 
+.PHONY: test
+
+test:
+	for f in ./tests/$(file) ; do $(MAKE) $$f ; $$f ; done
+
+## --------------------------------------------------------------------
+
 installcheck-local: $(TESTS)
 	@for f in $(TESTS); do $(builddir)/$$f; done
 
