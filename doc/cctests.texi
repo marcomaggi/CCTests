@@ -2883,7 +2883,7 @@ Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun void cctests_condition_new_signal_1 (cctests_condition_signal_1_t * @var{C})
+@deftypefun void cctests_condition_init_signal_1 (cctests_condition_signal_1_t * @var{C})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_signal_1_t}.
 @end deftypefun
@@ -2975,7 +2975,7 @@ Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun void cctests_condition_new_signal_2 (cctests_condition_signal_2_t * @var{C})
+@deftypefun void cctests_condition_init_signal_2 (cctests_condition_signal_2_t * @var{C})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_signal_2_t}.
 @end deftypefun
@@ -3067,7 +3067,7 @@ Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun void cctests_condition_new_signal_3 (cctests_condition_signal_3_t * @var{C})
+@deftypefun void cctests_condition_init_signal_3 (cctests_condition_signal_3_t * @var{C})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_signal_3_t}.
 @end deftypefun
