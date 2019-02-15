@@ -19,7 +19,7 @@ your option) any later version.
 This program  is distributed  in the  hope that it  will be  useful, but
 WITHOUT   ANY   WARRANTY;  without   even   the   implied  warranty   of
 MERCHANTABILITY  or  FITNESS FOR  A  PARTICULAR  PURPOSE.  See  the  GNU
-General Public License for more details.
+Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
@@ -46,6 +46,7 @@ LT_INIT
 #### basic system inspection
 
 MMUX_CHECK_TARGET_OS
+AX_IS_RELEASE([git-directory])
 
 AC_LANG([C])
 MMUX_LANG_C11
@@ -56,33 +57,12 @@ AC_HEADER_STDC
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([stddef.h regex.h unistd.h sys/types.h sys/wait.h])
 
-MMUX_DETERMINE_SIZEOF([LONG],  [long])
-MMUX_DETERMINE_SIZEOF([SIZE_T],  [size_t],  [
-#ifdef HAVE_STDDEF_H
-#  include <stddef.h>
-#endif
-])
-MMUX_DETERMINE_SIZEOF([SSIZE_T], [ssize_t], [
-#ifdef HAVE_UNISTD_H
-#  include <unistd.h>
-#endif
-])
-
-MMUX_DETERMINE_SIZEOF([PTRDIFF_T], [ptrdiff_t], [
-#ifdef HAVE_STDINT_H
-#  include <stdint.h>
-#endif
-])
-MMUX_DETERMINE_SIZEOF([INTPTR_T], [intptr_t], [
-#ifdef HAVE_STDINT_H
-#  include <stdint.h>
-#endif
-])
-MMUX_DETERMINE_SIZEOF([UINTPTR_T], [uintptr_t], [
-#ifdef HAVE_STDINT_H
-#  include <stdint.h>
-#endif
-])
+MMUX_DETERMINE_SIZEOF([LONG],      [long])
+MMUX_DETERMINE_SIZEOF([SIZE_T],    [size_t],    [MMUX_INCLUDE_STDDEF_H])
+MMUX_DETERMINE_SIZEOF([SSIZE_T],   [ssize_t],   [MMUX_INCLUDE_UNISTD_H])
+MMUX_DETERMINE_SIZEOF([PTRDIFF_T], [ptrdiff_t], [MMUX_INCLUDE_STDINT_H])
+MMUX_DETERMINE_SIZEOF([INTPTR_T],  [intptr_t],  [MMUX_INCLUDE_STDINT_H])
+MMUX_DETERMINE_SIZEOF([UINTPTR_T], [uintptr_t], [MMUX_INCLUDE_STDINT_H])
 
 AC_CACHE_SAVE
 

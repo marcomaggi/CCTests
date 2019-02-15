@@ -5,7 +5,8 @@ AUTOMAKE_OPTIONS	= foreign
 EXTRA_DIST		= INSTALL			\
 			  meta/slackware/slack-desc.in
 dist_doc_DATA		= README COPYING
-AM_CFLAGS		= $(MMUX_CFLAGS) -I$(srcdir)/src
+AM_CFLAGS		= $(MMUX_CFLAGS)
+AM_CPPFLAGS		= -I$(srcdir)/src
 
 ## --------------------------------------------------------------------
 
@@ -13,7 +14,8 @@ EXTRA_DIST		+= meta/scripts/cctests.pc.in
 pkgconfigdir		= $(libdir)/pkgconfig
 nodist_pkgconfig_DATA	= meta/scripts/cctests.pc
 
-## --------------------------------------------------------------------
+
+#### documentation
 
 AM_MAKEINFOFLAGS	= --no-split
 AM_MAKEINFOHTMLFLAGS	= --split=node -c WORDS_IN_PAGE=0 \
@@ -35,7 +37,7 @@ cctests_AGE		= @cctests_VERSION_INTERFACE_AGE@
 include_HEADERS		= src/cctests.h
 
 lib_LTLIBRARIES		= libcctests.la
-libcctests_la_CPPFLAGS	= $(CCEXCEPTIONS_CFLAGS)
+libcctests_la_CFLAGS	= $(AM_CFLAGS) $(CCEXCEPTIONS_CFLAGS)
 libcctests_la_LDFLAGS	= -version-info $(cctests_CURRENT):$(cctests_REVISION):$(cctests_AGE) \
 			  $(CCEXCEPTIONS_LIBS)
 libcctests_la_SOURCES	= \
@@ -79,16 +81,19 @@ check_PROGRAMS	= \
 TESTS				= $(check_PROGRAMS)
 XFAIL_TESTS			= tests/assertions
 
-cctests_tests_cppflags		= -I$(srcdir)/src -I$(srcdir)/tests $(CCEXCEPTIONS_CFLAGS)
+cctests_tests_cflags		= $(AM_FLAGS) $(CCEXCEPTIONS_CFLAGS)
+cctests_tests_cppflags		= $(AM_CPPFLAGS) -I$(srcdir)/tests
 cctests_tests_ldadd		= $(CCEXCEPTIONS_LIBS) libcctests.la
 
 ## --------------------------------------------------------------------
 
+tests_version_CFLAGS		= $(cctests_tests_cflags)
 tests_version_CPPFLAGS		= $(cctests_tests_cppflags)
 tests_version_LDADD		= $(cctests_tests_ldadd)
 
 ## --------------------------------------------------------------------
 
+tests_assert_conditions_CFLAGS	= $(cctests_tests_cflags)
 tests_assert_conditions_CPPFLAGS= $(cctests_tests_cppflags)
 tests_assert_conditions_LDADD	= $(cctests_tests_ldadd)
 
@@ -96,6 +101,7 @@ tests/assert_conditions.$(OBJEXT):	tests/test-utils.h
 
 ## --------------------------------------------------------------------
 
+tests_condition_base_subtyping_CFLAGS		= $(cctests_tests_cflags)
 tests_condition_base_subtyping_CPPFLAGS		= $(cctests_tests_cppflags)
 tests_condition_base_subtyping_LDADD		= $(cctests_tests_ldadd)
 tests_condition_base_subtyping_SOURCES		= \
@@ -105,6 +111,7 @@ tests_condition_base_subtyping_SOURCES		= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_success_subtyping_CFLAGS	= $(cctests_tests_cflags)
 tests_condition_success_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_success_subtyping_LDADD		= $(cctests_tests_ldadd)
 tests_condition_success_subtyping_SOURCES	= \
@@ -114,6 +121,7 @@ tests_condition_success_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_skipped_subtyping_CFLAGS	= $(cctests_tests_cflags)
 tests_condition_skipped_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_skipped_subtyping_LDADD		= $(cctests_tests_ldadd)
 tests_condition_skipped_subtyping_SOURCES	= \
@@ -123,6 +131,7 @@ tests_condition_skipped_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_failure_subtyping_CFLAGS	= $(cctests_tests_cflags)
 tests_condition_failure_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_failure_subtyping_LDADD		= $(cctests_tests_ldadd)
 tests_condition_failure_subtyping_SOURCES	= \
@@ -132,6 +141,7 @@ tests_condition_failure_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_expected_failure_subtyping_CFLAGS	= $(cctests_tests_cflags)
 tests_condition_expected_failure_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_expected_failure_subtyping_LDADD	= $(cctests_tests_ldadd)
 tests_condition_expected_failure_subtyping_SOURCES	= \
@@ -141,6 +151,7 @@ tests_condition_expected_failure_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_assertion_subtyping_CFLAGS	= $(cctests_tests_cflags)
 tests_condition_assertion_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_assertion_subtyping_LDADD	= $(cctests_tests_ldadd)
 tests_condition_assertion_subtyping_SOURCES	= \
@@ -150,6 +161,7 @@ tests_condition_assertion_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_unreachable_subtyping_CFLAGS	= $(cctests_tests_cflags)
 tests_condition_unreachable_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_unreachable_subtyping_LDADD	= $(cctests_tests_ldadd)
 tests_condition_unreachable_subtyping_SOURCES	= \
@@ -159,6 +171,7 @@ tests_condition_unreachable_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_signal_subtyping_CFLAGS		= $(cctests_tests_cflags)
 tests_condition_signal_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_signal_subtyping_LDADD		= $(cctests_tests_ldadd)
 tests_condition_signal_subtyping_SOURCES	= \
@@ -168,6 +181,7 @@ tests_condition_signal_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_signal_1_subtyping_CFLAGS	= $(cctests_tests_cflags)
 tests_condition_signal_1_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_signal_1_subtyping_LDADD	= $(cctests_tests_ldadd)
 tests_condition_signal_1_subtyping_SOURCES	= \
@@ -177,6 +191,7 @@ tests_condition_signal_1_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_signal_2_subtyping_CFLAGS	= $(cctests_tests_cflags)
 tests_condition_signal_2_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_signal_2_subtyping_LDADD	= $(cctests_tests_ldadd)
 tests_condition_signal_2_subtyping_SOURCES	= \
@@ -186,6 +201,7 @@ tests_condition_signal_2_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_signal_3_subtyping_CFLAGS	= $(cctests_tests_cflags)
 tests_condition_signal_3_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_signal_3_subtyping_LDADD	= $(cctests_tests_ldadd)
 tests_condition_signal_3_subtyping_SOURCES	= \
@@ -195,6 +211,7 @@ tests_condition_signal_3_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_regex_error_subtyping_CFLAGS	= $(cctests_tests_cflags)
 tests_condition_regex_error_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_regex_error_subtyping_LDADD	= $(cctests_tests_ldadd)
 tests_condition_regex_error_subtyping_SOURCES	= \
@@ -204,6 +221,7 @@ tests_condition_regex_error_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_condition_regex_compilation_error_subtyping_CFLAGS	= $(cctests_tests_cflags)
 tests_condition_regex_compilation_error_subtyping_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_condition_regex_compilation_error_subtyping_LDADD		= $(cctests_tests_ldadd)
 tests_condition_regex_compilation_error_subtyping_SOURCES	= \
@@ -213,6 +231,7 @@ tests_condition_regex_compilation_error_subtyping_SOURCES	= \
 
 ## --------------------------------------------------------------------
 
+tests_driver_CFLAGS		= $(cctests_tests_cflags)
 tests_driver_CPPFLAGS		= $(cctests_tests_cppflags)
 tests_driver_LDADD		= $(cctests_tests_ldadd)
 
@@ -220,16 +239,19 @@ tests/driver.$(OBJEXT):		tests/test-utils.h
 
 ## --------------------------------------------------------------------
 
+tests_assertions_CFLAGS		= $(cctests_tests_cflags)
 tests_assertions_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_assertions_LDADD		= $(cctests_tests_ldadd)
 
 ## --------------------------------------------------------------------
 
+tests_processes_CFLAGS		= $(cctests_tests_cflags)
 tests_processes_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_processes_LDADD		= $(cctests_tests_ldadd)
 
 ## --------------------------------------------------------------------
 
+tests_expected_failure_CFLAGS	= $(cctests_tests_cflags)
 tests_expected_failure_CPPFLAGS	= $(cctests_tests_cppflags)
 tests_expected_failure_LDADD	= $(cctests_tests_ldadd)
 
