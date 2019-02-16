@@ -37,6 +37,7 @@ cctests_AGE		= @cctests_VERSION_INTERFACE_AGE@
 include_HEADERS		= src/cctests.h
 
 lib_LTLIBRARIES		= libcctests.la
+libcctests_la_CPPFLAGS	= $(AM_CPPFLAGS)
 libcctests_la_CFLAGS	= $(AM_CFLAGS) $(CCEXCEPTIONS_CFLAGS)
 libcctests_la_LDFLAGS	= -version-info $(cctests_CURRENT):$(cctests_REVISION):$(cctests_AGE) \
 			  $(CCEXCEPTIONS_LIBS)
@@ -83,7 +84,7 @@ XFAIL_TESTS			= tests/assertions
 
 cctests_tests_cflags		= $(AM_FLAGS) $(CCEXCEPTIONS_CFLAGS)
 cctests_tests_cppflags		= $(AM_CPPFLAGS) -I$(srcdir)/tests
-cctests_tests_ldadd		= $(CCEXCEPTIONS_LIBS) libcctests.la
+cctests_tests_ldadd		= libcctests.la
 
 ## --------------------------------------------------------------------
 
