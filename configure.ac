@@ -78,6 +78,7 @@ AC_CACHE_SAVE
 #### external libraries
 
 MMUX_CHECK_PKG_CONFIG_MACROS
+PKG_INSTALLDIR
 PKG_CHECK_MODULES([CCEXCEPTIONS],[ccexceptions >= 0.8.0])
 
 MMUX_PKG_CONFIG_FIND_INCLUDE_FILE([ccexceptions],[ccexceptions.h])

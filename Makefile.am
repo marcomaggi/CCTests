@@ -10,8 +10,6 @@ AM_CPPFLAGS		= -I$(srcdir)/src
 
 ## --------------------------------------------------------------------
 
-EXTRA_DIST		+= meta/scripts/cctests.pc.in
-pkgconfigdir		= $(libdir)/pkgconfig
 nodist_pkgconfig_DATA	= meta/scripts/cctests.pc
 
 
