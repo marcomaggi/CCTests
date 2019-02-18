@@ -29,6 +29,7 @@
  ** ----------------------------------------------------------------- */
 
 #include "cctests-internals.h"
+#include <string.h>
 #include <stdarg.h>
 
 
@@ -50,13 +51,13 @@ cctests_p_debug_print (const char * file, const char * function, int line, const
     ++i;
   }
   file += i;
-  /*   CCTESTS_FPRINTF(stderr, "%s:%-25s (%d) *** ", file, function, line); */
-  CCTESTS_FPRINTF(stderr, "%-30s(%s:%d) *** ", function, file, line);
+  /*   CCTESTS_FPRINTF(cctests_log_stream, "%s:%-25s (%d) *** ", file, function, line); */
+  CCTESTS_FPRINTF(cctests_log_stream, "%-30s(%s:%d) *** ", function, file, line);
   va_start(ap, template);
   {
-    CCTESTS_VFPRINTF(stderr, template, ap);
-    CCTESTS_FPRINTF(stderr, "\n");
-    fflush(stderr);
+    CCTESTS_VFPRINTF(cctests_log_stream, template, ap);
+    CCTESTS_FPRINTF(cctests_log_stream, "\n");
+    fflush(cctests_log_stream);
   }
   va_end(ap);
 }

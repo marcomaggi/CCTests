@@ -3484,10 +3484,10 @@ When debugging is enabled, expand to:
 
 
 @deftypefn {Preprocessor Macro} void cctests_debug_print (char const * @var{template}, @dots{})
-When debugging is enabled, expand to an expression that prints to @stderr{} a debugging message.
-The message is composed of the current position in the source code and the result of formatting
-@var{template} with the given, optional, arguments; formatting works like it does for
-@cfunc{printf}.
+When debugging is enabled, expand to an expression that prints to @code{cctests_log_stream} a
+debugging message.  The message is composed of the current position in the source code and the
+result of formatting @var{template} with the given, optional, arguments; formatting works like it
+does for @cfunc{printf}.
 @end deftypefn
 
 
