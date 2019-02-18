@@ -52,6 +52,20 @@ test_1_4 (cce_destination_t L)
   cctests_assert_msg(L, false, "the expression is: %d", false);
 }
 
+static void
+test_1_5 (cce_destination_t L)
+/* Test the macro without optional arguments. */
+{
+  cctests_assert_msg(L, true, "the expression is: true");
+}
+
+static void
+test_1_6 (cce_destination_t L)
+/* Test the macro without optional arguments. */
+{
+  cctests_assert_msg(L, false, "the expression is: false");
+}
+
 
 /** --------------------------------------------------------------------
  ** ASCIIZ string assertions.
@@ -204,6 +218,8 @@ main (void)
       cctests_run(test_1_2);
       cctests_run(test_1_3);
       cctests_run(test_1_4);
+      cctests_run(test_1_5);
+      cctests_run(test_1_6);
     }
     cctests_end_group();
 

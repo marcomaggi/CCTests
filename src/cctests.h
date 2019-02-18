@@ -912,8 +912,8 @@ cctests_decl void cctests_p_assert (cce_destination_t L, char const * expr, bool
 
 /* ------------------------------------------------------------------ */
 
-#define cctests_assert_msg(L,EXPR,TEMPLATE,...) \
-  cctests_p_assert_msg((L), "cctests_assert_msg(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__, TEMPLATE, __VA_ARGS__)
+#define cctests_assert_msg(L,EXPR,...) \
+  cctests_p_assert_msg((L), "cctests_assert_msg(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__, __VA_ARGS__)
 
 cctests_decl void cctests_p_assert_msg (cce_destination_t L, char const * expr, bool result,
 					char const * filename, char const * funcname, int linenum,
