@@ -51,8 +51,7 @@ cctests_p_debug_print (const char * file, const char * function, int line, const
     ++i;
   }
   file += i;
-  /*   CCTESTS_FPRINTF(cctests_log_stream, "%s:%-25s (%d) *** ", file, function, line); */
-  CCTESTS_FPRINTF(cctests_log_stream, "%-30s(%s:%d) *** ", function, file, line);
+  CCTESTS_FPRINTF(cctests_log_stream, "%s (%s:%d) *** ", function, file, line);
   va_start(ap, template);
   {
     CCTESTS_VFPRINTF(cctests_log_stream, template, ap);
