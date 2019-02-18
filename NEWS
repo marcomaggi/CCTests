@@ -10,6 +10,12 @@ Revision 0.3.0-devel.6
 
 * Added some printing facilities for debugging purposes.
 
+* Extended  "cctests_condition_assertion_t"  to   include  an  optional,
+  dynamically allocated, string as description message.
+
+* Added macro "cctests_assert_msg()" to  include a formatted description
+  message in the raised exceptional-condition object.
+
 
 Revision 0.3.0-devel.5
 ----------------------

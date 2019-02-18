@@ -502,6 +502,14 @@ test_1_1 (cce_destination_t upper_L)
 Evaluate the expression @var{expr}; this macro is similar, but not equal, to the standard
 @cfunc{assert}.  If the expression evaluates to @ctrue{}: just return.  Otherwise raise an exception
 of type @objtype{cctests_condition_assertion_t} by performing a non--local exit to @var{L}.
+@end deftypefn
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_msg (cce_destination_t @var{L}, @var{expr}, char const * @var{message}, @dots{})
+Like @cfunc{cctests_assert}, but format @var{template} with the given optional arguments and include
+it in the raised exceptional--condition object as description message.
+@end deftypefn
+
 
 Here are some usage examples:
 
@@ -553,7 +561,6 @@ test_1_5 (cce_destination_t upper_L)
   @}
 @}
 @end example
-@end deftypefn
 
 @c page
 @node assertions strings
@@ -1643,6 +1650,10 @@ the failed assertion is located.  This value is meant to be generated with the p
 @item int linenum
 The line number in the source file in which the failed assertion is located.  This value is meant to
 be generated with the preprocessor macro @code{__LINE__}.
+
+@item char const * dynamic_string
+This is either @cnull{} or a pointer to an @asciiz{} message string allocated using the standard
+allocator.
 @end table
 @end deftp
 
@@ -1653,18 +1664,26 @@ Pointer to a statically allocated exceptional condition descriptor.
 
 
 @deftypefun void cctests_condition_init_assertion (cctests_condition_assertion_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
+@deftypefunx void cctests_condition_init_assertion_msg (cctests_condition_assertion_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_assertion_t}.
 
-The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are @strong{not} duplicated.
+The argument @var{message} is either @cnull{} or a pointer to an @asciiz{} message string allocated
+using the standard allocator; the ownership of this string is transferred to the
+exceptional--condition object.
 @end deftypefun
 
 
 @deftypefun {cce_condition_t const *} cctests_condition_new_assertion (cce_destination_t @var{L}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
+@deftypefunx {cce_condition_t const *} cctests_condition_new_assertion_msg (cce_destination_t @var{L}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
 Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
 an exception by performing a non--local exit to @var{L}.
 
-The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are @strong{not} duplicated.
+The argument @var{message} is either @cnull{} or a pointer to an @asciiz{} message string allocated
+using the standard allocator; the ownership of this string is transferred to the
+exceptional--condition object.
 @end deftypefun
 
 

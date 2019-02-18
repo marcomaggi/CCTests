@@ -7,7 +7,7 @@
 
 
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   This program is free  software: you can redistribute it and/or  modify it under the
   terms of the  GNU Lesser General Public  License as published by  the Free Software
@@ -29,6 +29,7 @@
 #include "cctests-internals.h"
 #include <string.h>
 #include <inttypes.h>
+#include <stdarg.h>
 
 
 /** --------------------------------------------------------------------
@@ -45,6 +46,58 @@ cctests_p_assert (cce_destination_t L, char const * const expr, bool const resul
 	      filename, funcname, linenum, expr);
     }
     cce_raise(L, cctests_condition_new_assertion(L, expr, filename, funcname, linenum));
+  }
+}
+
+void
+cctests_p_assert_msg (cce_destination_t L, char const * expr, bool result,
+		      char const * filename, char const * funcname, int linenum,
+		      char const * template, ...)
+{
+  if (false == result) {
+    if (0) {
+      fprintf(cctests_log_stream, "CCTests: %s: %s: line %d: assertion failure: %s\n",
+	      filename, funcname, linenum, expr);
+      {
+	va_list		ap;
+
+	va_start(ap, template);
+	{
+	  vfprintf(cctests_log_stream, template, ap);
+	  fprintf(cctests_log_stream, "\n");
+	  fflush(cctests_log_stream);
+	}
+	va_end(ap);
+      }
+    }
+
+    /* Build the dynamic string representing the message. */
+    {
+      size_t	str_len  = 255;
+      char	*str_ptr = cce_sys_malloc(L, 1+str_len);
+      size_t	required_len = 0;
+
+      {
+	va_list	ap;
+	va_start(ap, template);
+	{
+	  required_len = vsnprintf(str_ptr, str_len, template, ap);
+	}
+	va_end(ap);
+      }
+      if (str_len <= required_len) {
+	/* Not enough room in "str_buf". */
+	va_list	ap;
+	str_len = required_len;
+	str_ptr = cce_sys_realloc(L, str_ptr, 1+str_len);
+	va_start(ap, template);
+	{
+	  vsnprintf(str_ptr, str_len, template, ap);
+	}
+	va_end(ap);
+      }
+      cce_raise(L, cctests_condition_new_assertion_msg(L, expr, filename, funcname, linenum, str_ptr));
+    }
   }
 }
 

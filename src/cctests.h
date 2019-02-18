@@ -374,9 +374,14 @@ struct cctests_condition_assertion_t {
   char const *			filename;
   char const *			funcname;
   int				linenum;
+  /* This is either NULL or a pointer to an ASCIIZ message string allocated using the
+     standard allocator. */
+  char const *			dynamic_string;
 };
 
 cctests_decl cctests_descriptor_assertion_t const * const cctests_descriptor_assertion_ptr;
+
+/* ------------------------------------------------------------------ */
 
 cctests_decl void cctests_condition_init_assertion (cctests_condition_assertion_t * C,
 						    char const * const expr,
@@ -391,6 +396,26 @@ cctests_decl cce_condition_t const * cctests_condition_new_assertion (cce_destin
 								      char const * const funcname,
 								      int const linenum)
   __attribute__((__nonnull__(1,2,3,4),__returns_nonnull__));
+
+/* ------------------------------------------------------------------ */
+
+cctests_decl void cctests_condition_init_assertion_msg (cctests_condition_assertion_t * C,
+							char const * const expr,
+							char const * const filename,
+							char const * const funcname,
+							int const linenum,
+							char const * message)
+  __attribute__((__nonnull__(1,2,3,4)));
+
+cctests_decl cce_condition_t const * cctests_condition_new_assertion_msg (cce_destination_t L,
+									  char const * const expr,
+									  char const * const filename,
+									  char const * const funcname,
+									  int const linenum,
+									  char const * message)
+  __attribute__((__nonnull__(1,2,3,4),__returns_nonnull__));
+
+/* ------------------------------------------------------------------ */
 
 cctests_decl bool cctests_condition_is_assertion (cce_condition_t const * C)
   __attribute__((__pure__,__nonnull__(1)));
@@ -882,8 +907,17 @@ cctests_skip (void)
 
 #define cctests_assert(L,EXPR)	cctests_p_assert((L), "cctests_assert(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__)
 
-cctests_decl void cctests_p_assert (cce_destination_t L, char const * const expr, bool result,
-				    char const * const filename, char const * const funcname, int const linenum);
+cctests_decl void cctests_p_assert (cce_destination_t L, char const * expr, bool result,
+				    char const * filename, char const * funcname, int linenum);
+
+/* ------------------------------------------------------------------ */
+
+#define cctests_assert_msg(L,EXPR,TEMPLATE,...) \
+  cctests_p_assert_msg((L), "cctests_assert_msg(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__, TEMPLATE, __VA_ARGS__)
+
+cctests_decl void cctests_p_assert_msg (cce_destination_t L, char const * expr, bool result,
+					char const * filename, char const * funcname, int linenum,
+					char const * template, ...);
 
 /* ------------------------------------------------------------------ */
 

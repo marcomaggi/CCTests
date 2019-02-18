@@ -7,7 +7,7 @@
 
 
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   This is free software; you  can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -299,7 +299,12 @@ cctests_descriptor_assertion_t const * const cctests_descriptor_assertion_ptr = 
 void
 cctests_condition_delete_assertion (cce_condition_t * C)
 {
-  free(C);
+  CCTESTS_PC(cctests_condition_assertion_t, K, C);
+
+  if (K->dynamic_string) {
+    free((void *)K->dynamic_string);
+  }
+  free(K);
 }
 
 char const *
@@ -313,9 +318,13 @@ cctests_condition_print_assertion_fun (cce_condition_t const * C)
 {
   CCTESTS_PC(cctests_condition_assertion_t, K, C);
 
-  fprintf(cctests_log_stream, "CCTests: \033[35;1massertion failure\033[0m in test function %s: %s: %s: line %d\n\tcall:     %s\n",
+  fprintf(cctests_log_stream, "CCTests: \033[35;1massertion failure\033[0m in test function %s: %s: %s: line %d\n",
 	  cctests_test_func_name,
-	  K->filename, K->funcname, K->linenum, K->expr);
+	  K->filename, K->funcname, K->linenum);
+  if (K->dynamic_string) {
+    fprintf(cctests_log_stream, "\tmessage:  %s\n", K->dynamic_string);
+  }
+  fprintf(cctests_log_stream,   "\tcall:     %s\n", K->expr);
 }
 
 /* ------------------------------------------------------------------ */
@@ -335,11 +344,15 @@ cctests_condition_init_assertion (cctests_condition_assertion_t * C,
   C->filename			= filename;
   C->funcname			= funcname;
   C->linenum			= linenum;
+  C->dynamic_string		= NULL;
 }
 
 cce_condition_t const *
 cctests_condition_new_assertion (cce_destination_t L,
-				 char const * const expr, char const * const filename, char const * const funcname, int const linenum)
+				 char const * const expr,
+				 char const * const filename,
+				 char const * const funcname,
+				 int const linenum)
 {
   cctests_condition_assertion_t *	C = cce_sys_malloc(L, sizeof(cctests_condition_assertion_t));
 
@@ -350,6 +363,47 @@ cctests_condition_new_assertion (cce_destination_t L,
 
   return (cce_condition_t const *)C;
 }
+
+/* ------------------------------------------------------------------ */
+
+void
+cctests_condition_init_assertion_msg (cctests_condition_assertion_t * C,
+				      char const * const expr,
+				      char const * const filename,
+				      char const * const funcname,
+				      int const linenum,
+				      char const * message)
+{
+  /* Initialise the parent type. */
+  cctests_condition_init_failure(&(C->failure));
+
+  /* Initialise the fields of this type. */
+  C->expr			= expr;
+  C->filename			= filename;
+  C->funcname			= funcname;
+  C->linenum			= linenum;
+  C->dynamic_string		= message;
+}
+
+cce_condition_t const *
+cctests_condition_new_assertion_msg (cce_destination_t L,
+				     char const * const expr,
+				     char const * const filename,
+				     char const * const funcname,
+				     int const linenum,
+				     char const * message)
+{
+  cctests_condition_assertion_t *	C = cce_sys_malloc(L, sizeof(cctests_condition_assertion_t));
+
+  /* Initialise the basic condition fields. */
+  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_stru.descriptor);
+
+  cctests_condition_init_assertion_msg(C, expr, filename, funcname, linenum, message);
+
+  return (cce_condition_t const *)C;
+}
+
+/* ------------------------------------------------------------------ */
 
 bool
 cctests_condition_is_assertion (cce_condition_t const * C)
