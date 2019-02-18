@@ -33,7 +33,7 @@
 
 @c To be used as @value{COPYRIGHT_YEARS} whenever we need to include the
 @c list of copyright years.
-@set COPYRIGHT_YEARS            2017, 2018
+@set COPYRIGHT_YEARS            2017, 2018, 2019
 
 @c ------------------------------------------------------------
 
@@ -136,6 +136,7 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 * conditions::                  Condition object types.
 * utils::                       Utility definitions.
 * constants::                   Useful constants.
+* debugging::                   Debugging facilities.
 * automake::                    Interfacing with @gnu{} Automake.
 
 Appendices
@@ -3457,6 +3458,46 @@ Maximum value representable by the type @objtype{uintptr_t}.
 @deftypevr Constant {uintptr_t const} CCTESTS_UINTPTR_MIN
 Minimum value representable by the type @objtype{uintptr_t}.
 @end deftypevr
+
+@c page
+@node debugging
+@chapter Debugging facilities
+
+
+@value{PACKAGE} implements some facilities to print common debugging messages from test programs.
+
+
+@defmac CCTESTS_DEBUGGING
+Enables the debugging facilities when it is defined to @samp{1} before the inclusion of
+@file{cctests.h}.  By default, or if this symbol is defined to @samp{0}: the macros documented below
+will expand to the empty expression.
+@end defmac
+
+
+@deftypefn {Preprocessor Macro} {char const *} cctests_debug_question (@var{EXPR})
+When debugging is enabled, expand to:
+
+@example
+((@var{EXPR})? "yes" : "no")
+@end example
+@end deftypefn
+
+
+@deftypefn {Preprocessor Macro} void cctests_debug_print (char const * @var{template}, @dots{})
+When debugging is enabled, expand to an expression that prints to @stderr{} a debugging message.
+The message is composed of the current position in the source code and the result of formatting
+@var{template} with the given, optional, arguments; formatting works like it does for
+@cfunc{printf}.
+@end deftypefn
+
+
+@deftypefn {Preprocessor Macro} void cctests_debug_mark (void)
+When debugging is enabled, expand to:
+
+@example
+cctests_debug_print("mark")
+@end example
+@end deftypefn
 
 @c page
 @node automake

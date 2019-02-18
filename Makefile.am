@@ -49,6 +49,7 @@ libcctests_la_SOURCES	= \
 	src/cctests-driver.c			\
 	src/cctests-assertions.c		\
 	src/cctests-process.c			\
+	src/cctests-debugging.c			\
 	src/cctests-helpers.c
 
 

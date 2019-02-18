@@ -9,7 +9,7 @@
 	be included  in all the source  files using the features  of the
 	library.
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   This program is free  software: you can redistribute it and/or  modify it under the
   terms of the  GNU Lesser General Public  License as published by  the Free Software
@@ -1217,6 +1217,41 @@ cctests_decl void cctests_with_parent_and_child_process (cce_destination_t L,
 							 cctests_parent_process_function_t * parent_function,
 							 cctests_child_process_function_t * child_function)
   __attribute__((__nonnull__(1,2,3)));
+
+
+/** --------------------------------------------------------------------
+ ** Debugging facilities.
+ ** ----------------------------------------------------------------- */
+
+#ifndef CCTESTS_DEBUGGING
+#  define CCTESTS_DEBUGGING		0
+#endif
+#ifndef CCTESTS_DEBUGGING_HERE
+#  define CCTESTS_DEBUGGING_HERE	1
+#endif
+#ifndef CCTESTS_FPRINTF
+#  define CCTESTS_FPRINTF		fprintf
+#endif
+#ifndef CCTESTS_VFPRINTF
+#  define CCTESTS_VFPRINTF		vfprintf
+#endif
+
+#if (CCTESTS_DEBUGGING == 1)
+
+#  define cctests_debug_question(EXPR)		((EXPR)?"yes":"no")
+#  define cctests_debug_mark()			cctests_debug_print("mark")
+
+#  define cctests_debug_print(...)		\
+  if (CCTESTS_DEBUGGING_HERE) { cctests_p_debug_print(__FILE__,__func__,__LINE__,__VA_ARGS__); }
+
+cctests_decl void cctests_p_debug_print (const char * file, const char * function, int line, const char * template, ...)
+  __attribute__((__unused__,__nonnull__(1,2,4)));
+
+#else
+#  define cctests_debug_print(...)	/* empty */
+#  define cctests_debug_mark()		/* empty */
+#  define cctests_debug_question(...)	/* empty */
+#endif
 
 
 /** --------------------------------------------------------------------
