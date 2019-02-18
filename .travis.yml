@@ -143,6 +143,19 @@ matrix:
             - gcc-7
       script: "./configure --enable-maintainer-mode; make all; make check;"
 
+    # Plain build under Ubuntu GNU+Linux "trusty", GCC 8.
+    - os: linux
+      dist: trusty
+      compiler: gcc-8
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - texinfo
+            - gcc-8
+      script: "./configure --enable-maintainer-mode; make all; make check;"
+
     # Plain build  under Ubuntu GNU+Linux "trusty",  CLang automatically
     # selected by Travis CI.
     - os: linux
