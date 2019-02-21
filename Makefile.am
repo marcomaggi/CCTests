@@ -21,8 +21,10 @@ AM_MAKEINFOHTMLFLAGS	= --split=node -c WORDS_IN_PAGE=0 \
 
 info_TEXINFOS		= doc/cctests.texi
 doc_cctests_TEXINFOS	= \
-	doc/macros.texi		\
-	doc/lgpl-3.0.texi	\
+	doc/overview-linking.texi	\
+	doc/overview-ccexceptions.texi	\
+	doc/macros.texi			\
+	doc/lgpl-3.0.texi		\
 	doc/fdl-1.3.texi
 
 

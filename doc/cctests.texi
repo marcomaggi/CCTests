@@ -186,33 +186,8 @@ following definitions before including @strong{all} the header files:
 #define _POSIX_C_SOURCE         200809L
 @end example
 
-@menu
-* overview linking::            Linking code with the library.
-@end menu
-
-@c page
-@node overview linking
-@section Linking code with the library
-
-
-This package installs a data file for @command{pkg-config}, so when searching for the installed
-library with the @gnu{} Autotools, we can add the following macro use to @file{configure.ac}:
-
-@example
-PKG_CHECK_MODULES([CCTESTS],[cctests >= 0.1])
-@end example
-
-@noindent
-which will set the variables @code{CCTESTS_LIBS} and @code{CCTESTS_CFLAGS}.
-
-Alternatively we can use the raw @gnu{} Autoconf macros:
-
-@example
-AC_CHECK_LIB([cctests],[cctests_version_string],,
-  [AC_MSG_FAILURE([test for CCTests library failed])])
-AC_CHECK_HEADERS([cctests.h],,
-  [AC_MSG_FAILURE([test for CCTests header failed])])
-@end example
+@include overview-linking.texi
+@include overview-ccexceptions.texi
 
 @c page
 @node version
