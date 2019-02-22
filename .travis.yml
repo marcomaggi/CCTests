@@ -153,7 +153,7 @@ matrix:
           packages:
             - texinfo
             - gcc-5
-      script: "./configure --enable-maintainer-mode --enable-shared --disable-static;; make all; make check;"
+      script: "./configure --enable-maintainer-mode --enable-shared --disable-static; make all; make check;"
 
     # Plain build under Ubuntu GNU+Linux "trusty", GCC 6.
     - os: linux
@@ -166,7 +166,7 @@ matrix:
           packages:
             - texinfo
             - gcc-6
-      script: "./configure --enable-maintainer-mode --enable-shared --disable-static;; make all; make check;"
+      script: "./configure --enable-maintainer-mode --enable-shared --disable-static; make all; make check;"
 
     # Plain build under Ubuntu GNU+Linux "trusty", GCC 7.
     - os: linux
@@ -179,7 +179,7 @@ matrix:
           packages:
             - texinfo
             - gcc-7
-      script: "./configure --enable-maintainer-mode --enable-shared --disable-static;; make all; make check;"
+      script: "./configure --enable-maintainer-mode --enable-shared --disable-static; make all; make check;"
 
     # Plain build under Ubuntu GNU+Linux "trusty", GCC 8.
     - os: linux
@@ -192,7 +192,7 @@ matrix:
           packages:
             - texinfo
             - gcc-8
-      script: "./configure --enable-maintainer-mode --enable-shared --disable-static;; make all; make check;"
+      script: "./configure --enable-maintainer-mode --enable-shared --disable-static; make all; make check;"
 
     # Plain build under Ubuntu GNU+Linux "trusty", CLang automatically selected by Travis CI.
     - os: linux
