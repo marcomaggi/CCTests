@@ -37,6 +37,20 @@
 
 @c ------------------------------------------------------------
 
+@set PACKAGE_AUTOCONF_PREFIX            CCTESTS
+@set PACKAGE_PKGCONFIG_MODULE           cctests
+@set PACKAGE_LIBS_VAR                   @env{CCTESTS_LIBS}
+@set PACKAGE_CFLAGS_VAR                 @env{CCTESTS_CFLAGS}
+@c This is the stem of the library in "libcctests.so".
+@set PACKAGE_LIBSTEM                    cctests
+@set PACKAGE_API_PREFIX_LOWER           cctests_
+@set PACKAGE_API_PREFIX_UPPER           CCTESTS_
+
+@set PACKAGE_HEADER                     cctests.h
+@set PACKAGE_HEADER_FILE                @file{@value{PACKAGE_HEADER}}
+
+@c ------------------------------------------------------------------------
+
 @set CCEXCEPTIONS_REQUIRED_VERSION      0.8.0
 
 @c ------------------------------------------------------------
@@ -166,11 +180,14 @@ This package depends upon the external packages: CCExceptions at least version
 @value{CCEXCEPTIONS_REQUIRED_VERSION}; This package relies on @command{pkg-config} to find the
 dependency packages installed on the system.
 
-@value{PACKAGE} installs the single header file @file{cctests.h}.  All the function names in the
-@api{} are prefixed with @code{cctests_}; all the preprocessor symbol names are prefixed with
-@code{CCTESTS_}; all the type names are prefixed with @code{cctests_} and suffixed with @code{_t}.
-The header file @file{cctests.h} appropriately includes the header file @file{ccexceptions.h} from
-the package CCExceptions.
+@cindex @value{PACKAGE_HEADER_FILE}, header file
+@cindex Header file @value{PACKAGE_HEADER_FILE}
+@value{PACKAGE} installs the single header file @value{PACKAGE_HEADER_FILE}.  All the function names
+in the @api{} are prefixed with @code{@value{PACKAGE_API_PREFIX_LOWER}}; all the preprocessor symbol
+names are prefixed with @code{@value{PACKAGE_API_PREFIX_UPPER}}; all the type names are prefixed
+with @code{@value{PACKAGE_API_PREFIX_LOWER}} and suffixed with @code{_t}.  The header file
+@value{PACKAGE_HEADER_FILE} appropriately includes the header file @file{ccexceptions.h} from the
+package CCExceptions.
 
 The library's @api{} uses both @code{inline} functions and preprocessor macros to integrate some
 common operations at the call site.
@@ -179,8 +196,8 @@ Notice that, before using the library, we need to call the global initialisation
 @cfunc{cctests_init}.
 
 @strong{IMPORTANT} To use the library we must enable the @posix{} features when including the
-standard header files; so either we include @file{cctests.h} as first header, or we include the
-following definitions before including @strong{all} the header files:
+standard header files; so either we include @value{PACKAGE_HEADER_FILE} as first header, or we
+include the following definitions before including @strong{all} the header files:
 
 @example
 #define _POSIX_C_SOURCE         200809L

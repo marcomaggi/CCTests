@@ -6,11 +6,11 @@ This package installs a data file for @command{pkg-config}, so when searching fo
 library with the @gnu{} Autotools, we can add the following macro use to @file{configure.ac}:
 
 @example
-PKG_CHECK_MODULES([CCTESTS],[cctests >= 0.1.0])
+PKG_CHECK_MODULES([@value{PACKAGE_AUTOCONF_PREFIX}],[@value{PACKAGE_PKGCONFIG_MODULE} >= 0.1.0])
 @end example
 
 @noindent
-which will set the variables @code{CCTESTS_LIBS} and @code{CCTESTS_CFLAGS}.  To avoid
+which will set the variables @value{PACKAGE_LIBS_VAR} and @value{PACKAGE_CFLAGS_VAR}.  To avoid
 problems with @command{pkg-config}, we need to remember that:
 
 @itemize
@@ -81,10 +81,10 @@ export PKG_CONFIG_PATH
 Alternatively we can use the raw @gnu{} Autoconf macros:
 
 @example
-AC_CHECK_LIB([cctests],[cct_version_string],,
-  [AC_MSG_FAILURE([test for CCTests library failed])])
-AC_CHECK_HEADERS([cctests.h],,
-  [AC_MSG_FAILURE([test for CCTests header failed])])
+AC_CHECK_LIB([@value{PACKAGE_LIBSTEM}],[@value{PACKAGE_API_PREFIX_LOWER}version_string],,
+  [AC_MSG_FAILURE([test for @value{TITLE} library failed])])
+AC_CHECK_HEADERS([@value{PACKAGE_HEADER}],,
+  [AC_MSG_FAILURE([test for @value{TITLE} header failed])])
 @end example
 
 @c Local Variables:
