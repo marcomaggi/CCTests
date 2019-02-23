@@ -37,17 +37,17 @@
 
 @c ------------------------------------------------------------
 
-@set PACKAGE_AUTOCONF_PREFIX            CCTESTS
-@set PACKAGE_PKGCONFIG_MODULE           cctests
-@set PACKAGE_LIBS_VAR                   @env{CCTESTS_LIBS}
-@set PACKAGE_CFLAGS_VAR                 @env{CCTESTS_CFLAGS}
+@set PackageAutoconfPrefix              CCTESTS
+@set PackagePkgconfigModule             cctests
+@set PackageLibsVar                     @env{CCTESTS_LIBS}
+@set PackageCflagsVar                   @env{CCTESTS_CFLAGS}
 @c This is the stem of the library in "libcctests.so".
-@set PACKAGE_LIBSTEM                    cctests
-@set PACKAGE_API_PREFIX_LOWER           cctests_
-@set PACKAGE_API_PREFIX_UPPER           CCTESTS_
+@set PackageLibstem                     cctests
+@set PackageApiPrefixLower              cctests_
+@set PackageApiPrefixUpper              CCTESTS_
 
-@set PACKAGE_HEADER                     cctests.h
-@set PACKAGE_HEADER_FILE                @file{@value{PACKAGE_HEADER}}
+@set PackageHeader                      cctests.h
+@set PackageHeaderFile                  @file{@value{PackageHeader}}
 
 @c ------------------------------------------------------------------------
 
@@ -55,10 +55,10 @@
 
 @c ------------------------------------------------------------
 
-@set GITHUB_URL                 @url{https://github.com/marcomaggi/@value{PACKAGE_NICKNAME}}
-@set BITBUCKET_URL              @url{https://bitbucket.org/marcomaggi/@value{PACKAGE_NICKNAME}}
-@set DOWNLOAD_URL               @url{https://bitbucket.org/marcomaggi/@value{PACKAGE_NICKNAME}/downloads}
-@set DOCUMENTATION_URL          @url{https://marcomaggi.github.io/docs/@value{PACKAGE_NICKNAME}.html}
+@set GithubUrl                 @url{https://github.com/marcomaggi/@value{PACKAGE_NICKNAME}}
+@set BitbucketUrl              @url{https://bitbucket.org/marcomaggi/@value{PACKAGE_NICKNAME}}
+@set DownloadUrl               @url{https://bitbucket.org/marcomaggi/@value{PACKAGE_NICKNAME}/downloads}
+@set DocumentationUrl          @url{https://marcomaggi.github.io/docs/@value{PACKAGE_NICKNAME}.html}
 
 @c page
 @c ------------------------------------------------------------
@@ -77,17 +77,17 @@ The package is distributed under the terms of the @gnu{} Lesser General Public L
 
 The latest release can be downloaded from:
 
-@center @value{DOWNLOAD_URL}
+@center @value{DownloadUrl}
 
 @noindent
 development takes place at:
 
-@center @value{GITHUB_URL}
+@center @value{GithubUrl}
 
 @noindent
 and as backup at:
 
-@center @value{BITBUCKET_URL}
+@center @value{BitbucketUrl}
 
 @noindent
 Copyright @copyright{} @value{COPYRIGHT_YEARS} by @value{AUTHOR} @value{AUTHOR_EMAIL}
@@ -180,13 +180,13 @@ This package depends upon the external packages: CCExceptions at least version
 @value{CCEXCEPTIONS_REQUIRED_VERSION}; This package relies on @command{pkg-config} to find the
 dependency packages installed on the system.
 
-@cindex @value{PACKAGE_HEADER_FILE}, header file
-@cindex Header file @value{PACKAGE_HEADER_FILE}
-@value{PACKAGE} installs the single header file @value{PACKAGE_HEADER_FILE}.  All the function names
-in the @api{} are prefixed with @code{@value{PACKAGE_API_PREFIX_LOWER}}; all the preprocessor symbol
-names are prefixed with @code{@value{PACKAGE_API_PREFIX_UPPER}}; all the type names are prefixed
-with @code{@value{PACKAGE_API_PREFIX_LOWER}} and suffixed with @code{_t}.  The header file
-@value{PACKAGE_HEADER_FILE} appropriately includes the header file @file{ccexceptions.h} from the
+@cindex @value{PackageHeaderFile}, header file
+@cindex Header file @value{PackageHeaderFile}
+@value{PACKAGE} installs the single header file @value{PackageHeaderFile}.  All the function names
+in the @api{} are prefixed with @code{@value{PackageApiPrefixLower}}; all the preprocessor symbol
+names are prefixed with @code{@value{PackageApiPrefixUpper}}; all the type names are prefixed with
+@code{@value{PackageApiPrefixLower}} and suffixed with @code{_t}.  The header file
+@value{PackageHeaderFile} appropriately includes the header file @file{ccexceptions.h} from the
 package CCExceptions.
 
 The library's @api{} uses both @code{inline} functions and preprocessor macros to integrate some
@@ -196,7 +196,7 @@ Notice that, before using the library, we need to call the global initialisation
 @cfunc{cctests_init}.
 
 @strong{IMPORTANT} To use the library we must enable the @posix{} features when including the
-standard header files; so either we include @value{PACKAGE_HEADER_FILE} as first header, or we
+standard header files; so either we include @value{PackageHeaderFile} as first header, or we
 include the following definitions before including @strong{all} the header files:
 
 @example
@@ -3623,22 +3623,22 @@ $ make -j3 check cctests_file=two cctests_name=1_3
 
 The documentation of @value{PACKAGE} is available online:
 
-@center @value{DOCUMENTATION_URL}
+@center @value{DocumentationUrl}
 
 @noindent
 the latest release of this package can be downloaded from:
 
-@center @value{DOWNLOAD_URL}
+@center @value{DownloadUrl}
 
 @noindent
 development takes place at:
 
-@center @value{GITHUB_URL}
+@center @value{GithubUrl}
 
 @noindent
 and as backup at:
 
-@center @value{BITBUCKET_URL}
+@center @value{BitbucketUrl}
 
 we can find the package CCExceptions at:
 
