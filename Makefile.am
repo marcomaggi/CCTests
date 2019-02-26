@@ -83,8 +83,8 @@ check_PROGRAMS	= \
 TESTS				= $(check_PROGRAMS)
 XFAIL_TESTS			= tests/assertions
 
-cctests_tests_cppflags		= $(AM_CPPFLAGS) -I$(srcdir)/tests $(CCEXCEPTIONS_CFLAGS)
-cctests_tests_cflags		= $(AM_CFLAGS)
+cctests_tests_cppflags		= $(AM_CPPFLAGS) -I$(srcdir)/tests
+cctests_tests_cflags		= $(AM_CFLAGS) $(CCEXCEPTIONS_CFLAGS)
 cctests_tests_ldadd		= $(AM_LDFLAGS) libcctests.la $(CCEXCEPTIONS_LIBS)
 
 ## --------------------------------------------------------------------
