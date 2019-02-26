@@ -33,14 +33,14 @@ doc_cctests_TEXINFOS	= \
 cctests_CURRENT		= @cctests_VERSION_INTERFACE_CURRENT@
 cctests_REVISION	= @cctests_VERSION_INTERFACE_REVISION@
 cctests_AGE		= @cctests_VERSION_INTERFACE_AGE@
+cctests_LINKER_VERSION	= -version-info $(cctests_CURRENT):$(cctests_REVISION):$(cctests_AGE)
 
 include_HEADERS		= src/cctests.h
 
 lib_LTLIBRARIES		= libcctests.la
 libcctests_la_CPPFLAGS	= $(AM_CPPFLAGS)
 libcctests_la_CFLAGS	= $(AM_CFLAGS) $(CCEXCEPTIONS_CFLAGS)
-libcctests_la_LDFLAGS	= -version-info $(cctests_CURRENT):$(cctests_REVISION):$(cctests_AGE) \
-			  $(CCEXCEPTIONS_LIBS)
+libcctests_la_LDFLAGS	= $(cctests_LINKER_VERSION) $(AM_LDFLAGS) $(CCEXCEPTIONS_LIBS)
 libcctests_la_SOURCES	= \
 	src/cctests.h				\
 	src/cctests-internals.h			\
@@ -83,9 +83,9 @@ check_PROGRAMS	= \
 TESTS				= $(check_PROGRAMS)
 XFAIL_TESTS			= tests/assertions
 
-cctests_tests_cflags		= $(AM_FLAGS) $(CCEXCEPTIONS_CFLAGS)
-cctests_tests_cppflags		= $(AM_CPPFLAGS) -I$(srcdir)/tests
-cctests_tests_ldadd		= libcctests.la
+cctests_tests_cppflags		= $(AM_CPPFLAGS) -I$(srcdir)/tests $(CCEXCEPTIONS_CFLAGS)
+cctests_tests_cflags		= $(AM_CFLAGS)
+cctests_tests_ldadd		= $(AM_LDFLAGS) libcctests.la $(CCEXCEPTIONS_LIBS)
 
 ## --------------------------------------------------------------------
 
