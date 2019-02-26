@@ -483,7 +483,7 @@ cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
  ** Exceptional condition descriptor: failed assertion, expected immediate value.
  ** ----------------------------------------------------------------- */
 
-#define DECLARE_CONDITION_ASSERTION_EXPECTED(STEM, TYPE, PRINTF_FORMAT)		\
+#define DECLARE_CONDITION_ASSERTION_EXPECTED(STEM, TYPE, PRINTF_FORMAT, PRINTF_CAST) \
   static cce_condition_static_message_fun_t	cctests_condition_static_message_assertion_expected_ ## STEM; \
   static cce_condition_delete_fun_t		cctests_condition_delete_assertion_expected_ ## STEM; \
   static cctests_condition_print_assertion_fun_t cctests_condition_print_assertion_expected_ ## STEM ## _fun; \
@@ -519,10 +519,10 @@ cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
       CCTESTS_PC(cctests_condition_assertion_expected_ ## STEM ## _t, K, C); \
 									\
       fprintf(cctests_log_stream, "\texpected: ");			\
-      fprintf(cctests_log_stream, "%" PRINTF_FORMAT, K->expected);	\
+      fprintf(cctests_log_stream, "%" PRINTF_FORMAT, PRINTF_CAST K->expected); \
       fprintf(cctests_log_stream, "\n");				\
       fprintf(cctests_log_stream, "\tresult:   ");			\
-      fprintf(cctests_log_stream, "%" PRINTF_FORMAT, K->result);	\
+      fprintf(cctests_log_stream, "%" PRINTF_FORMAT, PRINTF_CAST K->result); \
       fprintf(cctests_log_stream, "\n");				\
     }									\
   }									\
@@ -570,50 +570,50 @@ cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
 
 /* ------------------------------------------------------------------ */
 
-DECLARE_CONDITION_ASSERTION_EXPECTED(char,	signed char,	"c")
-DECLARE_CONDITION_ASSERTION_EXPECTED(uchar,	unsigned char,	"c")
+DECLARE_CONDITION_ASSERTION_EXPECTED(char,	signed char,	"c",)
+DECLARE_CONDITION_ASSERTION_EXPECTED(uchar,	unsigned char,	"c",)
 
-DECLARE_CONDITION_ASSERTION_EXPECTED(int,	signed int,	"d")
-DECLARE_CONDITION_ASSERTION_EXPECTED(uint,	unsigned int,	"u")
+DECLARE_CONDITION_ASSERTION_EXPECTED(int,	signed int,	"d",)
+DECLARE_CONDITION_ASSERTION_EXPECTED(uint,	unsigned int,	"u",)
 
-DECLARE_CONDITION_ASSERTION_EXPECTED(short,	signed short,	"d")
-DECLARE_CONDITION_ASSERTION_EXPECTED(ushort,	unsigned short,	"u")
+DECLARE_CONDITION_ASSERTION_EXPECTED(short,	signed short,	"d",)
+DECLARE_CONDITION_ASSERTION_EXPECTED(ushort,	unsigned short,	"u",)
 
-DECLARE_CONDITION_ASSERTION_EXPECTED(long,	signed long,	"ld")
-DECLARE_CONDITION_ASSERTION_EXPECTED(ulong,	unsigned long,	"lu")
+DECLARE_CONDITION_ASSERTION_EXPECTED(long,	signed long,	"ld",)
+DECLARE_CONDITION_ASSERTION_EXPECTED(ulong,	unsigned long,	"lu",)
 
-DECLARE_CONDITION_ASSERTION_EXPECTED(llong,	signed long long,	"lld")
-DECLARE_CONDITION_ASSERTION_EXPECTED(ullong,	unsigned long long,	"llu")
+DECLARE_CONDITION_ASSERTION_EXPECTED(llong,	signed long long,	"lld",)
+DECLARE_CONDITION_ASSERTION_EXPECTED(ullong,	unsigned long long,	"llu",)
 
-DECLARE_CONDITION_ASSERTION_EXPECTED(int8,	int8_t,		PRId8)
-DECLARE_CONDITION_ASSERTION_EXPECTED(int16,	int16_t,	PRId16)
-DECLARE_CONDITION_ASSERTION_EXPECTED(int32,	int32_t,	PRId32)
-DECLARE_CONDITION_ASSERTION_EXPECTED(int64,	int64_t,	PRId64)
+DECLARE_CONDITION_ASSERTION_EXPECTED(int8,	int8_t,		PRId8,)
+DECLARE_CONDITION_ASSERTION_EXPECTED(int16,	int16_t,	PRId16,)
+DECLARE_CONDITION_ASSERTION_EXPECTED(int32,	int32_t,	PRId32,)
+DECLARE_CONDITION_ASSERTION_EXPECTED(int64,	int64_t,	PRId64,)
 
-DECLARE_CONDITION_ASSERTION_EXPECTED(uint8,	uint8_t,	PRIu8)
-DECLARE_CONDITION_ASSERTION_EXPECTED(uint16,	uint16_t,	PRIu16)
-DECLARE_CONDITION_ASSERTION_EXPECTED(uint32,	uint32_t,	PRIu32)
-DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,	uint64_t,	PRIu64)
+DECLARE_CONDITION_ASSERTION_EXPECTED(uint8,	uint8_t,	PRIu8,)
+DECLARE_CONDITION_ASSERTION_EXPECTED(uint16,	uint16_t,	PRIu16,)
+DECLARE_CONDITION_ASSERTION_EXPECTED(uint32,	uint32_t,	PRIu32,)
+DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,	uint64_t,	PRIu64,)
 
-DECLARE_CONDITION_ASSERTION_EXPECTED(float,	float,		"f")
-DECLARE_CONDITION_ASSERTION_EXPECTED(double,	double,		"f")
+DECLARE_CONDITION_ASSERTION_EXPECTED(float,	float,		"f", (double))
+DECLARE_CONDITION_ASSERTION_EXPECTED(double,	double,		"f",)
 
 #if (4 == CCTESTS_SIZEOF_SIZE_T)
-DECLARE_CONDITION_ASSERTION_EXPECTED(size,	size_t,		PRIu32)
+DECLARE_CONDITION_ASSERTION_EXPECTED(size,	size_t,		PRIu32,)
 #else
-DECLARE_CONDITION_ASSERTION_EXPECTED(size,	size_t,		PRIu64)
+DECLARE_CONDITION_ASSERTION_EXPECTED(size,	size_t,		PRIu64,)
 #endif
 
 #if (4 == CCTESTS_SIZEOF_SSIZE_T)
-DECLARE_CONDITION_ASSERTION_EXPECTED(ssize,	ssize_t,	PRId32)
+DECLARE_CONDITION_ASSERTION_EXPECTED(ssize,	ssize_t,	PRId32,)
 #else
-DECLARE_CONDITION_ASSERTION_EXPECTED(ssize,	ssize_t,	PRId64)
+DECLARE_CONDITION_ASSERTION_EXPECTED(ssize,	ssize_t,	PRId64,)
 #endif
 
-DECLARE_CONDITION_ASSERTION_EXPECTED(pointer,	void *,		"p")
-DECLARE_CONDITION_ASSERTION_EXPECTED(ptrdiff,	ptrdiff_t,	PRIdPTR)
-DECLARE_CONDITION_ASSERTION_EXPECTED(intptr,	intptr_t,	PRIdPTR)
-DECLARE_CONDITION_ASSERTION_EXPECTED(uintptr,	uintptr_t,	PRIuPTR)
+DECLARE_CONDITION_ASSERTION_EXPECTED(pointer,	void *,		"p",)
+DECLARE_CONDITION_ASSERTION_EXPECTED(ptrdiff,	ptrdiff_t,	PRIdPTR,)
+DECLARE_CONDITION_ASSERTION_EXPECTED(intptr,	intptr_t,	PRIdPTR,)
+DECLARE_CONDITION_ASSERTION_EXPECTED(uintptr,	uintptr_t,	PRIuPTR,)
 
 
 /** --------------------------------------------------------------------
