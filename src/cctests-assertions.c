@@ -31,6 +31,8 @@
 #include <inttypes.h>
 #include <stdarg.h>
 
+static char const * format_message (cce_destination_t L, va_list ap);
+
 
 /** --------------------------------------------------------------------
  ** Raw assertions.
@@ -52,7 +54,7 @@ cctests_p_assert (cce_destination_t L, char const * const expr, bool const resul
 void
 cctests_p_assert_msg (cce_destination_t L, char const * expr, bool result,
 		      char const * filename, char const * funcname, int linenum,
-		      char const * template, ...)
+		      ...)
 {
   if (false == result) {
     if (0) {
@@ -61,7 +63,8 @@ cctests_p_assert_msg (cce_destination_t L, char const * expr, bool result,
       {
 	va_list		ap;
 
-	va_start(ap, template);
+	va_start(ap, linenum);
+	char const * template = va_arg(ap, char const *);
 	{
 	  vfprintf(cctests_log_stream, template, ap);
 	  fprintf(cctests_log_stream, "\n");
@@ -73,32 +76,49 @@ cctests_p_assert_msg (cce_destination_t L, char const * expr, bool result,
 
     /* Build the dynamic string representing the message. */
     {
-      size_t	str_len  = 255;
-      char	*str_ptr = cce_sys_malloc(L, 1+str_len);
-      size_t	required_len = 0;
+      va_list		ap;
+      char const *	str_ptr;
 
+      va_start(ap, linenum);
       {
-	va_list	ap;
-	va_start(ap, template);
-	{
-	  required_len = vsnprintf(str_ptr, str_len, template, ap);
-	}
-	va_end(ap);
+	str_ptr = format_message(L, ap);
       }
-      if (str_len <= required_len) {
-	/* Not enough room in "str_buf". */
-	va_list	ap;
-	str_len = required_len;
-	str_ptr = cce_sys_realloc(L, str_ptr, 1+str_len);
-	va_start(ap, template);
-	{
-	  vsnprintf(str_ptr, str_len, template, ap);
-	}
-	va_end(ap);
-      }
+      va_end(ap);
       cce_raise(L, cctests_condition_new_assertion_msg(L, expr, filename, funcname, linenum, str_ptr));
     }
   }
+}
+
+static char const *
+format_message (cce_destination_t L, va_list original_ap)
+{
+  size_t	str_len		= 255;
+  char	*	str_ptr		= cce_sys_malloc(L, 1+str_len);
+  size_t	required_len	= 0;
+  char const *	template	= va_arg(original_ap, char const *);
+
+  {
+    va_list	ap;
+
+    va_copy(ap, original_ap);
+    {
+      required_len = vsnprintf(str_ptr, str_len, template, ap);
+    }
+    va_end(ap);
+  }
+  if (str_len <= required_len) {
+    /* Not enough room in "str_buf". */
+    va_list	ap;
+
+    str_len = required_len;
+    str_ptr = cce_sys_realloc(L, str_ptr, 1+str_len);
+    va_copy(ap, original_ap);
+    {
+      vsnprintf(str_ptr, str_len, template, ap);
+    }
+    va_end(ap);
+  }
+  return str_ptr;
 }
 
 

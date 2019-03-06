@@ -930,7 +930,7 @@ cctests_decl void cctests_p_assert (cce_destination_t L, char const * expr, bool
 
 cctests_decl void cctests_p_assert_msg (cce_destination_t L, char const * expr, bool result,
 					char const * filename, char const * funcname, int linenum,
-					char const * template, ...);
+					...);
 
 /* ------------------------------------------------------------------ */
 
