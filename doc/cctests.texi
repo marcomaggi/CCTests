@@ -497,9 +497,33 @@ of type @objtype{cctests_condition_assertion_t} by performing a non--local exit 
 @end deftypefn
 
 
+@deftypefn {Preprocessor Macro} void cctests_assert_true (cce_destination_t @var{L}, @var{expr})
+An alias for @cfunc{cctests_assert}.
+@end deftypefn
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_false (cce_destination_t @var{L}, @var{expr})
+Evaluate the expression @var{expr}.  If the expression evaluates to @cfalse{}: just return.
+Otherwise raise an exception of type @objtype{cctests_condition_assertion_t} by performing a
+non--local exit to @var{L}.
+@end deftypefn
+
+
 @deftypefn {Preprocessor Macro} void cctests_assert_msg (cce_destination_t @var{L}, @var{expr}, char const * @var{message}, @dots{})
 Like @cfunc{cctests_assert}, but format @var{template} with the given optional arguments and include
 it in the raised exceptional--condition object as description message.
+@end deftypefn
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_true_msg (cce_destination_t @var{L}, @var{expr}, char const * @var{message}, @dots{})
+Like @cfunc{cctests_assert_true}, but format @var{template} with the given optional arguments and
+include it in the raised exceptional--condition object as description message.
+@end deftypefn
+
+
+@deftypefn {Preprocessor Macro} void cctests_assert_false_msg (cce_destination_t @var{L}, @var{expr}, char const * @var{message}, @dots{})
+Like @cfunc{cctests_assert_false}, but format @var{template} with the given optional arguments and
+include it in the raised exceptional--condition object as description message.
 @end deftypefn
 
 

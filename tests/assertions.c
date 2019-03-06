@@ -29,41 +29,127 @@
  ** ----------------------------------------------------------------- */
 
 static void
-test_1_1 (cce_destination_t L)
+test_1_1_1 (cce_destination_t L)
 {
   cctests_assert(L, true);
 }
 
 static void
-test_1_2 (cce_destination_t L)
+test_1_1_2 (cce_destination_t L)
 {
   cctests_assert(L, false);
 }
 
+/* ------------------------------------------------------------------ */
+
 static void
-test_1_3 (cce_destination_t L)
+test_1_2_1 (cce_destination_t L)
+{
+  cctests_assert_true(L, true);
+}
+
+static void
+test_1_2_2 (cce_destination_t L)
+{
+  cctests_assert_true(L, false);
+}
+
+/* ------------------------------------------------------------------ */
+
+static void
+test_1_3_1 (cce_destination_t L)
+{
+  cctests_assert_false(L, true);
+}
+
+static void
+test_1_3_2 (cce_destination_t L)
+{
+  cctests_assert_false(L, false);
+}
+
+/* ------------------------------------------------------------------ */
+
+static void
+test_1_4_1 (cce_destination_t L)
 {
   cctests_assert_msg(L, true, "the expression is: %d", true);
 }
 
 static void
-test_1_4 (cce_destination_t L)
+test_1_4_2 (cce_destination_t L)
 {
   cctests_assert_msg(L, false, "the expression is: %d", false);
 }
 
 static void
-test_1_5 (cce_destination_t L)
+test_1_4_3 (cce_destination_t L)
 /* Test the macro without optional arguments. */
 {
   cctests_assert_msg(L, true, "the expression is: true");
 }
 
 static void
-test_1_6 (cce_destination_t L)
+test_1_4_4 (cce_destination_t L)
 /* Test the macro without optional arguments. */
 {
   cctests_assert_msg(L, false, "the expression is: false");
+}
+
+/* ------------------------------------------------------------------ */
+
+static void
+test_1_5_1 (cce_destination_t L)
+{
+  cctests_assert_true_msg(L, true, "the expression is: %d", true);
+}
+
+static void
+test_1_5_2 (cce_destination_t L)
+{
+  cctests_assert_true_msg(L, false, "the expression is: %d", false);
+}
+
+static void
+test_1_5_3 (cce_destination_t L)
+/* Test the macro without optional arguments. */
+{
+  cctests_assert_true_msg(L, true, "the expression is: true");
+}
+
+static void
+test_1_5_4 (cce_destination_t L)
+/* Test the macro without optional arguments. */
+{
+  cctests_assert_true_msg(L, false, "the expression is: false");
+}
+
+/* ------------------------------------------------------------------ */
+
+static void
+test_1_6_1 (cce_destination_t L)
+{
+  cctests_assert_false_msg(L, true, "the expression is: %d", true);
+}
+
+static void
+test_1_6_2 (cce_destination_t L)
+{
+  cctests_assert_false_msg(L, false, "the expression is: %d", false);
+}
+
+static void
+test_1_6_3 (cce_destination_t L)
+/* Test the macro without optional arguments. */
+{
+  cctests_assert_false_msg(L, true, "the expression is: true");
+}
+
+static void
+test_1_6_4 (cce_destination_t L)
+/* Test the macro without optional arguments. */
+{
+  cctests_assert_false_msg(L, false, "the expression is: false");
 }
 
 
@@ -214,12 +300,29 @@ main (void)
   {
     cctests_begin_group("Expression assertions");
     {
-      cctests_run(test_1_1);
-      cctests_run(test_1_2);
-      cctests_run(test_1_3);
-      cctests_run(test_1_4);
-      cctests_run(test_1_5);
-      cctests_run(test_1_6);
+      cctests_run(test_1_1_1);
+      cctests_run(test_1_1_2);
+
+      cctests_run(test_1_2_1);
+      cctests_run(test_1_2_2);
+
+      cctests_run(test_1_3_1);
+      cctests_run(test_1_3_2);
+
+      cctests_run(test_1_4_1);
+      cctests_run(test_1_4_2);
+      cctests_run(test_1_4_3);
+      cctests_run(test_1_4_4);
+
+      cctests_run(test_1_5_1);
+      cctests_run(test_1_5_2);
+      cctests_run(test_1_5_3);
+      cctests_run(test_1_5_4);
+
+      cctests_run(test_1_6_1);
+      cctests_run(test_1_6_2);
+      cctests_run(test_1_6_3);
+      cctests_run(test_1_6_4);
     }
     cctests_end_group();
 

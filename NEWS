@@ -6,7 +6,12 @@
 Revision 0.3.0-devel.8
 ----------------------
 
-* ...
+* Added assertions:
+
+     cctests_assert_true()
+     cctests_assert_false()
+     cctests_assert_true_msg()
+     cctests_assert_false_msg()
 
 
 Revision 0.3.0-devel.7

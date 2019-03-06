@@ -905,7 +905,14 @@ cctests_skip (void)
   cce_raise(cctests_location, cctests_condition_new_skipped());
 }
 
-#define cctests_assert(L,EXPR)	cctests_p_assert((L), "cctests_assert(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__)
+#define cctests_assert(L,EXPR)		\
+  cctests_p_assert((L), "cctests_assert(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__)
+
+#define cctests_assert_true(L,EXPR)	\
+  cctests_p_assert((L), "cctests_assert_true(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__)
+
+#define cctests_assert_false(L,EXPR)	\
+  cctests_p_assert((L), "cctests_assert_false(" #L ", " #EXPR ")", (!(EXPR)), __FILE__, __func__, __LINE__)
 
 cctests_decl void cctests_p_assert (cce_destination_t L, char const * expr, bool result,
 				    char const * filename, char const * funcname, int linenum);
@@ -914,6 +921,12 @@ cctests_decl void cctests_p_assert (cce_destination_t L, char const * expr, bool
 
 #define cctests_assert_msg(L,EXPR,...) \
   cctests_p_assert_msg((L), "cctests_assert_msg(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__, __VA_ARGS__)
+
+#define cctests_assert_true_msg(L,EXPR,...) \
+  cctests_p_assert_msg((L), "cctests_assert_true_msg(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__, __VA_ARGS__)
+
+#define cctests_assert_false_msg(L,EXPR,...) \
+  cctests_p_assert_msg((L), "cctests_assert_false_msg(" #L ", " #EXPR ")", (!(EXPR)), __FILE__, __func__, __LINE__, __VA_ARGS__)
 
 cctests_decl void cctests_p_assert_msg (cce_destination_t L, char const * expr, bool result,
 					char const * filename, char const * funcname, int linenum,
