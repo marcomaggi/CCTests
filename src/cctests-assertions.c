@@ -31,125 +31,110 @@
 #include <inttypes.h>
 #include <stdarg.h>
 
-static char const * format_message (cce_destination_t L, va_list ap);
+
+/** --------------------------------------------------------------------
+ ** Preprocessor symbols.
+ ** ----------------------------------------------------------------- */
+
+#undef CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS
+#define CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS	\
+  char const * const expr, char const * const filename, char const * const funcname, \
+    int const linenum, char const * const description_message
+
+#undef CCTESTS_ASSERT_COMMON_CALL_ARGS
+#define CCTESTS_ASSERT_COMMON_CALL_ARGS	\
+  expr, filename, funcname, linenum, description_message
 
 
 /** --------------------------------------------------------------------
- ** Raw assertions.
+ ** Helpers.
  ** ----------------------------------------------------------------- */
 
-void
-cctests_p_assert (cce_destination_t L, char const * const expr, bool const result,
-		  char const * const filename, char const * const funcname, int const linenum)
+char const *
+cctests_p_format_message (cce_destination_t L, char const * const template, ...)
 {
-  if (false == result) {
-    if (0) {
-      fprintf(cctests_log_stream, "CCTests: %s: %s: line %d: assertion failure: %s\n",
-	      filename, funcname, linenum, expr);
-    }
-    cce_raise(L, cctests_condition_new_assertion(L, expr, filename, funcname, linenum));
-  }
-}
+  if (template) {
+    size_t	str_len		= 255;
+    char	*str_ptr	= cce_sys_malloc(L, 1+str_len);
+    size_t	required_len	= 0;
 
-void
-cctests_p_assert_msg (cce_destination_t L, char const * expr, bool result,
-		      char const * filename, char const * funcname, int linenum,
-		      ...)
-{
-  if (false == result) {
-    if (0) {
-      fprintf(cctests_log_stream, "CCTests: %s: %s: line %d: assertion failure: %s\n",
-	      filename, funcname, linenum, expr);
-      {
-	va_list		ap;
-
-	va_start(ap, linenum);
-	char const * template = va_arg(ap, char const *);
-	{
-	  vfprintf(cctests_log_stream, template, ap);
-	  fprintf(cctests_log_stream, "\n");
-	  fflush(cctests_log_stream);
-	}
-	va_end(ap);
-      }
-    }
-
-    /* Build the dynamic string representing the message. */
     {
-      va_list		ap;
-      char const *	str_ptr;
+      va_list	ap;
 
-      va_start(ap, linenum);
+      va_start(ap, template);
       {
-	str_ptr = format_message(L, ap);
+	required_len = vsnprintf(str_ptr, str_len, template, ap);
       }
       va_end(ap);
-      cce_raise(L, cctests_condition_new_assertion_msg(L, expr, filename, funcname, linenum, str_ptr));
     }
-  }
-}
+    if (str_len <= required_len) {
+      /* Not enough room in "str_ptr". */
+      va_list	ap;
 
-static char const *
-format_message (cce_destination_t L, va_list original_ap)
-{
-  size_t	str_len		= 255;
-  char	*	str_ptr		= cce_sys_malloc(L, 1+str_len);
-  size_t	required_len	= 0;
-  char const *	template	= va_arg(original_ap, char const *);
-
-  {
-    va_list	ap;
-
-    va_copy(ap, original_ap);
-    {
-      required_len = vsnprintf(str_ptr, str_len, template, ap);
+      str_len = required_len;
+      str_ptr = cce_sys_realloc(L, str_ptr, 1+str_len);
+      va_start(ap, template);
+      {
+	vsnprintf(str_ptr, str_len, template, ap);
+      }
+      va_end(ap);
     }
-    va_end(ap);
+    return str_ptr;
+  } else {
+    return NULL;
   }
-  if (str_len <= required_len) {
-    /* Not enough room in "str_buf". */
-    va_list	ap;
-
-    str_len = required_len;
-    str_ptr = cce_sys_realloc(L, str_ptr, 1+str_len);
-    va_copy(ap, original_ap);
-    {
-      vsnprintf(str_ptr, str_len, template, ap);
-    }
-    va_end(ap);
-  }
-  return str_ptr;
 }
 
 
 /** --------------------------------------------------------------------
- ** String comparison.
+ ** Assertions: raw expression.
  ** ----------------------------------------------------------------- */
 
 void
-cctests_p_assert_asciiz (cce_destination_t L, char const * expected, char const * result,
-			 char const * const expr,
-			 char const * const filename, char const * const funcname, int const linenum)
-/* Compare zero-terminated strings. */
+cctests_p_assert_raise (cce_destination_t L, CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
 {
-  if (0 != strcmp(expected, result)) {
-    cce_raise(L, cctests_condition_new_assertion_expected_asciiz(L, expr, filename, funcname, linenum,
-								 expected, result));
-  }
+  cce_raise(L, cctests_condition_new_assertion(L, CCTESTS_ASSERT_COMMON_CALL_ARGS));
+}
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: ASCIIZ string comparison.
+ ** ----------------------------------------------------------------- */
+
+bool
+cctests_p_assert_asciiz_compare (char const * const expected, char const * const result)
+/* Return "false" if "expected" and "result" are equal! */
+{
+  return ((0 == strcmp(expected, result))? false : true);
 }
 
 void
-cctests_p_assert_ascii (cce_destination_t L, char const * expected, char const * result, size_t result_len,
-			char const * const expr,
-			char const * const filename, char const * const funcname, int const linenum)
-/* Compare non-zero terminated strings. */
+cctests_p_assert_asciiz_raise (cce_destination_t L, char const * const expected, char const * const result,
+			       CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+/* Compare zero-terminated strings. */
 {
-  size_t	expected_len = strlen(expected);
+  cce_raise(L, cctests_condition_new_assertion_expected_asciiz(L, expected, result, CCTESTS_ASSERT_COMMON_CALL_ARGS));
+}
 
-  if ((expected_len != result_len) || (0 != strncmp(expected, result, result_len))) {
-    cce_raise(L, cctests_condition_new_assertion_expected_ascii(L, expr, filename, funcname, linenum,
-								expected, result, result_len));
-  }
+
+/** --------------------------------------------------------------------
+ ** Assertions: ASCII string comparison.
+ ** ----------------------------------------------------------------- */
+
+bool
+cctests_p_assert_ascii_compare (char const * const expected, char const * const result, size_t const result_len)
+/* Return "false" if "expected" and "result" are equal! */
+{
+  size_t const	expected_len = strlen(expected);
+
+  return (((expected_len == result_len) && (0 == strncmp(expected, result, result_len)))? false : true);
+}
+
+void
+cctests_p_assert_ascii_raise (cce_destination_t L, char const * const expected, char const * const result, size_t const result_len,
+			      CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+{
+  cce_raise(L, cctests_condition_new_assertion_expected_ascii(L, expected, result, result_len, CCTESTS_ASSERT_COMMON_CALL_ARGS));
 }
 
 
@@ -157,64 +142,69 @@ cctests_p_assert_ascii (cce_destination_t L, char const * expected, char const *
  ** Immediate values comparisons.
  ** ----------------------------------------------------------------- */
 
-#define DECLARE_IMMEDIATE_ASSERT(STEM,TYPE)				\
-  void									\
-  cctests_p_assert_equal_ ## STEM (cce_destination_t L, TYPE const expected, TYPE const result, \
-				   char const * const expr,		\
-				   char const * const filename, char const * const funcname, int const linenum) \
+#define DECLARE_IMMEDIATE_ASSERT_FUNCS(STEM,TYPE)			\
+  bool									\
+  cctests_p_assert_ ## STEM ## _compare (TYPE const expected, TYPE const result) \
   {									\
-    if (expected != result) {						\
-      cce_raise(L, cctests_condition_new_assertion_expected_ ## STEM(L, expr, filename, funcname, linenum, expected, result)); \
-    }									\
+    return ((expected == result)? false : true);			\
+  }									\
+  void									\
+  cctests_p_assert_ ## STEM ## _raise (cce_destination_t L, TYPE const expected, TYPE const result, CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS) \
+  {									\
+    cce_raise(L, cctests_condition_new_assertion_expected_ ## STEM(L, expected, result, CCTESTS_ASSERT_COMMON_CALL_ARGS)); \
   }
 
-DECLARE_IMMEDIATE_ASSERT(char,	signed	char)
-DECLARE_IMMEDIATE_ASSERT(uchar,	unsigned char)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(char,	signed	char)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(uchar,	unsigned char)
 
-DECLARE_IMMEDIATE_ASSERT(int,	signed   int)
-DECLARE_IMMEDIATE_ASSERT(uint,	unsigned int)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(int,	signed   int)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(uint,	unsigned int)
 
-DECLARE_IMMEDIATE_ASSERT(short,	signed   short)
-DECLARE_IMMEDIATE_ASSERT(ushort,unsigned short)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(short,	signed   short)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(ushort,unsigned short)
 
-DECLARE_IMMEDIATE_ASSERT(long,	signed   long)
-DECLARE_IMMEDIATE_ASSERT(ulong,	unsigned long)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(long,	signed   long)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(ulong,	unsigned long)
 
-DECLARE_IMMEDIATE_ASSERT(llong,	signed   long long)
-DECLARE_IMMEDIATE_ASSERT(ullong,unsigned long long)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(llong,	signed   long long)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(ullong,unsigned long long)
 
-DECLARE_IMMEDIATE_ASSERT(int8,	int8_t)
-DECLARE_IMMEDIATE_ASSERT(uint8,	uint8_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(int8,	int8_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(uint8,	uint8_t)
 
-DECLARE_IMMEDIATE_ASSERT(int16,	int16_t)
-DECLARE_IMMEDIATE_ASSERT(uint16,uint16_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(int16,	int16_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(uint16,uint16_t)
 
-DECLARE_IMMEDIATE_ASSERT(int32,	int32_t)
-DECLARE_IMMEDIATE_ASSERT(uint32,uint32_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(int32,	int32_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(uint32,uint32_t)
 
-DECLARE_IMMEDIATE_ASSERT(int64,	int64_t)
-DECLARE_IMMEDIATE_ASSERT(uint64,uint64_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(int64,	int64_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(uint64,uint64_t)
 
-DECLARE_IMMEDIATE_ASSERT(float,	float)
-DECLARE_IMMEDIATE_ASSERT(double,double)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(float,	float)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(double,double)
 
-DECLARE_IMMEDIATE_ASSERT(size,  size_t)
-DECLARE_IMMEDIATE_ASSERT(ssize, ssize_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(size,  size_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(ssize, ssize_t)
 
-DECLARE_IMMEDIATE_ASSERT(ptrdiff, ptrdiff_t)
-DECLARE_IMMEDIATE_ASSERT(intptr,  intptr_t)
-DECLARE_IMMEDIATE_ASSERT(uintptr, uintptr_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(ptrdiff, ptrdiff_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(intptr,  intptr_t)
+DECLARE_IMMEDIATE_ASSERT_FUNCS(uintptr, uintptr_t)
 
-/* ------------------------------------------------------------------ */
+
+/** --------------------------------------------------------------------
+ ** More immediate values comparisons.
+ ** ----------------------------------------------------------------- */
 
-void
-cctests_p_assert_equal_pointer (cce_destination_t L, void * expected, void * result,
-				char const * const expr,
-				char const * const filename, char const * const funcname, int const linenum)
+bool
+cctests_p_assert_pointer_compare (void * const expected, void * const result)
 {
-  if (expected != result) {
-    cce_raise(L, cctests_condition_new_assertion_expected_pointer(L, expr, filename, funcname, linenum, expected, result));
-  }
+  return ((expected == result)? false : true);
+}
+void
+cctests_p_assert_pointer_raise (cce_destination_t L, void * const expected, void * const result, CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+{
+  cce_raise(L, cctests_condition_new_assertion_expected_pointer(L, expected, result, CCTESTS_ASSERT_COMMON_CALL_ARGS));
 }
 
 /* end of file */

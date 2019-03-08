@@ -7,7 +7,7 @@
 
 
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   This program is free  software: you can redistribute it and/or  modify it under the
   terms of the  GNU Lesser General Public  License as published by  the Free Software
@@ -28,6 +28,7 @@
 
 #include "cctests-internals.h"
 #include <stdio.h>
+#include <string.h>
 #ifdef HAVE_UNISTD_H
 #  include <unistd.h>
 #endif
@@ -55,6 +56,21 @@ cctests_log_stream_isatty (void)
    false. */
 {
   return cctests_isatty(cctests_log_stream);
+}
+
+
+/** --------------------------------------------------------------------
+ ** Miscellaneous.
+ ** ----------------------------------------------------------------- */
+
+char const *
+cctests_new_dynamic_string (cce_destination_t L, char const * in_str)
+{
+  size_t	in_len	= strlen(in_str);
+  char		*ou_str = cce_sys_malloc(L, 1+in_len);
+
+  memcpy(ou_str, in_str, in_len);
+  return (char const *)ou_str;
 }
 
 /* end of file */

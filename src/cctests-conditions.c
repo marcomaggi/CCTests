@@ -37,6 +37,20 @@
 
 
 /** --------------------------------------------------------------------
+ ** Preprocessor symbols.
+ ** ----------------------------------------------------------------- */
+
+#undef CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS
+#define CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS	\
+  char const * const expr, char const * const filename, char const * const funcname, \
+    int const linenum, char const * const description_message
+
+#undef CCTESTS_CONDITION_COMMON_CALL_ARGS
+#define CCTESTS_CONDITION_COMMON_CALL_ARGS	\
+  expr, filename, funcname, linenum, description_message
+
+
+/** --------------------------------------------------------------------
  ** Base exceptional condition descriptor.
  ** ----------------------------------------------------------------- */
 
@@ -322,19 +336,15 @@ cctests_condition_print_assertion_fun (cce_condition_t const * C)
 	  cctests_test_func_name,
 	  K->filename, K->funcname, K->linenum);
   if (K->dynamic_string) {
-    fprintf(cctests_log_stream, "\tmessage:  %s\n", K->dynamic_string);
+    fprintf(cctests_log_stream, "   description:  %s\n", K->dynamic_string);
   }
-  fprintf(cctests_log_stream,   "\tcall:     %s\n", K->expr);
+  fprintf(cctests_log_stream,   "   call:         %s\n", K->expr);
 }
 
 /* ------------------------------------------------------------------ */
 
 void
-cctests_condition_init_assertion (cctests_condition_assertion_t * C,
-				  char const * const expr,
-				  char const * const filename,
-				  char const * const funcname,
-				  int const linenum)
+cctests_condition_init_assertion (cctests_condition_assertion_t * C, CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
 {
   /* Initialise the parent type. */
   cctests_condition_init_failure(&(C->failure));
@@ -344,62 +354,17 @@ cctests_condition_init_assertion (cctests_condition_assertion_t * C,
   C->filename			= filename;
   C->funcname			= funcname;
   C->linenum			= linenum;
-  C->dynamic_string		= NULL;
+  C->dynamic_string		= description_message;
 }
 
 cce_condition_t const *
-cctests_condition_new_assertion (cce_destination_t L,
-				 char const * const expr,
-				 char const * const filename,
-				 char const * const funcname,
-				 int const linenum)
+cctests_condition_new_assertion (cce_destination_t L, CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
 {
-  cctests_condition_assertion_t *	C = cce_sys_malloc(L, sizeof(cctests_condition_assertion_t));
+  cctests_condition_assertion_t	*C = cce_sys_malloc(L, sizeof(cctests_condition_assertion_t));
 
   /* Initialise the basic condition fields. */
   cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_stru.descriptor);
-
-  cctests_condition_init_assertion(C, expr, filename, funcname, linenum);
-
-  return (cce_condition_t const *)C;
-}
-
-/* ------------------------------------------------------------------ */
-
-void
-cctests_condition_init_assertion_msg (cctests_condition_assertion_t * C,
-				      char const * const expr,
-				      char const * const filename,
-				      char const * const funcname,
-				      int const linenum,
-				      char const * message)
-{
-  /* Initialise the parent type. */
-  cctests_condition_init_failure(&(C->failure));
-
-  /* Initialise the fields of this type. */
-  C->expr			= expr;
-  C->filename			= filename;
-  C->funcname			= funcname;
-  C->linenum			= linenum;
-  C->dynamic_string		= message;
-}
-
-cce_condition_t const *
-cctests_condition_new_assertion_msg (cce_destination_t L,
-				     char const * const expr,
-				     char const * const filename,
-				     char const * const funcname,
-				     int const linenum,
-				     char const * message)
-{
-  cctests_condition_assertion_t *	C = cce_sys_malloc(L, sizeof(cctests_condition_assertion_t));
-
-  /* Initialise the basic condition fields. */
-  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_stru.descriptor);
-
-  cctests_condition_init_assertion_msg(C, expr, filename, funcname, linenum, message);
-
+  cctests_condition_init_assertion(C, CCTESTS_CONDITION_COMMON_CALL_ARGS);
   return (cce_condition_t const *)C;
 }
 
@@ -463,13 +428,10 @@ cctests_condition_print_assertion_expected_value_fun (cce_condition_t const * C)
 
 void
 cctests_condition_init_assertion_expected_value (cctests_condition_assertion_expected_value_t * C,
-						 char const * const expr,
-						 char const * const filename,
-						 char const * const funcname,
-						 int const linenum)
+						 CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
 {
   /* Initialise the parent type. */
-  cctests_condition_init_assertion(&(C->assertion), expr, filename, funcname, linenum);
+  cctests_condition_init_assertion(&(C->assertion), CCTESTS_CONDITION_COMMON_CALL_ARGS);
 }
 
 bool
@@ -518,25 +480,22 @@ cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
     {									\
       CCTESTS_PC(cctests_condition_assertion_expected_ ## STEM ## _t, K, C); \
 									\
-      fprintf(cctests_log_stream, "\texpected: ");			\
+      fprintf(cctests_log_stream, "   expected: ");			\
       fprintf(cctests_log_stream, "%" PRINTF_FORMAT, PRINTF_CAST K->expected); \
       fprintf(cctests_log_stream, "\n");				\
-      fprintf(cctests_log_stream, "\tresult:   ");			\
+      fprintf(cctests_log_stream, "   result:   ");			\
       fprintf(cctests_log_stream, "%" PRINTF_FORMAT, PRINTF_CAST K->result); \
       fprintf(cctests_log_stream, "\n");				\
     }									\
   }									\
 									\
   void									\
-  cctests_condition_init_assertion_expected_ ## STEM (cctests_condition_assertion_expected_ ## STEM ## _t * C, \
-						      char const * const expr, \
-						      char const * const filename, \
-						      char const * const funcname, \
-						      int const linenum, \
-						      TYPE expected, TYPE result) \
+  cctests_condition_init_assertion_expected_ ## STEM			\
+  (cctests_condition_assertion_expected_ ## STEM ## _t * C,		\
+   TYPE expected, TYPE result, CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS) \
   {									\
     /* Initialise the parent type. */					\
-    cctests_condition_init_assertion_expected_value(&(C->assertion_expected_value), expr, filename, funcname, linenum); \
+    cctests_condition_init_assertion_expected_value(&(C->assertion_expected_value), CCTESTS_CONDITION_COMMON_CALL_ARGS); \
 									\
     /* Initialise the fields of this type. */				\
     C->expected			= expected;				\
@@ -544,21 +503,15 @@ cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
   }									\
 									\
   cce_condition_t const *						\
-  cctests_condition_new_assertion_expected_ ## STEM (cce_destination_t L, \
-						     char const * const expr, \
-						     char const * const filename, \
-						     char const * const funcname, \
-						     int const linenum, \
-						     TYPE expected, TYPE result) \
+  cctests_condition_new_assertion_expected_ ## STEM			\
+  (cce_destination_t L, TYPE expected, TYPE result, CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS) \
   {									\
     cctests_condition_assertion_expected_ ## STEM ## _t *	C =	\
       cce_sys_malloc(L, sizeof(cctests_condition_assertion_expected_ ## STEM ## _t)); \
 									\
     /* Initialise the basic condition fields. */			\
     cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_ ## STEM ## _stru.descriptor); \
-									\
-    cctests_condition_init_assertion_expected_ ## STEM(C, expr, filename, funcname, linenum, expected, result); \
-									\
+    cctests_condition_init_assertion_expected_ ## STEM(C, expected, result, CCTESTS_CONDITION_COMMON_CALL_ARGS); \
     return (cce_condition_t const *)C;					\
   }									\
 									\
@@ -666,22 +619,19 @@ cctests_condition_print_assertion_expected_asciiz_fun (cce_condition_t const * C
   {
     CCTESTS_PC(cctests_condition_assertion_expected_asciiz_t, K, C);
 
-    fprintf(cctests_log_stream, "\texpected: '%s'\n", K->expected);
-    fprintf(cctests_log_stream, "\tresult:   '%s'\n", K->result);
+    fprintf(cctests_log_stream, "   expected:     '%s'\n", K->expected);
+    fprintf(cctests_log_stream, "   result:       '%s'\n", K->result);
   }
 }
 
 void
 cctests_condition_init_assertion_expected_asciiz (cce_destination_t L,
 						  cctests_condition_assertion_expected_asciiz_t * C,
-						  char const * const expr,
-						  char const * const filename,
-						  char const * const funcname,
-						  int const linenum,
-						  char const * expected, char const * result)
+						  char const * const expected, char const * const result,
+						  CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
 {
   /* Initialise the parent type. */
-  cctests_condition_init_assertion_expected_value(&(C->assertion_expected_value), expr, filename, funcname, linenum);
+  cctests_condition_init_assertion_expected_value(&(C->assertion_expected_value), CCTESTS_CONDITION_COMMON_CALL_ARGS);
 
   /* Initialise the fields of this type. */
   {
@@ -702,22 +652,19 @@ cctests_condition_init_assertion_expected_asciiz (cce_destination_t L,
 
 cce_condition_t const *
 cctests_condition_new_assertion_expected_asciiz (cce_destination_t L,
-						 char const * const expr,
-						 char const * const filename,
-						 char const * const funcname,
-						 int const linenum,
-						 char const * expected, char const * result)
+						 char const * const expected, char const * const result,
+						 CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
 {
   cctests_condition_assertion_expected_asciiz_t *	C =
     cce_sys_malloc(L, sizeof(cctests_condition_assertion_expected_asciiz_t));
 
   /* Initialise the basic condition fields. */
   cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_asciiz_stru.descriptor);
-
-  cctests_condition_init_assertion_expected_asciiz(L, C, expr, filename, funcname, linenum, expected, result);
-
+  cctests_condition_init_assertion_expected_asciiz(L, C, expected, result, CCTESTS_CONDITION_COMMON_CALL_ARGS);
   return (cce_condition_t const *)C;
 }
+
+/* ------------------------------------------------------------------ */
 
 bool
 cctests_condition_is_assertion_expected_asciiz (cce_condition_t const * C)
@@ -777,8 +724,8 @@ cctests_condition_print_assertion_expected_ascii_fun (cce_condition_t const * C)
     CCTESTS_PC(cctests_condition_assertion_expected_ascii_t, K, C);
     size_t	expected_len = strlen(K->expected);
 
-    fprintf(cctests_log_stream, "\texpected: '%s' (len=%" PRIuSIZE ")\n", K->expected, expected_len);
-    fprintf(cctests_log_stream, "\tresult:   '");
+    fprintf(cctests_log_stream, "   expected:     '%s' (len=%" PRIuSIZE ")\n", K->expected, expected_len);
+    fprintf(cctests_log_stream, "   result:       '");
     fwrite(K->result, sizeof(char), K->result_len, cctests_log_stream);
     fprintf(cctests_log_stream, "' (len=%" PRIuSIZE ")\n", K->result_len);
   }
@@ -789,14 +736,11 @@ cctests_condition_print_assertion_expected_ascii_fun (cce_condition_t const * C)
 void
 cctests_condition_init_assertion_expected_ascii (cce_destination_t L,
 						 cctests_condition_assertion_expected_ascii_t * C,
-						 char const * const expr,
-						 char const * const filename,
-						 char const * const funcname,
-						 int const linenum,
-						 char const * expected, char const * result, size_t result_len)
+						 char const * const expected, char const * const result, size_t result_len,
+						 CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
 {
   /* Initialise the parent type. */
-  cctests_condition_init_assertion_expected_value(&(C->assertion_expected_value), expr, filename, funcname, linenum);
+  cctests_condition_init_assertion_expected_value(&(C->assertion_expected_value), CCTESTS_CONDITION_COMMON_CALL_ARGS);
 
   /* Initialise the fields of this type. */
   {
@@ -815,22 +759,19 @@ cctests_condition_init_assertion_expected_ascii (cce_destination_t L,
 
 cce_condition_t const *
 cctests_condition_new_assertion_expected_ascii (cce_destination_t L,
-						char const * const expr,
-						char const * const filename,
-						char const * const funcname,
-						int const linenum,
-						char const * expected, char const * result, size_t result_len)
+						char const * const expected, char const * const result, size_t result_len,
+						CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
 {
   cctests_condition_assertion_expected_ascii_t *	C =
     cce_sys_malloc(L, sizeof(cctests_condition_assertion_expected_ascii_t));
 
   /* Initialise the basic condition fields. */
   cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_ascii_stru.descriptor);
-
-  cctests_condition_init_assertion_expected_ascii(L, C, expr, filename, funcname, linenum, expected, result, result_len);
-
+  cctests_condition_init_assertion_expected_ascii(L, C, expected, result, result_len, CCTESTS_CONDITION_COMMON_CALL_ARGS);
   return (cce_condition_t const *)C;
 }
+
+/* ------------------------------------------------------------------ */
 
 bool
 cctests_condition_is_assertion_expected_ascii (cce_condition_t const * C)

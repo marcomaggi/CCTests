@@ -7,7 +7,7 @@
 
 	Body definitions of a subtype of "test assertion".
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -89,6 +89,7 @@ my_condition_init_assertion_subtype (cce_destination_t L, my_condition_assertion
 				     char const * const filename,
 				     char const * const funcname,
 				     int const linenum,
+				     char const * const description_message,
 				     int const the_data)
 /* This initialisation function must be called both by:
  *
@@ -102,7 +103,7 @@ my_condition_init_assertion_subtype (cce_destination_t L, my_condition_assertion
  */
 {
   if (1) { fprintf(stderr, "%s: initialising %p\n", __func__, (void*)C); }
-  cctests_condition_init_assertion(&(C->assertion), expr, filename, funcname, linenum);
+  cctests_condition_init_assertion(&(C->assertion), expr, filename, funcname, linenum, description_message);
   C->data = cce_sys_malloc(L, sizeof(int));
   *(C->data) = the_data;
   if (1) { fprintf(stderr, "%s: initialised %p\n", __func__, (void*)C); }
@@ -114,6 +115,7 @@ my_condition_new_assertion_subtype (cce_destination_t upper_L,
 				    char const * const filename,
 				    char const * const funcname,
 				    int const linenum,
+				    char const * const description_message,
 				    int the_data)
 /* This constructor function is the  public interface to the constructor
  * of condition objects of type "my_condition_assertion_subtype_t".
@@ -136,7 +138,7 @@ my_condition_new_assertion_subtype (cce_destination_t upper_L,
     my_condition_assertion_subtype_t * C = cce_sys_malloc_guarded(L, C_H, sizeof(my_condition_assertion_subtype_t));
 
     cce_condition_init((cce_condition_t *) C, &(my_descriptor_assertion_subtype_ptr->descriptor));
-    my_condition_init_assertion_subtype(L, C, expr, filename, funcname, linenum, the_data);
+    my_condition_init_assertion_subtype(L, C, expr, filename, funcname, linenum, description_message, the_data);
 
     cce_run_body_handlers(L);
     if (1) { fprintf(stderr, "%s: constructed %p\n", __func__, (void*)C); }

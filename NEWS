@@ -10,8 +10,13 @@ Revision 0.3.0-devel.8
 
      cctests_assert_true()
      cctests_assert_false()
-     cctests_assert_true_msg()
-     cctests_assert_false_msg()
+
+* Added   optional   arguments    to   format   an   assertion-violation
+  description-message to the assertion macros.
+
+* BACKWARDS  INCOMPATIBILITY   Added  an   argument  assertion-violation
+  description-message  to   the  constructors  of   assertion  condition
+  objects.
 
 
 Revision 0.3.0-devel.7

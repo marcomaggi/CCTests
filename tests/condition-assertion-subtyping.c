@@ -7,7 +7,7 @@
 
 	Test file for subtyping of "test assertion" conditions.
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -75,7 +75,9 @@ main (void)
 
       cce_run_catch_handlers_final(L);
     } else {
-      cce_raise(L, my_condition_new_assertion_subtype(L, "expr", "filename", "funcname", 999, 123));
+      cce_raise(L, my_condition_new_assertion_subtype(L, "expr", "filename", "funcname", 999,
+						      cctests_new_dynamic_string(L, "description"),
+						      123));
       cce_run_body_handlers(L);
     }
   }

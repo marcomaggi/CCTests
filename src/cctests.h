@@ -5,9 +5,9 @@
 
   Abstract
 
-	This is the public header file for the library CCTests.  It must
-	be included  in all the source  files using the features  of the
-	library.
+  This is the public header file for the library CCTests.  It must
+  be included  in all the source  files using the features  of the
+  library.
 
   Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
@@ -241,7 +241,7 @@ cctests_decl int	cctests_version_interface_age (void);
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: base.
+ ** Exceptional-condition objects: base.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_base_t {
@@ -262,7 +262,7 @@ cctests_decl bool cctests_condition_is_base (cce_condition_t const * C)
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: test success.
+ ** Exceptional-condition objects: test success.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_success_t {
@@ -286,7 +286,7 @@ cctests_decl bool cctests_condition_is_success (cce_condition_t const * C)
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: test skipped.
+ ** Exceptional-condition objects: test skipped.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_skipped_t {
@@ -310,7 +310,7 @@ cctests_decl bool cctests_condition_is_skipped (cce_condition_t const * C)
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: test failure.
+ ** Exceptional-condition objects: test failure.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_failure_t {
@@ -334,7 +334,7 @@ cctests_decl bool cctests_condition_is_failure (cce_condition_t const * C)
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: test expected failure.
+ ** Exceptional-condition objects: test expected failure.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_expected_failure_t {
@@ -358,7 +358,7 @@ cctests_decl bool cctests_condition_is_expected_failure (cce_condition_t const *
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: assertion failure.
+ ** Exceptional-condition objects: assertion failure.
  ** ----------------------------------------------------------------- */
 
 typedef void cctests_condition_print_assertion_fun_t (cce_condition_t const * C);
@@ -383,49 +383,25 @@ cctests_decl cctests_descriptor_assertion_t const * const cctests_descriptor_ass
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_condition_init_assertion (cctests_condition_assertion_t * C,
-						    char const * const expr,
-						    char const * const filename,
-						    char const * const funcname,
-						    int const linenum)
+#undef CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS
+#define CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS				\
+  char const * expr, char const * filename, char const * funcname, int const linenum, char const * description_message
+
+cctests_decl void cctests_condition_init_assertion (cctests_condition_assertion_t * C, CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,2,3,4)));
 
-cctests_decl cce_condition_t const * cctests_condition_new_assertion (cce_destination_t L,
-								      char const * const expr,
-								      char const * const filename,
-								      char const * const funcname,
-								      int const linenum)
+cctests_decl cce_condition_t const * cctests_condition_new_assertion (cce_destination_t L, CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,2,3,4),__returns_nonnull__));
-
-/* ------------------------------------------------------------------ */
-
-cctests_decl void cctests_condition_init_assertion_msg (cctests_condition_assertion_t * C,
-							char const * const expr,
-							char const * const filename,
-							char const * const funcname,
-							int const linenum,
-							char const * message)
-  __attribute__((__nonnull__(1,2,3,4)));
-
-cctests_decl cce_condition_t const * cctests_condition_new_assertion_msg (cce_destination_t L,
-									  char const * const expr,
-									  char const * const filename,
-									  char const * const funcname,
-									  int const linenum,
-									  char const * message)
-  __attribute__((__nonnull__(1,2,3,4),__returns_nonnull__));
-
-/* ------------------------------------------------------------------ */
 
 cctests_decl bool cctests_condition_is_assertion (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 cctests_decl void cctests_condition_print_assertion (cce_condition_t const * C)
   __attribute__((__nonnull__(1)));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: assertion failure, expected value.
+ ** Exceptional-condition objects: assertion failure, expected value.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_assertion_expected_value_t {
@@ -439,26 +415,27 @@ struct cctests_condition_assertion_expected_value_t {
 
 cctests_decl cctests_descriptor_assertion_expected_value_t const * const cctests_descriptor_assertion_expected_value_ptr;
 
+/* ------------------------------------------------------------------ */
+
 cctests_decl void cctests_condition_init_assertion_expected_value (cctests_condition_assertion_expected_value_t * C,
-								   char const * const expr,
-								   char const * const filename,
-								   char const * const funcname,
-								   int const linenum)
+								   CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,2,3,4)));
 
-/* This condition object type cannot be instantiated, only subtyped, */
+/* This condition object type cannot be instantiated, only subtyped. */
 
 cctests_decl bool cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: assertion failure, expected immediate value.
+ ** Exceptional-condition objects: assertion failure, expected immediate value.
  ** ----------------------------------------------------------------- */
 
 #define CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(STEM, TYPE)	\
-  typedef struct cctests_descriptor_assertion_expected_ ## STEM ## _t	cctests_descriptor_assertion_expected_ ## STEM ## _t; \
-  typedef struct cctests_condition_assertion_expected_ ## STEM ## _t	cctests_condition_assertion_expected_ ## STEM ## _t; \
+  typedef struct cctests_descriptor_assertion_expected_ ## STEM ## _t	\
+  cctests_descriptor_assertion_expected_ ## STEM ## _t;			\
+  typedef struct cctests_condition_assertion_expected_ ## STEM ## _t	\
+  cctests_condition_assertion_expected_ ## STEM ## _t;			\
 									\
   struct cctests_descriptor_assertion_expected_ ## STEM ## _t {		\
     cce_descriptor_t	descriptor;					\
@@ -466,78 +443,69 @@ cctests_decl bool cctests_condition_is_assertion_expected_value (cce_condition_t
   };									\
 									\
   struct cctests_condition_assertion_expected_ ## STEM ## _t {		\
-    cctests_condition_assertion_expected_value_t assertion_expected_value;	\
-    TYPE			expected;				\
-    TYPE			result;					\
+    cctests_condition_assertion_expected_value_t assertion_expected_value; \
+    TYPE		expected;					\
+    TYPE		result;						\
   };									\
 									\
-  cctests_decl cctests_descriptor_assertion_expected_ ## STEM ## _t const * const cctests_descriptor_assertion_expected_ ## STEM ## _ptr; \
+  cctests_decl cctests_descriptor_assertion_expected_ ## STEM ## _t	\
+  const * const cctests_descriptor_assertion_expected_ ## STEM ## _ptr; \
 									\
-  cctests_decl void cctests_condition_init_assertion_expected_ ## STEM (cctests_condition_assertion_expected_ ## STEM ## _t * C, \
-								       char const * const expr, \
-								       char const * const filename, \
-								       char const * const funcname, \
-								       int const linenum, \
-								       TYPE expected, \
-								       TYPE result) \
-    __attribute__((__nonnull__(1,2,3,4)));				\
+  cctests_decl void cctests_condition_init_assertion_expected_ ## STEM	\
+  (cctests_condition_assertion_expected_ ## STEM ## _t * C, TYPE expected, TYPE result, CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS) \
+    __attribute__((__nonnull__(1,4,5,6)));				\
 									\
-  cctests_decl cce_condition_t const * cctests_condition_new_assertion_expected_ ## STEM (cce_destination_t L, \
-									char const * const expr, \
-									char const * const filename, \
-									char const * const funcname, \
-									int const linenum, \
-									TYPE expected, \
-									TYPE result) \
-    __attribute__((__nonnull__(1,2,3,4),__returns_nonnull__));		\
+  cctests_decl cce_condition_t const * cctests_condition_new_assertion_expected_ ## STEM \
+  (cce_destination_t L, TYPE expected, TYPE result, CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS) \
+    __attribute__((__nonnull__(1,4,5,6),__returns_nonnull__));		\
 									\
   cctests_decl bool cctests_condition_is_assertion_expected_ ## STEM (cce_condition_t const * C) \
-    __attribute__((__pure__,__nonnull__(1)));
+    __attribute__((__nonnull__(1),__pure__));
 
 /* ------------------------------------------------------------------ */
 
 CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(char,	signed char)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uchar,	unsigned char)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uchar,	unsigned char)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int,	signed int)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint,	unsigned int)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int,	signed int)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint,	unsigned int)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(short,	signed short)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ushort,	unsigned short)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(short,	signed short)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ushort,	unsigned short)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(long,	signed long)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ulong,	unsigned long)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(long,	signed long)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ulong,	unsigned long)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(llong,	signed long long)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ullong,	unsigned long long)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(llong,	signed long long)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ullong,	unsigned long long)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int8,	int8_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int16,	int16_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int32,	int32_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int64,	int64_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int8,	int8_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int16,	int16_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int32,	int32_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int64,	int64_t)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint8,	uint8_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint16,	uint16_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint32,	uint32_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,	uint64_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint8,	uint8_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint16,	uint16_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint32,	uint32_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,	uint64_t)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(float,	float)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(double,	double)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(float,	float)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(double,	double)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(size,	size_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ssize,	ssize_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(size,	size_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ssize,	ssize_t)
 
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(pointer,	void *)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ptrdiff,	ptrdiff_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(intptr,	intptr_t)
-CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uintptr,	uintptr_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(pointer,	void *)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ptrdiff,	ptrdiff_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(intptr,	intptr_t)
+  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uintptr,	uintptr_t)
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: assertion failure, expected ASCIIZ value.
+ ** Exceptional-condition objects: assertion failure, expected ASCIIZ value.
  ** ----------------------------------------------------------------- */
 
-typedef struct cctests_descriptor_assertion_expected_asciiz_t	cctests_descriptor_assertion_expected_asciiz_t;
+  typedef struct cctests_descriptor_assertion_expected_asciiz_t	cctests_descriptor_assertion_expected_asciiz_t;
 typedef struct cctests_condition_assertion_expected_asciiz_t	cctests_condition_assertion_expected_asciiz_t;
 
 struct cctests_descriptor_assertion_expected_asciiz_t {
@@ -555,29 +523,21 @@ struct cctests_condition_assertion_expected_asciiz_t {
 
 cctests_decl void cctests_condition_init_assertion_expected_asciiz (cce_destination_t L,
 								    cctests_condition_assertion_expected_asciiz_t * C,
-								    char const * const expr,
-								    char const * const filename,
-								    char const * const funcname,
-								    int const linenum,
-								    char const * expected,
-								    char const * result)
-  __attribute__((__nonnull__(1,2,3,4,5,7,8)));
+								    char const * expected, char const * result,
+								    CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,2,3,4,5,6,7)));
 
 cctests_decl cce_condition_t const * cctests_condition_new_assertion_expected_asciiz (cce_destination_t L,
-										      char const * const expr,
-										      char const * const filename,
-										      char const * const funcname,
-										      int const linenum,
-										      char const * expected,
-										      char const * result)
-  __attribute__((__nonnull__(1,2,3,4,6,7),__returns_nonnull__));
+										      char const * expected, char const * result,
+										      CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,2,3,4,5,6),__returns_nonnull__));
 
 cctests_decl bool cctests_condition_is_assertion_expected_asciiz (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: assertion failure, expected ASCII value.
+ ** Exceptional-condition objects: assertion failure, expected ASCII value.
  ** ----------------------------------------------------------------- */
 
 typedef struct cctests_descriptor_assertion_expected_ascii_t	cctests_descriptor_assertion_expected_ascii_t;
@@ -599,31 +559,23 @@ struct cctests_condition_assertion_expected_ascii_t {
 
 cctests_decl void cctests_condition_init_assertion_expected_ascii (cce_destination_t L,
 								   cctests_condition_assertion_expected_ascii_t * C,
-								   char const * const expr,
-								   char const * const filename,
-								   char const * const funcname,
-								   int const linenum,
-								   char const * expected,
-								   char const * result,
-								   size_t result_len)
-  __attribute__((__nonnull__(1,2,3,4,5,7,8)));
+								   char const * expected, char const * result,
+								   size_t result_len,
+								   CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,2,3,4,6,7,8)));
 
 cctests_decl cce_condition_t const * cctests_condition_new_assertion_expected_ascii (cce_destination_t L,
-										     char const * const expr,
-										     char const * const filename,
-										     char const * const funcname,
-										     int const linenum,
-										     char const * expected,
-										     char const * result,
-										     size_t result_len)
-  __attribute__((__nonnull__(1,2,3,4,6,7),__returns_nonnull__));
+										     char const * expected, char const * result,
+										     size_t result_len,
+										     CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,2,3,5,6,7),__returns_nonnull__));
 
 cctests_decl bool cctests_condition_is_assertion_expected_ascii (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: unreachable code.
+ ** Exceptional-condition objects: unreachable code.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_unreachable_t {
@@ -640,26 +592,26 @@ struct cctests_condition_unreachable_t {
 cctests_decl cctests_descriptor_unreachable_t const * const cctests_descriptor_unreachable_ptr;
 
 cctests_decl void cctests_condition_init_unreachable (cctests_condition_unreachable_t * C,
-						    char const * const filename,
-						    char const * const funcname,
-						    int const linenum)
+						      char const * filename,
+						      char const * funcname,
+						      int const linenum)
   __attribute__((__nonnull__(1,2,3)));
 
 cctests_decl cce_condition_t const * cctests_condition_new_unreachable (cce_destination_t L,
-									char const * const filename,
-									char const * const funcname,
+									char const * filename,
+									char const * funcname,
 									int const linenum)
   __attribute__((__nonnull__(1,2,3),__returns_nonnull__));
 
-#define cctests_raise_unreachable(L)		\
+#define cctests_raise_unreachable(L)					\
   cce_raise((L), cctests_condition_new_unreachable((L), __FILE__, __func__, __LINE__))
 
 cctests_decl bool cctests_condition_is_unreachable (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: signal.
+ ** Exceptional-condition objects: signal.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_signal_t {
@@ -679,11 +631,11 @@ cctests_decl cce_condition_t const * cctests_condition_new_signal (void)
   __attribute__((__leaf__,__const__,__returns_nonnull__));
 
 cctests_decl bool cctests_condition_is_signal (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: signal one.
+ ** Exceptional-condition objects: signal one.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_signal_1_t {
@@ -703,11 +655,11 @@ cctests_decl cce_condition_t const * cctests_condition_new_signal_1 (void)
   __attribute__((__leaf__,__const__,__returns_nonnull__));
 
 cctests_decl bool cctests_condition_is_signal_1 (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: signal two.
+ ** Exceptional-condition objects: signal two.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_signal_2_t {
@@ -727,11 +679,11 @@ cctests_decl cce_condition_t const * cctests_condition_new_signal_2 (void)
   __attribute__((__leaf__,__const__,__returns_nonnull__));
 
 cctests_decl bool cctests_condition_is_signal_2 (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: signal three.
+ ** Exceptional-condition objects: signal three.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_signal_3_t {
@@ -751,11 +703,11 @@ cctests_decl cce_condition_t const * cctests_condition_new_signal_3 (void)
   __attribute__((__leaf__,__const__,__returns_nonnull__));
 
 cctests_decl bool cctests_condition_is_signal_3 (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: regular expression error.
+ ** Exceptional-condition objects: regular expression error.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_regex_error_t {
@@ -777,11 +729,11 @@ cctests_decl cce_condition_t const * cctests_condition_new_regex_error (cce_dest
   __attribute__((__nonnull__(1),__returns_nonnull__));
 
 cctests_decl bool cctests_condition_is_regex_error (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: regular expression compilation error.
+ ** Exceptional-condition objects: regular expression compilation error.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_regex_compilation_error_t {
@@ -801,11 +753,11 @@ cctests_decl cce_condition_t const * cctests_condition_new_regex_compilation_err
   __attribute__((__nonnull__(1),__returns_nonnull__));
 
 cctests_decl bool cctests_condition_is_regex_compilation_error (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: child process failure.
+ ** Exceptional-condition objects: child process failure.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_child_failure_t {
@@ -825,11 +777,11 @@ cctests_decl cce_condition_t const * cctests_condition_new_child_failure (void)
   __attribute__((__returns_nonnull__));
 
 cctests_decl bool cctests_condition_is_child_failure (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: child process abnormal termination.
+ ** Exceptional-condition objects: child process abnormal termination.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_child_abnormal_termination_t {
@@ -849,11 +801,11 @@ cctests_decl cce_condition_t const * cctests_condition_new_child_abnormal_termin
   __attribute__((__returns_nonnull__));
 
 cctests_decl bool cctests_condition_is_child_abnormal_termination (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
- ** Condition objects: child process abnormal termination.
+ ** Exceptional-condition objects: child process abnormal termination.
  ** ----------------------------------------------------------------- */
 
 struct cctests_descriptor_child_failure_exit_status_t {
@@ -873,14 +825,14 @@ cctests_decl cce_condition_t const * cctests_condition_new_child_failure_exit_st
   __attribute__((__returns_nonnull__));
 
 cctests_decl bool cctests_condition_is_child_failure_exit_status (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  __attribute__((__nonnull__(1),__pure__));
 
 
 /** --------------------------------------------------------------------
  ** Test driver.
  ** ----------------------------------------------------------------- */
 
-cctests_decl void cctests_begin_group (char const * const test_group_name)
+cctests_decl void cctests_begin_group (char const * test_group_name)
   __attribute__((__nonnull__(1)));
 cctests_decl void cctests_end_group   (void);
 
@@ -893,7 +845,7 @@ cctests_decl bool cctests_latest_func_completed_successfully (void);
 
 
 /** --------------------------------------------------------------------
- ** Assertions API.
+ ** Assertions API: common definitions.
  ** ----------------------------------------------------------------- */
 
 cctests_decl cce_destination_t	cctests_location;
@@ -905,349 +857,894 @@ cctests_skip (void)
   cce_raise(cctests_location, cctests_condition_new_skipped());
 }
 
-#define cctests_assert(L,EXPR)		\
-  cctests_p_assert((L), "cctests_assert(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__)
+cctests_decl char const * cctests_p_format_message (cce_destination_t L, char const * template, ...)
+  __attribute__((__nonnull__(1)));
 
-#define cctests_assert_true(L,EXPR)	\
-  cctests_p_assert((L), "cctests_assert_true(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__)
+
+/** --------------------------------------------------------------------
+ ** Assertions: basic expressions.
+ ** ----------------------------------------------------------------- */
 
-#define cctests_assert_false(L,EXPR)	\
-  cctests_p_assert((L), "cctests_assert_false(" #L ", " #EXPR ")", (!(EXPR)), __FILE__, __func__, __LINE__)
+#undef CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS
+#define CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS				\
+  char const * expr, char const * filename, char const * funcname, int linenum, char const * description_message
 
-cctests_decl void cctests_p_assert (cce_destination_t L, char const * expr, bool result,
-				    char const * filename, char const * funcname, int linenum);
-
-/* ------------------------------------------------------------------ */
-
-#define cctests_assert_msg(L,EXPR,...) \
-  cctests_p_assert_msg((L), "cctests_assert_msg(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__, __VA_ARGS__)
-
-#define cctests_assert_true_msg(L,EXPR,...) \
-  cctests_p_assert_msg((L), "cctests_assert_true_msg(" #L ", " #EXPR ")", (EXPR), __FILE__, __func__, __LINE__, __VA_ARGS__)
-
-#define cctests_assert_false_msg(L,EXPR,...) \
-  cctests_p_assert_msg((L), "cctests_assert_false_msg(" #L ", " #EXPR ")", (!(EXPR)), __FILE__, __func__, __LINE__, __VA_ARGS__)
-
-cctests_decl void cctests_p_assert_msg (cce_destination_t L, char const * expr, bool result,
-					char const * filename, char const * funcname, int linenum,
-					...);
+#undef CCTESTS_ASSERT_COMMON_CALL_ARGS
+#define CCTESTS_ASSERT_COMMON_CALL_ARGS(...)				\
+  cctests_p_expr, __FILE__, __func__, cctests_p_linenum, cctests_p_format_message(L, __VA_ARGS__, NULL)
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_asciiz (cce_destination_t L, char const * expected, char const * result,
-					   char const * expr,
-					   char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_raise (cce_destination_t L, CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS);
+
+#define cctests_assert(L,...)		cctests_assert_1(L,__VA_ARGS__,NULL)
+#define cctests_assert_1(L,EXPR,...)					\
+  { size_t	cctests_p_linenum  = __LINE__;				\
+    if (!(EXPR)) {							\
+      cctests_p_assert_raise(L,						\
+			     "cctests_assert(" #L ", " #EXPR ")",	\
+			     __FILE__, __func__, cctests_p_linenum,	\
+			     cctests_p_format_message(L, __VA_ARGS__, NULL)); \
+    }									\
+  }
+
+#define cctests_assert_true(L,...)	cctests_assert_true_1(L,__VA_ARGS__,NULL)
+#define cctests_assert_true_1(L,EXPR,...)				\
+  { size_t	cctests_p_linenum  = __LINE__;				\
+    if (!(EXPR)) {							\
+      cctests_p_assert_raise(L,						\
+			     "cctests_assert_true(" #L ", " #EXPR ")",	\
+			     __FILE__, __func__, cctests_p_linenum,	\
+			     cctests_p_format_message(L, __VA_ARGS__, NULL)); \
+    }									\
+  }
+
+#define cctests_assert_false(L,...)	cctests_assert_false_1(L,__VA_ARGS__,NULL)
+#define cctests_assert_false_1(L,EXPR,...)				\
+  { size_t	cctests_p_linenum  = __LINE__;				\
+    if (EXPR) {								\
+      cctests_p_assert_raise(L,						\
+			     "cctests_assert_false(" #L ", " #EXPR ")",	\
+			     __FILE__, __func__, cctests_p_linenum,	\
+			     cctests_p_format_message(L, __VA_ARGS__, NULL)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: ASCIIZ strings.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_asciiz_compare (char const * expected, char const * result)
+  __attribute__((__nonnull__(1,2),__pure__));
+
+cctests_decl void cctests_p_assert_asciiz_raise (cce_destination_t L, char const * expected, char const * result,
+						 char const * expr,
+						 char const * filename, char const * funcname, int linenum,
+						 char const * description_message)
   __attribute__((__nonnull__(1,2,3,4,5,6)));
 
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_asciiz(L,EXPECTED,...)		\
+  cctests_assert_asciiz_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-#define cctests_assert_asciiz(L,EXPECTED,RESULT)			\
-  cctests_p_assert_asciiz(L, EXPECTED, RESULT,				\
-			  "cctests_assert_asciiz(" #L ", " #EXPECTED ", " #RESULT ")", \
-			  __FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_asciiz_1(L,EXPECTED,RESULT,...)			\
+  { size_t		cctests_p_linenum  = __LINE__;			\
+    char const *	cctests_p_expected = (EXPECTED);		\
+    char const *	cctests_p_result   = (RESULT);			\
+    static char const *	cctests_p_expr     = "cctests_assert_asciiz(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_asciiz_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_asciiz_raise(L, cctests_p_expected, cctests_p_result, \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
-/* ------------------------------------------------------------------ */
+
+/** --------------------------------------------------------------------
+ ** Assertions: ASCII strings.
+ ** ----------------------------------------------------------------- */
 
-cctests_decl void cctests_p_assert_ascii (cce_destination_t L, char const * expected, char const * result, size_t result_len,
-					  char const * expr,
-					  char const * filename, char const * funcname, int linenum)
+cctests_decl bool cctests_p_assert_ascii_compare (char const * expected, char const * result, size_t result_len)
+  __attribute__((__nonnull__(1,2),__pure__));
+
+cctests_decl void cctests_p_assert_ascii_raise (cce_destination_t L, char const * expected, char const * result, size_t result_len,
+						CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,2,3,5,6,7)));
 
-#define cctests_assert_ascii(L,EXPECTED,RESULT,RESULT_LEN)		\
-  cctests_p_assert_ascii(L, EXPECTED, RESULT, RESULT_LEN,		\
-			 "cctests_assert_ascii(" #L ", " #EXPECTED ", " #RESULT ", " #RESULT_LEN ")", \
-			 __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So  we use  "RESULT_LEN" as  such argument  and add  a NULL  for the  other, true,
+   macro. */
+#define cctests_assert_ascii(L,EXPECTED,RESULT,...)		\
+  cctests_assert_ascii_1(L,EXPECTED,RESULT,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_ascii_1(L,EXPECTED,RESULT,RESULT_LEN,...)	\
+  { size_t		cctests_p_linenum    = __LINE__;		\
+    char const *	cctests_p_expected   = (EXPECTED);		\
+    char const *	cctests_p_result     = (RESULT);		\
+    size_t		cctests_p_result_len = (RESULT_LEN);		\
+    static char const *	cctests_p_expr       = "cctests_assert_ascii(" #L ", " #EXPECTED ", " #RESULT ", " #RESULT_LEN ")"; \
+    if (cctests_p_assert_ascii_compare(cctests_p_expected, cctests_p_result, cctests_p_result_len)) { \
+      cctests_p_assert_ascii_raise(L, cctests_p_expected, cctests_p_result, cctests_p_result_len, \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: standalone characters.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_char_compare (signed char expected, signed char result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_char_raise (cce_destination_t L, signed char expected, signed char result,
+					       CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_char(L,EXPECTED,...)		\
+  cctests_assert_equal_char_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_char_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    signed char const	cctests_p_expected = (EXPECTED);		\
+    signed char	const	cctests_p_result   = (RESULT);			\
+    static char const *	cctests_p_expr     = "cctests_assert_equal_char(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_char_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_char_raise(L, cctests_p_expected, cctests_p_result, \
+				  CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_char (cce_destination_t L, signed char expected, signed char result,
-					       char const * expr,
-					       char const * filename, char const * funcname, int linenum)
+cctests_decl bool cctests_p_assert_uchar_compare (unsigned char expected, unsigned char result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_uchar_raise (cce_destination_t L, unsigned char expected, unsigned char result,
+						CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-cctests_decl void cctests_p_assert_equal_uchar (cce_destination_t L, unsigned char expected, unsigned char result,
-						char const * expr,
-						char const * filename, char const * funcname, int linenum)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_uchar(L,EXPECTED,...)		\
+  cctests_assert_equal_uchar_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_uchar_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    unsigned char const	cctests_p_expected = (EXPECTED);		\
+    unsigned char const	cctests_p_result   = (RESULT);			\
+    static char const *	cctests_p_expr     = "cctests_assert_equal_uchar(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_uchar_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_uchar_raise(L, cctests_p_expected, cctests_p_result, \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: short integers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_short_compare (signed short int expected, signed short int result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_short_raise (cce_destination_t L, signed short int expected, signed short int result,
+						CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_char(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_char(L, EXPECTED, RESULT,			\
-			      "cctests_assert_equal_char(" #L ", " #EXPECTED ", " #RESULT ")", \
-			      __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_short(L,EXPECTED,...)		\
+  cctests_assert_equal_short_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-#define cctests_assert_equal_uchar(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_uchar(L, EXPECTED, RESULT,			\
-			       "cctests_assert_equal_uchar(" #L ", " #EXPECTED ", " #RESULT ")", \
-			       __FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_short_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    signed short int const	cctests_p_expected = (EXPECTED);	\
+    signed short int const	cctests_p_result   = (RESULT);		\
+    static char const *cctests_p_expr     = "cctests_assert_equal_short(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_short_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_short_raise(L, cctests_p_expected, cctests_p_result, \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_short (cce_destination_t L, short expected, short result,
-						char const * expr,
-						char const * filename, char const * funcname, int linenum)
-__attribute__((__nonnull__(1,4,5,6)));
+cctests_decl bool cctests_p_assert_ushort_compare (unsigned short int expected, unsigned short int result)
+  __attribute__((__pure__));
 
-cctests_decl void cctests_p_assert_equal_ushort (cce_destination_t L, unsigned short expected, unsigned short result,
-						 char const * expr,
-						 char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_ushort_raise (cce_destination_t L, unsigned short int expected, unsigned short int result,
+						 CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_short(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_short(L, EXPECTED, RESULT,			\
-			       "cctests_assert_equal_short(" #L ", " #EXPECTED ", " #RESULT ")", \
-			       __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_ushort(L,EXPECTED,...)		\
+  cctests_assert_equal_ushort_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-#define cctests_assert_equal_ushort(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_ushort(L, EXPECTED, RESULT,			\
-				"cctests_assert_equal_ushort(" #L ", " #EXPECTED ", " #RESULT ")", \
-				__FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_ushort_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    unsigned short int const	cctests_p_expected = (EXPECTED);	\
+    unsigned short int const	cctests_p_result   = (RESULT);		\
+    static char const *cctests_p_expr     = "cctests_assert_equal_ushort(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_ushort_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_ushort_raise(L, cctests_p_expected, cctests_p_result, \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: integers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_int_compare (signed int expected, signed int result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_int_raise (cce_destination_t L, signed int expected, signed int result,
+					      CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_int(L,EXPECTED,...)		\
+  cctests_assert_equal_int_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_int_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    signed int const	cctests_p_expected = (EXPECTED);		\
+    signed int const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_int(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_int_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_int_raise(L, cctests_p_expected, cctests_p_result, \
+				 CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_int (cce_destination_t L, int expected, int result,
-					      char const * expr,
-					      char const * filename, char const * funcname, int linenum)
-__attribute__((__nonnull__(1,4,5,6)));
+cctests_decl bool cctests_p_assert_uint_compare (unsigned int expected, unsigned int result)
+  __attribute__((__pure__));
 
-cctests_decl void cctests_p_assert_equal_uint (cce_destination_t L, unsigned int expected, unsigned int result,
-					       char const * expr,
-					       char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_uint_raise (cce_destination_t L, unsigned int expected, unsigned int result,
+					       CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_int(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_int(L, EXPECTED, RESULT,			\
-			     "cctests_assert_equal_int(" #L ", " #EXPECTED ", " #RESULT ")", \
-			     __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_uint(L,EXPECTED,...)		\
+  cctests_assert_equal_uint_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-#define cctests_assert_equal_uint(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_uint(L, EXPECTED, RESULT,			\
-			      "cctests_assert_equal_uint(" #L ", " #EXPECTED ", " #RESULT ")", \
-			      __FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_uint_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    unsigned int const	cctests_p_expected = (EXPECTED);		\
+    unsigned int const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_uint(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_uint_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_uint_raise(L, cctests_p_expected, cctests_p_result, \
+				  CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: long integers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_long_compare (signed long expected, signed long result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_long_raise (cce_destination_t L, signed long expected, signed long result,
+					       CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_long(L,EXPECTED,...)		\
+  cctests_assert_equal_long_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_long_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    signed long const	cctests_p_expected = (EXPECTED);		\
+    signed long const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_long(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_long_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_long_raise(L, cctests_p_expected, cctests_p_result, \
+				  CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_long (cce_destination_t L, long expected, long result,
-					       char const * expr,
-					       char const * filename, char const * funcname, int linenum)
-__attribute__((__nonnull__(1,4,5,6)));
+cctests_decl bool cctests_p_assert_ulong_compare (unsigned long expected, unsigned long result)
+  __attribute__((__pure__));
 
-cctests_decl void cctests_p_assert_equal_ulong (cce_destination_t L, unsigned long expected, unsigned long result,
-						char const * expr,
-						char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_ulong_raise (cce_destination_t L, unsigned long expected, unsigned long result,
+						CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_long(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_long(L, EXPECTED, RESULT,			\
-			      "cctests_assert_equal_long(" #L ", " #EXPECTED ", " #RESULT ")", \
-			      __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_ulong(L,EXPECTED,...)		\
+  cctests_assert_equal_ulong_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-#define cctests_assert_equal_ulong(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_ulong(L, EXPECTED, RESULT,			\
-			       "cctests_assert_equal_ulong(" #L ", " #EXPECTED ", " #RESULT ")", \
-			       __FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_ulong_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    unsigned long const	cctests_p_expected = (EXPECTED);		\
+    unsigned long const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_ulong(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_ulong_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_ulong_raise(L, cctests_p_expected, cctests_p_result, \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: long long integers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_llong_compare (signed long long expected, signed long long result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_llong_raise (cce_destination_t L, signed long long expected, signed long long result,
+						CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_llong(L,EXPECTED,...)		\
+  cctests_assert_equal_llong_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_llong_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    signed long long const	cctests_p_expected = (EXPECTED);	\
+    signed long long const	cctests_p_result   = (RESULT);		\
+    static char const *cctests_p_expr     = "cctests_assert_equal_llong(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_llong_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_llong_raise(L, cctests_p_expected, cctests_p_result, \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_llong (cce_destination_t L, long long expected, long long result,
-					       char const * expr,
-					       char const * filename, char const * funcname, int linenum)
-__attribute__((__nonnull__(1,4,5,6)));
+cctests_decl bool cctests_p_assert_ullong_compare (unsigned long long expected, unsigned long long result)
+  __attribute__((__pure__));
 
-cctests_decl void cctests_p_assert_equal_ullong (cce_destination_t L, unsigned long long expected, unsigned long long result,
-						char const * expr,
-						char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_ullong_raise (cce_destination_t L, unsigned long long expected, unsigned long long result,
+						 CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_llong(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_llong(L, EXPECTED, RESULT,			\
-			      "cctests_assert_equal_llong(" #L ", " #EXPECTED ", " #RESULT ")", \
-			      __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_ullong(L,EXPECTED,...)		\
+  cctests_assert_equal_ullong_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-#define cctests_assert_equal_ullong(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_ullong(L, EXPECTED, RESULT,			\
-			       "cctests_assert_equal_ullong(" #L ", " #EXPECTED ", " #RESULT ")", \
-			       __FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_ullong_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    unsigned long long const	cctests_p_expected = (EXPECTED);	\
+    unsigned long long const	cctests_p_result   = (RESULT);		\
+    static char const *cctests_p_expr     = "cctests_assert_equal_ullong(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_ullong_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_ullong_raise(L, cctests_p_expected, cctests_p_result, \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: 8-bit integers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_int8_compare (int8_t expected, int8_t result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_int8_raise (cce_destination_t L, int8_t expected, int8_t result,
+					       CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_int8(L,EXPECTED,...)		\
+  cctests_assert_equal_int8_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_int8_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    int8_t const	cctests_p_expected = (EXPECTED);		\
+    int8_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_int8(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_int8_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_int8_raise(L, cctests_p_expected, cctests_p_result, \
+				  CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_int8 (cce_destination_t L, int8_t expected, int8_t result,
-					       char const * expr,
-					       char const * filename, char const * funcname, int linenum)
+cctests_decl bool cctests_p_assert_uint8_compare (uint8_t expected, uint8_t result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_uint8_raise (cce_destination_t L, uint8_t expected, uint8_t result,
+						CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-cctests_decl void cctests_p_assert_equal_uint8 (cce_destination_t L, uint8_t expected, uint8_t result,
-						char const * expr,
-						char const * filename, char const * funcname, int linenum)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_uint8(L,EXPECTED,...)		\
+  cctests_assert_equal_uint8_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_uint8_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    uint8_t const	cctests_p_expected = (EXPECTED);		\
+    uint8_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_uint8(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_uint8_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_uint8_raise(L, cctests_p_expected, cctests_p_result, \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: 16-bit integers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_int16_compare (int16_t expected, int16_t result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_int16_raise (cce_destination_t L, int16_t expected, int16_t result,
+						CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_int8(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_int8(L, EXPECTED, RESULT,			\
-			      "cctests_assert_equal_int8(" #L ", " #EXPECTED ", " #RESULT ")", \
-			      __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_int16(L,EXPECTED,...)		\
+  cctests_assert_equal_int16_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-#define cctests_assert_equal_uint8(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_uint8(L, EXPECTED, RESULT,			\
-			       "cctests_assert_equal_uint8(" #L ", " #EXPECTED ", " #RESULT ")", \
-			       __FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_int16_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    int16_t const	cctests_p_expected = (EXPECTED);		\
+    int16_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_int16(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_int16_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_int16_raise(L, cctests_p_expected, cctests_p_result, \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_int16 (cce_destination_t L, int16_t expected, int16_t result,
-						char const * expr,
-						char const * filename, char const * funcname, int linenum)
-__attribute__((__nonnull__(1,4,5,6)));
+cctests_decl bool cctests_p_assert_uint16_compare (uint16_t expected, uint16_t result)
+  __attribute__((__pure__));
 
-cctests_decl void cctests_p_assert_equal_uint16 (cce_destination_t L, uint16_t expected, uint16_t result,
-						 char const * expr,
-						 char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_uint16_raise (cce_destination_t L, uint16_t expected, uint16_t result,
+						 CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_int16(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_int16(L, EXPECTED, RESULT,			\
-			       "cctests_assert_equal_int16(" #L ", " #EXPECTED ", " #RESULT ")", \
-			       __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_uint16(L,EXPECTED,...)		\
+  cctests_assert_equal_uint16_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-#define cctests_assert_equal_uint16(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_uint16(L, EXPECTED, RESULT,			\
-				"cctests_assert_equal_uint16(" #L ", " #EXPECTED ", " #RESULT ")", \
-				__FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_uint16_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    uint16_t const	cctests_p_expected = (EXPECTED);		\
+    uint16_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_uint16(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_uint16_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_uint16_raise(L, cctests_p_expected, cctests_p_result, \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: 32-bit integers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_int32_compare (int32_t expected, int32_t result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_int32_raise (cce_destination_t L, int32_t expected, int32_t result,
+						CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_int32(L,EXPECTED,...)		\
+  cctests_assert_equal_int32_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_int32_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    int32_t const	cctests_p_expected = (EXPECTED);		\
+    int32_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_int32(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_int32_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_int32_raise(L, cctests_p_expected, cctests_p_result, \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_int32 (cce_destination_t L, int32_t expected, int32_t result,
-						char const * expr,
-						char const * filename, char const * funcname, int linenum)
-__attribute__((__nonnull__(1,4,5,6)));
+cctests_decl bool cctests_p_assert_uint32_compare (uint32_t expected, uint32_t result)
+  __attribute__((__pure__));
 
-cctests_decl void cctests_p_assert_equal_uint32 (cce_destination_t L, uint32_t expected, uint32_t result,
-						 char const * expr,
-						 char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_uint32_raise (cce_destination_t L, uint32_t expected, uint32_t result,
+						 CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_int32(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_int32(L, EXPECTED, RESULT,			\
-			       "cctests_assert_equal_int32(" #L ", " #EXPECTED ", " #RESULT ")", \
-			       __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_uint32(L,EXPECTED,...)		\
+  cctests_assert_equal_uint32_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-#define cctests_assert_equal_uint32(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_uint32(L, EXPECTED, RESULT,			\
-				"cctests_assert_equal_uint32(" #L ", " #EXPECTED ", " #RESULT ")", \
-				__FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_uint32_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    uint32_t const	cctests_p_expected = (EXPECTED);		\
+    uint32_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_uint32(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_uint32_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_uint32_raise(L, cctests_p_expected, cctests_p_result, \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: 64-bit integers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_int64_compare (int64_t expected, int64_t result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_int64_raise (cce_destination_t L, int64_t expected, int64_t result,
+						CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_int64(L,EXPECTED,...)		\
+  cctests_assert_equal_int64_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_int64_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    int64_t const	cctests_p_expected = (EXPECTED);		\
+    int64_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_int64(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_int64_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_int64_raise(L, cctests_p_expected, cctests_p_result, \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_int64 (cce_destination_t L, int64_t expected, int64_t result,
-						char const * expr,
-						char const * filename, char const * funcname, int linenum)
-__attribute__((__nonnull__(1,4,5,6)));
+cctests_decl bool cctests_p_assert_uint64_compare (uint64_t expected, uint64_t result)
+  __attribute__((__pure__));
 
-cctests_decl void cctests_p_assert_equal_uint64 (cce_destination_t L, uint64_t expected, uint64_t result,
-						 char const * expr,
-						 char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_uint64_raise (cce_destination_t L, uint64_t expected, uint64_t result,
+						 CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_int64(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_int64(L, EXPECTED, RESULT,			\
-			       "cctests_assert_equal_int64(" #L ", " #EXPECTED ", " #RESULT ")", \
-			       __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_uint64(L,EXPECTED,...)		\
+  cctests_assert_equal_uint64_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-#define cctests_assert_equal_uint64(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_uint64(L, EXPECTED, RESULT,			\
-				"cctests_assert_equal_uint64(" #L ", " #EXPECTED ", " #RESULT ")", \
-				__FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_uint64_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    uint64_t const	cctests_p_expected = (EXPECTED);		\
+    uint64_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_uint64(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_uint64_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_uint64_raise(L, cctests_p_expected, cctests_p_result, \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: floating point numbers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_float_compare (float expected, float result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_float_raise (cce_destination_t L, float expected, float result,
+						CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_float(L,EXPECTED,...)		\
+  cctests_assert_equal_float_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_float_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    float const	cctests_p_expected = (EXPECTED);			\
+    float const	cctests_p_result   = (RESULT);				\
+    static char const *cctests_p_expr     = "cctests_assert_equal_float(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_float_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_float_raise(L, cctests_p_expected, cctests_p_result, \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_float (cce_destination_t L, float expected, float result,
-						char const * expr,
-						char const * filename, char const * funcname, int linenum)
-__attribute__((__nonnull__(1,4,5,6)));
+cctests_decl bool cctests_p_assert_double_compare (double expected, double result)
+  __attribute__((__pure__));
 
-cctests_decl void cctests_p_assert_equal_double (cce_destination_t L, double expected, double result,
-						 char const * expr,
-						 char const * filename, char const * funcname, int linenum)
+cctests_decl void cctests_p_assert_double_raise (cce_destination_t L, double expected, double result,
+						 CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_float(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_float(L, EXPECTED, RESULT,			\
-			       "cctests_assert_equal_float(" #L ", " #EXPECTED ", " #RESULT ")", \
-			       __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_double(L,EXPECTED,...)		\
+  cctests_assert_equal_double_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-#define cctests_assert_equal_double(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_double(L, EXPECTED, RESULT,			\
-				"cctests_assert_equal_double(" #L ", " #EXPECTED ", " #RESULT ")", \
-				__FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_double_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    double const	cctests_p_expected = (EXPECTED);		\
+    double const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_double(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_double_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_double_raise(L, cctests_p_expected, cctests_p_result, \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: memory pointers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_pointer_compare (void * expected, void * result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_pointer_raise (cce_destination_t L, void * expected, void * result,
+						  CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_pointer(L,EXPECTED,...)		\
+  cctests_assert_equal_pointer_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_pointer_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    void * const	cctests_p_expected = (EXPECTED);		\
+    void * const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_pointer(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_pointer_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_pointer_raise(L, cctests_p_expected, cctests_p_result, \
+				     CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: size integers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_size_compare (size_t expected, size_t result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_size_raise (cce_destination_t L, size_t expected, size_t result,
+					       CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_size(L,EXPECTED,...)		\
+  cctests_assert_equal_size_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_size_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    size_t const	cctests_p_expected = (EXPECTED);		\
+    size_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_size(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_size_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_size_raise(L, cctests_p_expected, cctests_p_result, \
+				  CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_pointer (cce_destination_t L, void * expected, void * result,
-						  char const * expr,
-						  char const * filename, char const * funcname, int linenum)
+cctests_decl bool cctests_p_assert_ssize_compare (ssize_t expected, ssize_t result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_ssize_raise (cce_destination_t L, ssize_t expected, ssize_t result,
+						CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_pointer(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_pointer(L, EXPECTED, RESULT,			\
-				 "cctests_assert_equal_pointer(" #L ", " #EXPECTED ", " #RESULT ")", \
-				 __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_ssize(L,EXPECTED,...)		\
+  cctests_assert_equal_ssize_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_ssize_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    ssize_t const	cctests_p_expected = (EXPECTED);		\
+    ssize_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_ssize(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_ssize_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_ssize_raise(L, cctests_p_expected, cctests_p_result, \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: mmemory pointer differences.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_ptrdiff_compare (ptrdiff_t expected, ptrdiff_t result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_ptrdiff_raise (cce_destination_t L, ptrdiff_t expected, ptrdiff_t result,
+						  CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_ptrdiff(L,EXPECTED,...)		\
+  cctests_assert_equal_ptrdiff_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_ptrdiff_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    ptrdiff_t const	cctests_p_expected = (EXPECTED);		\
+    ptrdiff_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_ptrdiff(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_ptrdiff_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_ptrdiff_raise(L, cctests_p_expected, cctests_p_result, \
+				     CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
+
+
+/** --------------------------------------------------------------------
+ ** Assertions: pointer integers.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl bool cctests_p_assert_intptr_compare (intptr_t expected, intptr_t result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_intptr_raise (cce_destination_t L, intptr_t expected, intptr_t result,
+						 CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+  __attribute__((__nonnull__(1,4,5,6)));
+
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_intptr(L,EXPECTED,...)		\
+  cctests_assert_equal_intptr_1(L,EXPECTED,__VA_ARGS__,NULL)
+
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_intptr_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    intptr_t const	cctests_p_expected = (EXPECTED);		\
+    intptr_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_intptr(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_intptr_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_intptr_raise(L, cctests_p_expected, cctests_p_result, \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void cctests_p_assert_equal_size (cce_destination_t L, size_t expected, size_t result,
-					       char const * expr,
-					       char const * filename, char const * funcname, int linenum)
+cctests_decl bool cctests_p_assert_uintptr_compare (uintptr_t expected, uintptr_t result)
+  __attribute__((__pure__));
+
+cctests_decl void cctests_p_assert_uintptr_raise (cce_destination_t L, uintptr_t expected, uintptr_t result,
+						  CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,4,5,6)));
 
-#define cctests_assert_equal_size(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_size(L, EXPECTED, RESULT,			\
-			      "cctests_assert_equal_size(" #L ", " #EXPECTED ", " #RESULT ")", \
-			      __FILE__, __func__, __LINE__)
+/* This trick  with "__VA_ARGS__, NULL"  exists because  some C standard  requires at
+   least one argument  to be present in  the optional arguments of  a variadic macro.
+   So we use "RESULT" as such argument and add a NULL for the other, true, macro. */
+#define cctests_assert_equal_uintptr(L,EXPECTED,...)		\
+  cctests_assert_equal_uintptr_1(L,EXPECTED,__VA_ARGS__,NULL)
 
-/* ------------------------------------------------------------------ */
-
-cctests_decl void cctests_p_assert_equal_ssize (cce_destination_t L, ssize_t expected, ssize_t result,
-						char const * expr,
-						char const * filename, char const * funcname, int linenum)
-  __attribute__((__nonnull__(1,4,5,6)));
-
-#define cctests_assert_equal_ssize(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_ssize(L, EXPECTED, RESULT,			\
-			       "cctests_assert_equal_ssize(" #L ", " #EXPECTED ", " #RESULT ")", \
-			       __FILE__, __func__, __LINE__)
-
-/* ------------------------------------------------------------------ */
-
-cctests_decl void cctests_p_assert_equal_ptrdiff (cce_destination_t L, ptrdiff_t expected, ptrdiff_t result,
-						  char const * expr,
-						  char const * filename, char const * funcname, int linenum)
-  __attribute__((__nonnull__(1,4,5,6)));
-
-#define cctests_assert_equal_ptrdiff(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_ptrdiff(L, EXPECTED, RESULT,			\
-				 "cctests_assert_equal_ptrdiff(" #L ", " #EXPECTED ", " #RESULT ")", \
-				 __FILE__, __func__, __LINE__)
-
-/* ------------------------------------------------------------------ */
-
-cctests_decl void cctests_p_assert_equal_intptr (cce_destination_t L, intptr_t expected, intptr_t result,
-						 char const * expr,
-						 char const * filename, char const * funcname, int linenum)
-  __attribute__((__nonnull__(1,4,5,6)));
-
-#define cctests_assert_equal_intptr(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_intptr(L, EXPECTED, RESULT,			\
-				"cctests_assert_equal_intptr(" #L ", " #EXPECTED ", " #RESULT ")", \
-				__FILE__, __func__, __LINE__)
-
-/* ------------------------------------------------------------------ */
-
-cctests_decl void cctests_p_assert_equal_uintptr (cce_destination_t L, uintptr_t expected, uintptr_t result,
-						  char const * expr,
-						  char const * filename, char const * funcname, int linenum)
-  __attribute__((__nonnull__(1,4,5,6)));
-
-#define cctests_assert_equal_uintptr(L,EXPECTED,RESULT)			\
-  cctests_p_assert_equal_uintptr(L, EXPECTED, RESULT,			\
-				 "cctests_assert_equal_uintptr(" #L ", " #EXPECTED ", " #RESULT ")", \
-				 __FILE__, __func__, __LINE__)
+/* In the  expansion of this  macro: the symbol "__LINE__"  must appear in  the first
+   line. */
+#define cctests_assert_equal_uintptr_1(L,EXPECTED,RESULT,...)		\
+  { size_t const	cctests_p_linenum  = __LINE__;			\
+    uintptr_t const	cctests_p_expected = (EXPECTED);		\
+    uintptr_t const	cctests_p_result   = (RESULT);			\
+    static char const *cctests_p_expr     = "cctests_assert_equal_uintptr(" #L ", " #EXPECTED ", " #RESULT ")"; \
+    if (cctests_p_assert_uintptr_compare(cctests_p_expected, cctests_p_result)) { \
+      cctests_p_assert_uintptr_raise(L, cctests_p_expected, cctests_p_result, \
+				     CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+    }									\
+  }
 
 
 /** --------------------------------------------------------------------
@@ -1276,23 +1773,17 @@ cctests_decl void cctests_with_parent_and_child_process (cce_destination_t L,
 #ifndef CCTESTS_DEBUGGING_HERE
 #  define CCTESTS_DEBUGGING_HERE	1
 #endif
-#ifndef CCTESTS_FPRINTF
-#  define CCTESTS_FPRINTF		fprintf
-#endif
-#ifndef CCTESTS_VFPRINTF
-#  define CCTESTS_VFPRINTF		vfprintf
-#endif
 
 #if (CCTESTS_DEBUGGING == 1)
 
 #  define cctests_debug_question(EXPR)		((EXPR)?"yes":"no")
 #  define cctests_debug_mark()			cctests_debug_print("mark")
 
-#  define cctests_debug_print(...)		\
+#  define cctests_debug_print(...)					\
   if (CCTESTS_DEBUGGING_HERE) { cctests_p_debug_print(__FILE__,__func__,__LINE__,__VA_ARGS__); }
 
 cctests_decl void cctests_p_debug_print (const char * file, const char * function, int line, const char * template, ...)
-  __attribute__((__unused__,__nonnull__(1,2,4)));
+__attribute__((__unused__,__nonnull__(1,2,4)));
 
 #else
 #  define cctests_debug_print(...)	/* empty */
@@ -1311,6 +1802,9 @@ cctests_decl bool cctests_isatty (FILE * stream)
   __attribute__((__nonnull__(1)));
 
 cctests_decl bool cctests_log_stream_isatty (void);
+
+cctests_decl char const * cctests_new_dynamic_string (cce_destination_t L, char const * in_str)
+  __attribute__((__nonnull__(1,2)));
 
 
 /** --------------------------------------------------------------------

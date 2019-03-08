@@ -7,7 +7,7 @@
 
 	Header definitions for subtyping of "test assertion" conditions.
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -30,7 +30,7 @@
  ** ----------------------------------------------------------------- */
 
 typedef struct my_descriptor_assertion_subtype_t	my_descriptor_assertion_subtype_t;
-typedef struct my_condition_assertion_subtype_t	my_condition_assertion_subtype_t;
+typedef struct my_condition_assertion_subtype_t		my_condition_assertion_subtype_t;
 
 struct my_descriptor_assertion_subtype_t {
   cce_descriptor_t	descriptor;
@@ -48,6 +48,7 @@ cctests_decl void my_condition_init_assertion_subtype (cce_destination_t L, my_c
 						       char const * const filename,
 						       char const * const funcname,
 						       int const linenum,
+						       char const * const description_message,
 						       int the_data)
   __attribute__((__nonnull__(1,2,3,4,5)));
 
@@ -56,6 +57,7 @@ cctests_decl cce_condition_t const * my_condition_new_assertion_subtype (cce_des
 									 char const * const filename,
 									 char const * const funcname,
 									 int const linenum,
+									 char const * const description_message,
 									 int the_data)
   __attribute__((__nonnull__(1,2,3,4),__returns_nonnull__));
 

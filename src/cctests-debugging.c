@@ -32,6 +32,13 @@
 #include <string.h>
 #include <stdarg.h>
 
+#ifndef CCTESTS_FPRINTF
+#  define CCTESTS_FPRINTF		fprintf
+#endif
+#ifndef CCTESTS_VFPRINTF
+#  define CCTESTS_VFPRINTF		vfprintf
+#endif
+
 
 /** --------------------------------------------------------------------
  ** Printing.

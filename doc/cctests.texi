@@ -491,39 +491,32 @@ test_1_1 (cce_destination_t upper_L)
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert (cce_destination_t @var{L}, @var{expr})
+@deftypefnx {Preprocessor Macro} void cctests_assert (cce_destination_t @var{L}, @var{expr}, char const * @var{message}, @dots{})
 Evaluate the expression @var{expr}; this macro is similar, but not equal, to the standard
 @cfunc{assert}.  If the expression evaluates to @ctrue{}: just return.  Otherwise raise an exception
 of type @objtype{cctests_condition_assertion_t} by performing a non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_true (cce_destination_t @var{L}, @var{expr})
+@deftypefnx {Preprocessor Macro} void cctests_assert_true (cce_destination_t @var{L}, @var{expr}, char const * @var{message}, @dots{})
 An alias for @cfunc{cctests_assert}.
 @end deftypefn
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_false (cce_destination_t @var{L}, @var{expr})
+@deftypefnx {Preprocessor Macro} void cctests_assert_false (cce_destination_t @var{L}, @var{expr}, char const * @var{message}, @dots{})
 Evaluate the expression @var{expr}.  If the expression evaluates to @cfalse{}: just return.
 Otherwise raise an exception of type @objtype{cctests_condition_assertion_t} by performing a
 non--local exit to @var{L}.
-@end deftypefn
 
-
-@deftypefn {Preprocessor Macro} void cctests_assert_msg (cce_destination_t @var{L}, @var{expr}, char const * @var{message}, @dots{})
-Like @cfunc{cctests_assert}, but format @var{template} with the given optional arguments and include
-it in the raised exceptional--condition object as description message.
-@end deftypefn
-
-
-@deftypefn {Preprocessor Macro} void cctests_assert_true_msg (cce_destination_t @var{L}, @var{expr}, char const * @var{message}, @dots{})
-Like @cfunc{cctests_assert_true}, but format @var{template} with the given optional arguments and
-include it in the raised exceptional--condition object as description message.
-@end deftypefn
-
-
-@deftypefn {Preprocessor Macro} void cctests_assert_false_msg (cce_destination_t @var{L}, @var{expr}, char const * @var{message}, @dots{})
-Like @cfunc{cctests_assert_false}, but format @var{template} with the given optional arguments and
-include it in the raised exceptional--condition object as description message.
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 
@@ -556,7 +549,8 @@ test_1_4 (cce_destination_t L)
   char const *  A = "ciao";
   char const *  B = "hello";
 
-  cctests_assert(L, 0 == strcmp(A, B));
+  cctests_assert(L, 0 == strcmp(A, B),
+                 "Unqual strings: %s, %s", A, B);
 @}
 
 void
@@ -584,19 +578,29 @@ test_1_5 (cce_destination_t upper_L)
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_asciiz (cce_destination_t @var{L}, char const * @var{expected}, char const * @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_asciiz (cce_destination_t @var{L}, char const * @var{expected}, char const * @var{result}, char const * @var{message}, @dots{})
 Assert that the @asciiz{} string @var{expected} equals the @asciiz{} string @var{result}; the
 comparison is performed with the standard function @cfunc{strcmp}.  If the strings are equal: just
 return.  Otherwise raise an exception of type
 @objtype{cctests_condition_assertion_expected_asciiz_t} by performing a non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_ascii (cce_destination_t @var{L}, char const * @var{expected}, char const * @var{result}, size_t @var{result_len})
+@deftypefnx {Preprocessor Macro} void cctests_assert_ascii (cce_destination_t @var{L}, char const * @var{expected}, char const * @var{result}, size_t @var{result_len}, char const * @var{message}, @dots{})
 Assert that the first @var{result_len} octets in the @ascii{} string @var{expected} equal the first
 @var{result_len} octets in the @ascii{} string @var{result}; the comparison is performed with the
 standard function @cfunc{strncmp}.  If the strings are equal: just return.  Otherwise raise an
 exception of type @objtype{cctests_condition_assertion_expected_ascii_t} by performing a non--local
 exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 
@@ -639,17 +643,27 @@ test_1_1 (cce_destination_t L)
 
 @macro AssertionEqualitySignedFun {TYPENAME, TYPE}
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_\TYPENAME\ (cce_destination_t @var{L}, signed \TYPE\ @var{expected}, signed \TYPE\ @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_\TYPENAME\ (cce_destination_t @var{L}, signed \TYPE\ @var{expected}, signed \TYPE\ @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_\TYPENAME\_t} by performing
 a non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 @end macro
 
 @macro AssertionEqualityUnsignedFun {TYPENAME, TYPE}
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_u\TYPENAME\ (cce_destination_t @var{L}, unsigned \TYPE\ @var{expected}, unsigned \TYPE\ @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_u\TYPENAME\ (cce_destination_t @var{L}, unsigned \TYPE\ @var{expected}, unsigned \TYPE\ @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_u\TYPENAME\_t} by
 performing a non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 @end macro
 
@@ -665,17 +679,27 @@ performing a non--local exit to @var{L}.
 
 @macro AssertionEqualitySignedBitIntFun {TYPENAME, TYPE}
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_\TYPENAME\ (cce_destination_t @var{L}, \TYPE\ @var{expected}, \TYPE\ @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_\TYPENAME\ (cce_destination_t @var{L}, \TYPE\ @var{expected}, \TYPE\ @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_\TYPENAME\_t} by performing
 a non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 @end macro
 
 @macro AssertionEqualityUnsignedBitIntFun {TYPENAME, TYPE}
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_u\TYPENAME\ (cce_destination_t @var{L}, u\TYPE\ @var{expected}, u\TYPE\ @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_u\TYPENAME\ (cce_destination_t @var{L}, u\TYPE\ @var{expected}, u\TYPE\ @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_u\TYPENAME\_t} by
 performing a non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 @end macro
 
@@ -756,9 +780,14 @@ performing a non--local exit to @var{L}.
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_float (cce_destination_t @var{L}, float @var{expected}, float @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_float (cce_destination_t @var{L}, float @var{expected}, float @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_float_t} by performing a
 non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 @c page
@@ -767,9 +796,14 @@ non--local exit to @var{L}.
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_double (cce_destination_t @var{L}, double @var{expected}, double @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_double (cce_destination_t @var{L}, double @var{expected}, double @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_double_t} by performing a
 non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 @c page
@@ -778,9 +812,14 @@ non--local exit to @var{L}.
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_ssize (cce_destination_t @var{L}, ssize_t @var{expected}, ssize_t @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_ssize (cce_destination_t @var{L}, ssize_t @var{expected}, ssize_t @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_ssize} by performing a
 non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 @c page
@@ -789,9 +828,14 @@ non--local exit to @var{L}.
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_size (cce_destination_t @var{L}, size_t @var{expected}, size_t @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_size (cce_destination_t @var{L}, size_t @var{expected}, size_t @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_size} by performing a
 non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 @c page
@@ -800,9 +844,14 @@ non--local exit to @var{L}.
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_pointer (cce_destination_t @var{L}, void * @var{expected}, void * @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_pointer (cce_destination_t @var{L}, void * @var{expected}, void * @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_pointer_t} by performing a
 non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 @c page
@@ -811,9 +860,14 @@ non--local exit to @var{L}.
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_ptrdiff (cce_destination_t @var{L}, ptrdiff_t @var{expected}, ptrdiff_t @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_ptrdiff (cce_destination_t @var{L}, ptrdiff_t @var{expected}, ptrdiff_t @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_ptrdiff} by performing a
 non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 @c page
@@ -822,9 +876,14 @@ non--local exit to @var{L}.
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_intptr (cce_destination_t @var{L}, intptr_t @var{expected}, intptr_t @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_intptr (cce_destination_t @var{L}, intptr_t @var{expected}, intptr_t @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_intptr} by performing a
 non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 @c page
@@ -833,9 +892,14 @@ non--local exit to @var{L}.
 
 
 @deftypefn {Preprocessor Macro} void cctests_assert_equal_uintptr (cce_destination_t @var{L}, uintptr_t @var{expected}, uintptr_t @var{result})
+@deftypefnx {Preprocessor Macro} void cctests_assert_equal_uintptr (cce_destination_t @var{L}, uintptr_t @var{expected}, uintptr_t @var{result}, char const * @var{message}, @dots{})
 Assert that @var{expected} equals @var{result}.  If the values are equal: just return.  Otherwise
 raise an exception of type @objtype{cctests_condition_assertion_expected_uintptr} by performing a
 non--local exit to @var{L}.
+
+When the optional argument @var{message} and the following arguments are used: a dynamically
+allocated string is formatted using @var{message} as template and @cfunc{printf} format specifiers;
+this string is used as description message for the assertion violation.
 @end deftypefn
 
 @c page
@@ -1575,21 +1639,27 @@ Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun void cctests_condition_init_assertion_expected_\TYPENAME\ (cce_destination_t @var{L}, cctests_condition_assertion_expected_\TYPENAME\_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, \TYPE\ @var{expected}, \TYPE\ @var{result})
+@deftypefun void cctests_condition_init_assertion_expected_\TYPENAME\ (cctests_condition_assertion_expected_\TYPENAME\_t * @var{C}, \TYPE\ @var{expected}, \TYPE\ @var{result}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_assertion_expected_\TYPENAME\_t}.
 If an error occurs building the instance: raise an exception by performing a non--local exit to
 @var{L}.
 
-The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
+argument @var{message} is either @cnull{} or a pointer to an @asciiz{} message string allocated
+using the standard allocator; the ownership of this string is transferred to the
+exceptional--condition object.
 @end deftypefun
 
 
-@deftypefun void cctests_condition_new_assertion_expected_\TYPENAME\ (cce_destination_t @var{L}, cctests_condition_assertion_expected_\TYPENAME\_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, \TYPE\ @var{expected}, \TYPE\ @var{result})
+@deftypefun void cctests_condition_new_assertion_expected_\TYPENAME\ (cce_destination_t @var{L}, cctests_condition_assertion_expected_\TYPENAME\_t * @var{C}, \TYPE\ @var{expected}, \TYPE\ @var{result}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
 Build and return a new exceptional condition object.  If an error occurs building the instance:
 raise an exception by performing a non--local exit to @var{L}.
 
-The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.
+The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
+argument @var{message} is either @cnull{} or a pointer to an @asciiz{} message string allocated
+using the standard allocator; the ownership of this string is transferred to the
+exceptional--condition object.
 @end deftypefun
 
 
@@ -1679,8 +1749,7 @@ Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun void cctests_condition_init_assertion (cctests_condition_assertion_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
-@deftypefunx void cctests_condition_init_assertion_msg (cctests_condition_assertion_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
+@deftypefun void cctests_condition_init_assertion (cctests_condition_assertion_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_assertion_t}.
 
@@ -1691,8 +1760,7 @@ exceptional--condition object.
 @end deftypefun
 
 
-@deftypefun {cce_condition_t const *} cctests_condition_new_assertion (cce_destination_t @var{L}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
-@deftypefunx {cce_condition_t const *} cctests_condition_new_assertion_msg (cce_destination_t @var{L}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
+@deftypefun {cce_condition_t const *} cctests_condition_new_assertion (cce_destination_t @var{L}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
 Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
 an exception by performing a non--local exit to @var{L}.
 
@@ -1786,11 +1854,14 @@ Pointer to a statically allocated exceptional condition descriptor.
 
 
 @deftypefun void cctests_condition_init_assertion_expected_value (cctests_condition_assertion_expected_value_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
+@deftypefunx void cctests_condition_init_assertion_expected_value (cctests_condition_assertion_expected_value_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_assertion_expected_value_t}.
 
 The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
-strings referenced by @var{expected} and @var{result} are duplicated.
+strings referenced by @var{expected} and @var{result} are duplicated.  The argument @var{message} is
+either @cnull{} or a pointer to an @asciiz{} message string allocated using the standard allocator;
+the ownership of this string is transferred to the exceptional--condition object.
 @end deftypefun
 
 
@@ -1868,23 +1939,27 @@ Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun void cctests_condition_init_assertion_expected_asciiz (cce_destination_t @var{L}, cctests_condition_assertion_expected_asciiz_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{expected}, char const * @var{result})
+@deftypefun void cctests_condition_init_assertion_expected_asciiz (cce_destination_t @var{L}, cctests_condition_assertion_expected_asciiz_t * @var{C}, char const * @var{expected}, char const * @var{result}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_assertion_expected_asciiz_t}.
 If an error occurs building the instance: raise an exception by performing a non--local exit to
 @var{L}.
 
 The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
-strings referenced by @var{expected} and @var{result} are duplicated.
+strings referenced by @var{expected} and @var{result} are duplicated.  The argument @var{message} is
+either @cnull{} or a pointer to an @asciiz{} message string allocated using the standard allocator;
+the ownership of this string is transferred to the exceptional--condition object.
 @end deftypefun
 
 
-@deftypefun void cctests_condition_new_assertion_expected_asciiz (cce_destination_t @var{L}, cctests_condition_assertion_expected_asciiz_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{expected}, char const * @var{result})
+@deftypefun void cctests_condition_new_assertion_expected_asciiz (cce_destination_t @var{L}, cctests_condition_assertion_expected_asciiz_t * @var{C}, char const * @var{expected}, char const * @var{result}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
 Build and return a new exceptional condition object.  If an error occurs building the instance:
 raise an exception by performing a non--local exit to @var{L}.
 
 The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
-strings referenced by @var{expected} and @var{result} are duplicated.
+strings referenced by @var{expected} and @var{result} are duplicated.  The argument @var{message} is
+either @cnull{} or a pointer to an @asciiz{} message string allocated using the standard allocator;
+the ownership of this string is transferred to the exceptional--condition object.
 @end deftypefun
 
 
@@ -1965,23 +2040,27 @@ Pointer to a statically allocated exceptional condition descriptor.
 @end deftypevr
 
 
-@deftypefun void cctests_condition_init_assertion_expected_ascii (cce_destination_t @var{L}, cctests_condition_assertion_expected_ascii_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{expected}, char const * @var{result}, size_t @var{result_len})
+@deftypefun void cctests_condition_init_assertion_expected_ascii (cce_destination_t @var{L}, cctests_condition_assertion_expected_ascii_t * @var{C}, char const * @var{expected}, char const * @var{result}, size_t @var{result_len}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
 Initialisation function for the condition object.  This function is meant to be called from the
 initialisation function of sub--types of @objtype{cctests_condition_assertion_expected_ascii_t}.
 If an error occurs building the instance: raise an exception by performing a non--local exit to
 @var{L}.
 
 The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
-strings referenced by @var{expected} and @var{result} are duplicated.
+strings referenced by @var{expected} and @var{result} are duplicated.  The argument @var{message} is
+either @cnull{} or a pointer to an @asciiz{} message string allocated using the standard allocator;
+the ownership of this string is transferred to the exceptional--condition object.
 @end deftypefun
 
 
-@deftypefun void cctests_condition_new_assertion_expected_ascii (cce_destination_t @var{L}, cctests_condition_assertion_expected_ascii_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{expected}, char const * @var{result}, size_t @var{result_len})
+@deftypefun void cctests_condition_new_assertion_expected_ascii (cce_destination_t @var{L}, cctests_condition_assertion_expected_ascii_t * @var{C}, char const * @var{expected}, char const * @var{result}, size_t @var{result_len}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
 Build and return a new exceptional condition object.  If an error occurs building the instance:
 raise an exception by performing a non--local exit to @var{L}.
 
 The strings referenced by @var{expr}, @var{filename}, @var{funcname} are not duplicated.  The
-strings referenced by @var{expected} and @var{result} are duplicated.
+strings referenced by @var{expected} and @var{result} are duplicated.  The argument @var{message} is
+either @cnull{} or a pointer to an @asciiz{} message string allocated using the standard allocator;
+the ownership of this string is transferred to the exceptional--condition object.
 @end deftypefun
 
 

@@ -7,7 +7,7 @@
 
 	Test file for assertion functions.
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -108,7 +108,8 @@ test_5_1 (void)
 /* Tests that "assertion" is a base condition. */
 {
   cce_location_t	L[1];
-  cce_condition_t const *	C = cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__);
+  cce_condition_t const *	C = cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__,
+								    cctests_new_dynamic_string(L, "description"));
 
   test_assert(true == cctests_condition_is_base(C));
   cce_condition_delete((cce_condition_t *)C);
@@ -119,7 +120,8 @@ test_5_2 (void)
 /* Tests that "assertion" is a "failure" condition. */
 {
   cce_location_t	L[1];
-  cce_condition_t const *	C = cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__);
+  cce_condition_t const *	C = cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__,
+								    cctests_new_dynamic_string(L, "description"));
 
   test_assert(true == cctests_condition_is_failure(C));
   cce_condition_delete((cce_condition_t *)C);
@@ -130,13 +132,18 @@ test_5_3 (void)
 /* Tests that "assertion" is a "assertion" condition. */
 {
   cce_location_t		L[1];
-  cce_condition_t const *	C = cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__);
+  cce_condition_t const *	C = cctests_condition_new_assertion(L, "1+2", __FILE__, __func__, __LINE__,
+								    cctests_new_dynamic_string(L, "description"));
 
   test_assert(true == cctests_condition_is_assertion(C));
   cce_condition_delete((cce_condition_t *)C);
 }
 
 
+/** --------------------------------------------------------------------
+ ** Let's go.
+ ** ----------------------------------------------------------------- */
+
 int
 main (void)
 {
@@ -145,6 +152,7 @@ main (void)
   /* Condition signal one. */
   if (1) { test_1_1(); }
   if (1) { test_1_2(); }
+
 
   /* Condition signal two. */
   if (1) { test_2_1(); }

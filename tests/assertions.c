@@ -73,27 +73,27 @@ test_1_3_2 (cce_destination_t L)
 static void
 test_1_4_1 (cce_destination_t L)
 {
-  cctests_assert_msg(L, true, "the expression is: %d", true);
+  cctests_assert(L, true, "the expression is: %d", true);
 }
 
 static void
 test_1_4_2 (cce_destination_t L)
 {
-  cctests_assert_msg(L, false, "the expression is: %d", false);
+  cctests_assert(L, false, "the expression is: %d", false);
 }
 
 static void
 test_1_4_3 (cce_destination_t L)
 /* Test the macro without optional arguments. */
 {
-  cctests_assert_msg(L, true, "the expression is: true");
+  cctests_assert(L, true, "the expression is: true");
 }
 
 static void
 test_1_4_4 (cce_destination_t L)
 /* Test the macro without optional arguments. */
 {
-  cctests_assert_msg(L, false, "the expression is: false");
+  cctests_assert(L, false, "the expression is: false");
 }
 
 /* ------------------------------------------------------------------ */
@@ -101,27 +101,27 @@ test_1_4_4 (cce_destination_t L)
 static void
 test_1_5_1 (cce_destination_t L)
 {
-  cctests_assert_true_msg(L, true, "the expression is: %d", true);
+  cctests_assert_true(L, true, "the expression is: %d", true);
 }
 
 static void
 test_1_5_2 (cce_destination_t L)
 {
-  cctests_assert_true_msg(L, false, "the expression is: %d", false);
+  cctests_assert_true(L, false, "the expression is: %d", false);
 }
 
 static void
 test_1_5_3 (cce_destination_t L)
 /* Test the macro without optional arguments. */
 {
-  cctests_assert_true_msg(L, true, "the expression is: true");
+  cctests_assert_true(L, true, "the expression is: true");
 }
 
 static void
 test_1_5_4 (cce_destination_t L)
 /* Test the macro without optional arguments. */
 {
-  cctests_assert_true_msg(L, false, "the expression is: false");
+  cctests_assert_true(L, false, "the expression is: false");
 }
 
 /* ------------------------------------------------------------------ */
@@ -129,27 +129,27 @@ test_1_5_4 (cce_destination_t L)
 static void
 test_1_6_1 (cce_destination_t L)
 {
-  cctests_assert_false_msg(L, true, "the expression is: %d", true);
+  cctests_assert_false(L, true, "the expression is: %d", true);
 }
 
 static void
 test_1_6_2 (cce_destination_t L)
 {
-  cctests_assert_false_msg(L, false, "the expression is: %d", false);
+  cctests_assert_false(L, false, "the expression is: %d", false);
 }
 
 static void
 test_1_6_3 (cce_destination_t L)
 /* Test the macro without optional arguments. */
 {
-  cctests_assert_false_msg(L, true, "the expression is: true");
+  cctests_assert_false(L, true, "the expression is: true");
 }
 
 static void
 test_1_6_4 (cce_destination_t L)
 /* Test the macro without optional arguments. */
 {
-  cctests_assert_false_msg(L, false, "the expression is: false");
+  cctests_assert_false(L, false, "the expression is: false");
 }
 
 
@@ -169,6 +169,30 @@ test_2_2 (cce_destination_t L)
   cctests_assert_asciiz(L, "ciao", "hello");
 }
 
+static void
+test_2_3 (cce_destination_t L)
+{
+  cctests_assert_asciiz(L, "ciao", "ciao", "the static message");
+}
+
+static void
+test_2_4 (cce_destination_t L)
+{
+  cctests_assert_asciiz(L, "ciao", "hello", "the static message");
+}
+
+static void
+test_2_5 (cce_destination_t L)
+{
+  cctests_assert_asciiz(L, "ciao", "ciao", "the %s message", "dynamic");
+}
+
+static void
+test_2_6 (cce_destination_t L)
+{
+  cctests_assert_asciiz(L, "ciao", "hello", "the %s message", "dynamic");
+}
+
 
 /** --------------------------------------------------------------------
  ** ASCII string assertions.
@@ -184,6 +208,30 @@ static void
 test_3_2 (cce_destination_t L)
 {
   cctests_assert_ascii(L, "ciao", "hello", strlen("hello"));
+}
+
+static void
+test_3_3 (cce_destination_t L)
+{
+  cctests_assert_ascii(L, "ciao", "ciao", strlen("ciao"), "the static message");
+}
+
+static void
+test_3_4 (cce_destination_t L)
+{
+  cctests_assert_ascii(L, "ciao", "hello", strlen("hello"), "the static message");
+}
+
+static void
+test_3_5 (cce_destination_t L)
+{
+  cctests_assert_ascii(L, "ciao", "ciao", strlen("ciao"), "the %s message", "dynamic");
+}
+
+static void
+test_3_6 (cce_destination_t L)
+{
+  cctests_assert_ascii(L, "ciao", "hello", strlen("hello"), "the %s message", "dynamic");
 }
 
 
@@ -330,6 +378,10 @@ main (void)
     {
       cctests_run(test_2_1);
       cctests_run(test_2_2);
+      cctests_run(test_2_3);
+      cctests_run(test_2_4);
+      cctests_run(test_2_5);
+      cctests_run(test_2_6);
     }
     cctests_end_group();
 
@@ -337,6 +389,10 @@ main (void)
     {
       cctests_run(test_3_1);
       cctests_run(test_3_2);
+      cctests_run(test_3_3);
+      cctests_run(test_3_4);
+      cctests_run(test_3_5);
+      cctests_run(test_3_6);
     }
     cctests_end_group();
 
