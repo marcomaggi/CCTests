@@ -7,7 +7,7 @@
 
 
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   This program is free  software: you can redistribute it and/or  modify it under the
   terms of the  GNU Lesser General Public  License as published by  the Free Software
@@ -145,10 +145,18 @@ cctests_init (char const * const test_program_name)
 	exit(CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_HARD_ERROR);
       } else {
 	if (test_file_matches_user_selection(L, test_program_name)) {
-	  fprintf(cctests_log_stream, "CCTests: enter test program: %s\n\n", test_program_name);
+	  if (cctests_log_stream_isatty()) {
+	    fprintf(cctests_log_stream, "CCTests: \033[33;1menter test program\033[0m: %s\n\n", test_program_name);
+	  } else {
+	    fprintf(cctests_log_stream, "CCTests: enter test program: %s\n\n", test_program_name);
+	  }
 	  cce_run_body_handlers(L);
 	} else {
-	  fprintf(cctests_log_stream, "CCTests: skip test program: %s\n", test_program_name);
+	  if (cctests_log_stream_isatty()) {
+	    fprintf(cctests_log_stream, "CCTests: \033[33;1mskip test program\033[0m: %s\n\n", test_program_name);
+	  } else {
+	    fprintf(cctests_log_stream, "CCTests: skip test program: %s\n", test_program_name);
+	  }
 	  cce_run_body_handlers(L);
 	  exit(CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_SKIP_TEST);
 	}
@@ -181,7 +189,12 @@ cctests_final (void)
 {
   int	status;
 
-  fprintf(cctests_log_stream, "CCTests: exit test program: %s\n", cctests_test_program_name);
+  if (cctests_log_stream_isatty()) {
+    fprintf(cctests_log_stream, "CCTests: \033[33;1mexit test program\033[0m: %s\n", cctests_test_program_name);
+  } else {
+    fprintf(cctests_log_stream, "CCTests: exit test program: %s\n", cctests_test_program_name);
+  }
+
   if (cctests_all_test_passed) {
     status = CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_SUCCESS;
   } else {
