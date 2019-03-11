@@ -29,6 +29,19 @@
 #include "cctests-internals.h"
 #include <string.h>
 
+static bool test_file_matches_user_selection (cce_destination_t L, char const * const groupname);
+static bool test_group_matches_user_selection (cce_destination_t L, char const * const groupname);
+static bool test_func_matches_user_selection  (cce_destination_t L, char const * const funcname);
+
+static void acquire_environment_test_file  (cce_destination_t L);
+static void acquire_environment_test_group (cce_destination_t L);
+static void acquire_environment_test_name  (cce_destination_t L);
+
+
+/** --------------------------------------------------------------------
+ ** Global variables.
+ ** ----------------------------------------------------------------- */
+
 static regex_t	cctests_test_program_selection;
 static regex_t	cctests_test_group_selection;
 static regex_t	cctests_test_name_selection;
@@ -39,30 +52,21 @@ static bool	cctests_test_name_selection_used;
 
 FILE *	cctests_log_stream;
 
-static bool test_file_matches_user_selection (cce_destination_t L, char const * const groupname);
-static bool test_group_matches_user_selection (cce_destination_t L, char const * const groupname);
-static bool test_func_matches_user_selection  (cce_destination_t L, char const * const funcname);
-
-static void acquire_environment_test_file  (cce_destination_t L);
-static void acquire_environment_test_group (cce_destination_t L);
-static void acquire_environment_test_name  (cce_destination_t L);
-
-/* This  variable is  true if  all the  test functions  run so  far have
-   completed successfully.  When a test function fails: this variable is
-   set to false. */
+/* This  variable is  true  if all  the  test  functions run  so  far have  completed
+   successfully.  When a test function fails: this variable is set to false. */
 static bool cctests_all_test_passed;
 
-/* This  variable is  initialised by  "cctests_begin_group()" and  it is
-   mutated by  "cctests_p_run()".  It  is set  to true  if all  the test
-   functions in a group succeed; otherwise it is set to false. */
+/* This  variable is  initialised by  "cctests_begin_group()"  and it  is mutated  by
+   "cctests_p_run()".   It is  set to  true  if all  the  test functions  in a  group
+   succeed; otherwise it is set to false. */
 static bool cctests_successful_group;
 
-/* This variable is mutated by "cctests_p_run()".   It is set to true if
-   the test function succeeds; otherwise it is set to false. */
+/* This variable  is mutated  by "cctests_p_run()".  It  is set to  true if  the test
+   function succeeds; otherwise it is set to false. */
 static bool cctests_successful_func;
 
-/* The test program name selected with the argument of "cctests_init()".
-   It is used to compose test log messages. */
+/* The test program name selected with  the argument of "cctests_init()".  It is used
+   to compose test log messages. */
 static char const * cctests_test_program_name;
 
 /* While the code runs the block:
@@ -73,13 +77,13 @@ static char const * cctests_test_program_name;
  *   }
  *   cctests_end_group();
  *
- * this variable  holds a pointer  to an ASCIIZ string  representing the
- * current test group name.
+ * this variable  holds a pointer to  an ASCIIZ string representing  the current test
+ * group name.
  */
 static char const *	cctests_test_group_name;
 
-/* While the code runs a test function: this variable holds a pointer to
- * an ASCIIZ string representing the current test function name.
+/* While the code  runs a test function:  this variable holds a pointer  to an ASCIIZ
+ * string representing the current test function name.
  */
 char const *	cctests_test_func_name;
 
@@ -91,9 +95,9 @@ char const *	cctests_test_func_name;
  *   }
  *   cctests_end_group();
  *
- * this variable is true if  the function "cctests_p_run()" must run the
- * test function;  this variable is false  if all the test  functions in
- * the group must be skipped.
+ * this  variable  is true  if  the  function  "cctests_p_run()"  must run  the  test
+ * function; this variable  is false if all  the test functions in the  group must be
+ * skipped.
  */
 static bool	run_tests_in_group;
 
