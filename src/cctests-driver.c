@@ -463,6 +463,7 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 		test_func_name);
       } else {
 	cctests_successful_func  = true;
+	cctests_counters_register_skipped_test();
 	fprintf(cctests_log_stream, "CCTests: %sskipped%s test function: %s\n",
 		cctests_terminal_skipping_color, cctests_terminal_default_color,
 		test_func_name);
