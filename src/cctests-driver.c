@@ -105,6 +105,110 @@ cce_destination_t	cctests_location;
 
 
 /** --------------------------------------------------------------------
+ ** Terminal colors.
+ ** ----------------------------------------------------------------- */
+
+char const * cctests_terminal_directive_color	= "\033[33;1m";
+char const * cctests_terminal_success_color	= "\033[32;1m";
+char const * cctests_terminal_failure_color	= "\033[35;1m";
+char const * cctests_terminal_skipping_color	= "\033[36;1m";
+char const * cctests_terminal_default_color	= "\033[0m";
+
+void
+cctests_terminal_configure_colors (void)
+{
+  if (! cctests_log_stream_isatty()) {
+    cctests_terminal_directive_color	= "";
+    cctests_terminal_success_color	= "";
+    cctests_terminal_failure_color	= "";
+    cctests_terminal_skipping_color	= "";
+    cctests_terminal_default_color	= "";
+  }
+}
+
+
+/** --------------------------------------------------------------------
+ ** Tests counters.
+ ** ----------------------------------------------------------------- */
+
+typedef struct cctests_counters_tuple_t		cctests_counters_tuple_t;
+
+struct cctests_counters_tuple_t {
+  unsigned	number_of_tests;
+  unsigned	number_of_successful_tests;
+  unsigned	number_of_failed_tests;
+  unsigned	number_of_skipped_tests;
+};
+
+static void
+cctests_counters_tuple_reset (cctests_counters_tuple_t * const tuple)
+{
+  tuple->number_of_tests		= 0;
+  tuple->number_of_successful_tests	= 0;
+  tuple->number_of_failed_tests		= 0;
+  tuple->number_of_skipped_tests	= 0;
+}
+
+/* ------------------------------------------------------------------ */
+
+typedef struct cctests_counters_t		cctests_counters_t;
+
+struct cctests_counters_t {
+  cctests_counters_tuple_t	file;
+  cctests_counters_tuple_t	group;
+};
+
+static cctests_counters_t	cctests_counters;
+
+static void
+cctests_counters_reset_file (void)
+{
+  cctests_counters_tuple_reset(&cctests_counters.file);
+}
+
+static void
+cctests_counters_reset_group (void)
+{
+  cctests_counters_tuple_reset(&cctests_counters.group);
+}
+
+static void
+cctests_counters_reset_all (void)
+{
+  cctests_counters_reset_file();
+  cctests_counters_reset_group();
+}
+
+static void
+cctests_counters_register_test (void)
+{
+  ++cctests_counters.file.number_of_tests;
+  ++cctests_counters.group.number_of_tests;
+}
+
+static void
+cctests_counters_register_successful_test (void)
+{
+  ++cctests_counters.file.number_of_successful_tests;
+  ++cctests_counters.group.number_of_successful_tests;
+}
+
+static void
+cctests_counters_register_failed_test (void)
+{
+  ++cctests_counters.file.number_of_failed_tests;
+  ++cctests_counters.group.number_of_failed_tests;
+}
+
+static void
+cctests_counters_register_skipped_test (void)
+{
+  ++cctests_counters.file.number_of_skipped_tests;
+  ++cctests_counters.group.number_of_skipped_tests;
+}
+
+
+/** --------------------------------------------------------------------
  ** Initialisation.
  ** ----------------------------------------------------------------- */
 
@@ -124,8 +228,8 @@ cctests_init (char const * const test_program_name)
     cctests_test_program_name	= test_program_name;
     cctests_all_test_passed	= true;
 
-    /* Acquire the values of the environment variables: "file", "group",
-       "name"; handle them as POSIX regular expressions. */
+    /* Acquire  the values  of the  environment variables:  "file", "group",  "name";
+       handle them as POSIX regular expressions. */
     {
       cce_location_t	L[1];
 
@@ -139,8 +243,10 @@ cctests_init (char const * const test_program_name)
       }
     }
 
-    /* Check  that  the  string  "test_program_name"  matches  the  regular
-       expression from the environment variable "file". */
+    cctests_terminal_configure_colors();
+
+    /* Check that the string "test_program_name"  matches the regular expression from
+       the environment variable "file". */
     {
       cce_location_t	L[1];
 
@@ -149,23 +255,19 @@ cctests_init (char const * const test_program_name)
 	exit(CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_HARD_ERROR);
       } else {
 	if (test_file_matches_user_selection(L, test_program_name)) {
-	  if (cctests_log_stream_isatty()) {
-	    fprintf(cctests_log_stream, "CCTests: \033[33;1menter test program\033[0m: %s\n\n", test_program_name);
-	  } else {
-	    fprintf(cctests_log_stream, "CCTests: enter test program: %s\n\n", test_program_name);
-	  }
+	  fprintf(cctests_log_stream, "CCTests: %senter test program%s: %s\n\n",
+		  cctests_terminal_directive_color, cctests_terminal_default_color, test_program_name);
 	  cce_run_body_handlers(L);
 	} else {
-	  if (cctests_log_stream_isatty()) {
-	    fprintf(cctests_log_stream, "CCTests: \033[33;1mskip test program\033[0m: %s\n\n", test_program_name);
-	  } else {
-	    fprintf(cctests_log_stream, "CCTests: skip test program: %s\n", test_program_name);
-	  }
+	  fprintf(cctests_log_stream, "CCTests: %sskip test program%s: %s\n\n",
+		  cctests_terminal_skipping_color, cctests_terminal_default_color, test_program_name);
 	  cce_run_body_handlers(L);
 	  exit(CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_SKIP_TEST);
 	}
       }
     }
+
+    cctests_counters_reset_file();
   }
 }
 
@@ -193,11 +295,13 @@ cctests_final (void)
 {
   int	status;
 
-  if (cctests_log_stream_isatty()) {
-    fprintf(cctests_log_stream, "CCTests: \033[33;1mexit test program\033[0m: %s\n", cctests_test_program_name);
-  } else {
-    fprintf(cctests_log_stream, "CCTests: exit test program: %s\n", cctests_test_program_name);
-  }
+  fprintf(cctests_log_stream, "CCTests: %sexit test program%s: %s\n",
+	  cctests_terminal_directive_color, cctests_terminal_default_color, cctests_test_program_name);
+  fprintf(cctests_log_stream, "   number of tests: %u, %ssuccessful %u%s, %sfailed %u%s, %sskipped %u%s\n\n",
+	  cctests_counters.file.number_of_tests,
+	  cctests_terminal_success_color,  cctests_counters.file.number_of_successful_tests, cctests_terminal_default_color,
+	  cctests_terminal_failure_color,  cctests_counters.file.number_of_failed_tests,     cctests_terminal_default_color,
+	  cctests_terminal_skipping_color, cctests_counters.file.number_of_skipped_tests,    cctests_terminal_default_color);
 
   if (cctests_all_test_passed) {
     status = CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_SUCCESS;
@@ -210,11 +314,16 @@ cctests_final (void)
 }
 
 void
-ctests_reset_global_state (void)
+cctests_reset_global_state (void)
 {
+  fprintf(cctests_log_stream, "CCTests: %sresetting global state%s\n",
+	  cctests_terminal_directive_color, cctests_terminal_default_color);
+
   cctests_all_test_passed	= true;
   cctests_successful_group	= true;
   cctests_successful_func	= true;
+
+  cctests_counters_reset_all();
 }
 
 
@@ -229,24 +338,19 @@ cctests_begin_group (char const * const test_group_name)
 
   cctests_test_group_name	= test_group_name;
   cctests_successful_group	= true;
+  cctests_counters_reset_group();
 
   if (cce_location(L)) {
     run_tests_in_group = false;
     cce_run_catch_handlers_final(L);
   } else {
     if (test_group_matches_user_selection(L, test_group_name)) {
-      if (cctests_log_stream_isatty()) {
-	fprintf(cctests_log_stream, "CCTests: \033[33;1mbegin group\033[0m: %s\n", cctests_test_group_name);
-      } else {
-	fprintf(cctests_log_stream, "CCTests: begin group: %s\n", cctests_test_group_name);
-      }
+      fprintf(cctests_log_stream, "CCTests: %sbegin group%s: %s\n",
+	      cctests_terminal_directive_color, cctests_terminal_default_color, cctests_test_group_name);
       run_tests_in_group	= true;
     } else {
-      if (cctests_log_stream_isatty()) {
-	fprintf(cctests_log_stream, "CCTests: \033[33;1mskip group\033[0m: %s\n", cctests_test_group_name);
-      } else {
-	fprintf(cctests_log_stream, "CCTests: skip group: %s\n", cctests_test_group_name);
-      }
+      fprintf(cctests_log_stream, "CCTests: %sskip group%s: %s\n",
+	      cctests_terminal_directive_color, cctests_terminal_default_color, cctests_test_group_name);
       run_tests_in_group	= false;
     }
     cce_run_body_handlers(L);
@@ -256,11 +360,13 @@ cctests_begin_group (char const * const test_group_name)
 void
 cctests_end_group (void)
 {
-  if (cctests_log_stream_isatty()) {
-    fprintf(cctests_log_stream, "CCTests: \033[33;1mend group\033[0m: %s\n\n", cctests_test_group_name);
-  } else {
-    fprintf(cctests_log_stream, "CCTests: end group: %s\n\n", cctests_test_group_name);
-  }
+  fprintf(cctests_log_stream, "CCTests: %send group%s: %s\n",
+	  cctests_terminal_directive_color, cctests_terminal_default_color, cctests_test_group_name);
+  fprintf(cctests_log_stream, "   number of tests: %u, %ssuccessful %u%s, %sfailed %u%s, %sskipped %u%s\n\n",
+	  cctests_counters.group.number_of_tests,
+	  cctests_terminal_success_color,  cctests_counters.group.number_of_successful_tests, cctests_terminal_default_color,
+	  cctests_terminal_failure_color,  cctests_counters.group.number_of_failed_tests,     cctests_terminal_default_color,
+	  cctests_terminal_skipping_color, cctests_counters.group.number_of_skipped_tests,    cctests_terminal_default_color);
   cctests_test_group_name = NULL;
 }
 
@@ -279,6 +385,8 @@ void
 cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 {
   cctests_test_func_name = test_func_name;
+  cctests_counters_register_test();
+
   if (run_tests_in_group) {
     cce_location_t	L[1];
 
@@ -286,55 +394,46 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
       /* Handle an exception raised by the body below. */
       if (cctests_condition_is_skipped(cce_condition(L))) {
 	cctests_successful_func = true;
-	if (cctests_log_stream_isatty()) {
-	  fprintf(cctests_log_stream, "CCTests: \033[36;1mskipped\033[0m test function: %s\n", test_func_name);
-	} else {
-	  fprintf(cctests_log_stream, "CCTests: skipped test function: %s\n", test_func_name);
-	}
+	cctests_counters_register_skipped_test();
+	fprintf(cctests_log_stream, "CCTests: %sskipped%s test function: %s\n",
+		cctests_terminal_skipping_color, cctests_terminal_default_color,
+		test_func_name);
       } else if (cctests_condition_is_success(cce_condition(L))) {
 	cctests_successful_func = true;
+	cctests_counters_register_successful_test();
       } else if (cctests_condition_is_expected_failure(cce_condition(L))) {
 	cctests_successful_func = true;
-	if (cctests_log_stream_isatty()) {
-	  fprintf(cctests_log_stream, "CCTests: \033[32;1mexpected failure\033[0m in test function: %s\n", test_func_name);
-	} else {
-	  fprintf(cctests_log_stream, "CCTests: expected failure in test function: %s\n", test_func_name);
-	}
+	cctests_counters_register_successful_test();
+	fprintf(cctests_log_stream, "CCTests: %sexpected failure%s in test function: %s\n",
+		cctests_terminal_failure_color, cctests_terminal_default_color,
+		test_func_name);
       } else if (cctests_condition_is_signal(cce_condition(L))) {
 	cctests_all_test_passed  = false;
 	cctests_successful_group = false;
 	cctests_successful_func  = false;
-	if (cctests_log_stream_isatty()) {
-	  fprintf(cctests_log_stream,
-		  "CCTests: \033[35;1merror\033[0m: unexpected signal exception raised by test function: %s\n",
-		  test_func_name);
-	} else {
-	  fprintf(cctests_log_stream,
-		  "CCTests: error: unexpected signal exception raised by test function: %s\n",
-		  test_func_name);
-	}
+	cctests_counters_register_failed_test();
+	fprintf(cctests_log_stream,
+		"CCTests: %serror%s: unexpected signal exception raised by test function: %s\n",
+		cctests_terminal_failure_color, cctests_terminal_default_color,
+		test_func_name);
       } else if (cctests_condition_is_unreachable(cce_condition(L))) {
 	cctests_all_test_passed  = false;
 	cctests_successful_group = false;
 	cctests_successful_func  = false;
+	cctests_counters_register_failed_test();
 	{
 	  CCTESTS_PC(cctests_condition_unreachable_t, C, cce_condition(L));
-	  if (cctests_log_stream_isatty()) {
-	    fprintf(cctests_log_stream,
-		    "CCTests: \033[35;1merror\033[0m in test function %s: exception raised, "
-		    "unreachable code was executed in file=%s, function=%s, line number=%d\n",
-		    test_func_name, C->filename, C->funcname, C->linenum);
-	  } else {
-	    fprintf(cctests_log_stream,
-		    "CCTests: error in test function %s: exception raised, "
-		    "unreachable code was executed in file=%s, function=%s, line number=%d\n",
-		    test_func_name, C->filename, C->funcname, C->linenum);
-	  }
+	  fprintf(cctests_log_stream,
+		  "CCTests: %serror%s in test function %s: exception raised, "
+		  "unreachable code was executed in file=%s, function=%s, line number=%d\n",
+		  cctests_terminal_failure_color, cctests_terminal_default_color,
+		  test_func_name, C->filename, C->funcname, C->linenum);
 	}
       } else if (cctests_condition_is_assertion(cce_condition(L))) {
 	cctests_all_test_passed  = false;
 	cctests_successful_group = false;
 	cctests_successful_func  = false;
+	cctests_counters_register_failed_test();
 	{
 	  /* CCTESTS_PC(cctests_condition_assertion_t, C, cce_condition(L)); */
 	  cctests_condition_print_assertion(cce_condition(L));
@@ -343,11 +442,9 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	cctests_all_test_passed  = false;
 	cctests_successful_group = false;
 	cctests_successful_func  = false;
-	if (cctests_log_stream_isatty()) {
-	  fprintf(cctests_log_stream, "CCTests: \033[35;1merror\033[0m in test function: %s, exception raised\n", test_func_name);
-	} else {
-	  fprintf(cctests_log_stream, "CCTests: error in test function: %s, exception raised\n", test_func_name);
-	}
+	fprintf(cctests_log_stream, "CCTests: %serror%s in test function: %s, exception raised\n",
+		cctests_terminal_failure_color, cctests_terminal_default_color,
+		test_func_name);
       }
 
       /* Release the raised condition object. */
@@ -360,21 +457,20 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	cctests_location = L;
 	fun(L);
 	cctests_successful_func  = true;
-	if (cctests_log_stream_isatty()) {
-	  fprintf(cctests_log_stream, "CCTests: \033[32;1msuccessful\033[0m test function: %s\n", test_func_name);
-	} else {
-	  fprintf(cctests_log_stream, "CCTests: successful test function: %s\n", test_func_name);
-	}
+	cctests_counters_register_successful_test();
+	fprintf(cctests_log_stream, "CCTests: %ssuccessful%s test function: %s\n",
+		cctests_terminal_success_color, cctests_terminal_default_color,
+		test_func_name);
       } else {
 	cctests_successful_func  = true;
-	if (cctests_log_stream_isatty()) {
-	  fprintf(cctests_log_stream, "CCTests: \033[36;1mskipped\033[0m test function: %s\n", test_func_name);
-	} else {
-	  fprintf(cctests_log_stream, "CCTests: skipped test function: %s\n", test_func_name);
-	}
+	fprintf(cctests_log_stream, "CCTests: %sskipped%s test function: %s\n",
+		cctests_terminal_skipping_color, cctests_terminal_default_color,
+		test_func_name);
       }
     }
     cce_run_body_handlers(L);
+  } else {
+    cctests_counters_register_skipped_test();
   }
 }
 
@@ -397,21 +493,14 @@ acquire_environment_test_file (cce_destination_t upper_L)
   if (cce_location(L)) {
     if (cctests_condition_is_regex_compilation_error(cce_condition(L))) {
       CCE_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
-      if (cctests_log_stream_isatty()) {
-	fprintf(cctests_log_stream,
-		"CCTests: \033[35;1merror\033[0m acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_FILE "\": %s\n",
-		C->regex_error.error_message);
-      } else {
-	fprintf(cctests_log_stream,
-		"CCTests: error acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_FILE "\": %s\n",
-		C->regex_error.error_message);
-      }
+      fprintf(cctests_log_stream,
+	      "CCTests: %serror%s acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_FILE "\": %s\n",
+	      cctests_terminal_failure_color, cctests_terminal_default_color,
+	      C->regex_error.error_message);
     } else {
-      if (cctests_log_stream_isatty()) {
-	fprintf(cctests_log_stream, "CCTests: \033[35;1merror\033[0m: %s\n", cce_condition_static_message(cce_condition(L)));
-      } else {
-	fprintf(cctests_log_stream, "CCTests: error: %s\n", cce_condition_static_message(cce_condition(L)));
-      }
+      fprintf(cctests_log_stream, "CCTests: %serror%s: %s\n",
+	      cctests_terminal_failure_color, cctests_terminal_default_color,
+	      cce_condition_static_message(cce_condition(L)));
     }
     cce_run_catch_handlers_raise(L, upper_L);
   } else {
@@ -435,21 +524,14 @@ acquire_environment_test_group (cce_destination_t upper_L)
   if (cce_location(L)) {
     if (cctests_condition_is_regex_compilation_error(cce_condition(L))) {
       CCE_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
-      if (cctests_log_stream_isatty()) {
-	fprintf(cctests_log_stream,
-		"CCTests: \033[35;1merror\033[0m acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_GROUP "\": %s\n",
-		C->regex_error.error_message);
-      } else {
-	fprintf(cctests_log_stream,
-		"CCTests: error acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_GROUP "\": %s\n",
-		C->regex_error.error_message);
-      }
+      fprintf(cctests_log_stream,
+	      "CCTests: %serror%s acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_GROUP "\": %s\n",
+	      cctests_terminal_failure_color, cctests_terminal_default_color,
+	      C->regex_error.error_message);
     } else {
-      if (cctests_log_stream_isatty()) {
-	fprintf(cctests_log_stream, "CCTests: \033[35;1merror\033[0m: %s\n", cce_condition_static_message(cce_condition(L)));
-      } else {
-	fprintf(cctests_log_stream, "CCTests: error: %s\n", cce_condition_static_message(cce_condition(L)));
-      }
+      fprintf(cctests_log_stream, "CCTests: %serror%s: %s\n",
+	      cctests_terminal_failure_color, cctests_terminal_default_color,
+	      cce_condition_static_message(cce_condition(L)));
     }
     cce_run_catch_handlers_raise(L, upper_L);
   } else {
@@ -473,21 +555,14 @@ acquire_environment_test_name (cce_destination_t upper_L)
   if (cce_location(L)) {
     if (cctests_condition_is_regex_compilation_error(cce_condition(L))) {
       CCE_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
-      if (cctests_log_stream_isatty()) {
-	fprintf(cctests_log_stream,
-		"CCTests: \033[35;1merror\033[0m acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_NAME "\": %s\n",
-		C->regex_error.error_message);
-      } else {
-	fprintf(cctests_log_stream,
-		"CCTests: error acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_NAME "\": %s\n",
-		C->regex_error.error_message);
-      }
+      fprintf(cctests_log_stream,
+	      "CCTests: %serror%ss acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_NAME "\": %s\n",
+	      cctests_terminal_failure_color, cctests_terminal_default_color,
+	      C->regex_error.error_message);
     } else {
-      if (cctests_log_stream_isatty()) {
-	fprintf(cctests_log_stream, "CCTests: \033[35;1merror\033[0m: %s\n", cce_condition_static_message(cce_condition(L)));
-      } else {
-	fprintf(cctests_log_stream, "CCTests: error: %s\n", cce_condition_static_message(cce_condition(L)));
-      }
+      fprintf(cctests_log_stream, "CCTests: %serror%s: %s\n",
+	      cctests_terminal_failure_color, cctests_terminal_default_color,
+	      cce_condition_static_message(cce_condition(L)));
     }
     cce_run_catch_handlers_raise(L, upper_L);
   } else {

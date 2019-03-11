@@ -331,7 +331,7 @@ main purpose of this function is to select the correct exit status to interface,
 @end deftypefun
 
 
-@deftypefun void ctests_reset_global_state (void)
+@deftypefun void cctests_reset_global_state (void)
 Reset the internal state to represent an all--successful execution so far.  We can use this function
 if we want @cfunc{cctests_final} to exit successfully the current process.
 @end deftypefun

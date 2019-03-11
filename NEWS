@@ -18,6 +18,8 @@ Revision 0.4.0-devel.0
   description-message  to   the  constructors  of   assertion  condition
   objects.
 
+* Better support for terminal colours.
+
 
 Revision 0.3.0-devel.7
 ----------------------

@@ -8,7 +8,7 @@
 	This  header  file is  for  internal  definitions.  It  must  be
 	included by all the source files in this package.
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   This program is  free software: you can redistribute  it and/or modify
   it under the  terms of the GNU General Public  License as published by
@@ -82,6 +82,12 @@
  * an ASCIIZ string representing the current test function name.
  */
 cctests_private_decl char const *	cctests_test_func_name;
+
+cctests_private_decl char const *	cctests_terminal_directive_color;
+cctests_private_decl char const *	cctests_terminal_success_color;
+cctests_private_decl char const *	cctests_terminal_failure_color;
+cctests_private_decl char const *	cctests_terminal_skipping_color;
+cctests_private_decl char const *	cctests_terminal_default_color;
 
 
 /** --------------------------------------------------------------------

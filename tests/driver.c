@@ -7,7 +7,7 @@
 
 	Test file for driver functions.
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -94,7 +94,7 @@ main (void)
     if (1) { test_1_2(); }
     if (1) { test_1_3(); }
 
-    ctests_reset_global_state();
+    cctests_reset_global_state();
   }
   cctests_final();
 }
