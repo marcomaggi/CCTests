@@ -26,6 +26,13 @@
 
 
 /** --------------------------------------------------------------------
+ ** Module initialisation.
+ ** ----------------------------------------------------------------- */
+
+cctests_decl void condition_regex_error_subtyping_init_module (void);
+
+
+/** --------------------------------------------------------------------
  ** Header definitions.
  ** ----------------------------------------------------------------- */
 
@@ -55,8 +62,6 @@ cctests_decl cce_condition_t const * my_condition_new_regex_error_subtype (cce_d
 
 cctests_decl bool my_condition_is_regex_error_subtype (cce_condition_t const * C)
   __attribute__((__pure__,__nonnull__(1)));
-
-cctests_decl void condition_regex_error_subtyping_init_module (void);
 
 
 /** --------------------------------------------------------------------
