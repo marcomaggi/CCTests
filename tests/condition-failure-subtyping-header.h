@@ -7,7 +7,7 @@
 
 	Header definitions for subtyping of "test failure" conditions.
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -41,7 +41,7 @@ struct my_condition_failure_subtype_t {
   int *				data;
 };
 
-cctests_decl my_descriptor_failure_subtype_t const * const	my_descriptor_failure_subtype_ptr;
+/* ------------------------------------------------------------------ */
 
 cctests_decl void my_condition_init_failure_subtype (cce_destination_t L, my_condition_failure_subtype_t * C, int the_data)
   __attribute__((__nonnull__(1,2)));
@@ -49,12 +49,8 @@ cctests_decl void my_condition_init_failure_subtype (cce_destination_t L, my_con
 cctests_decl cce_condition_t const * my_condition_new_failure_subtype (cce_destination_t L, int the_data)
   __attribute__((__nonnull__(1),__returns_nonnull__));
 
-__attribute__((__pure__,__nonnull__(1),__always_inline__))
-static inline bool
-my_condition_is_failure_subtype (cce_condition_t const * C)
-{
-  return cce_condition_is(C, &(my_descriptor_failure_subtype_ptr->descriptor));
-}
+cctests_decl bool my_condition_is_failure_subtype (cce_condition_t const * C)
+  __attribute__((__pure__,__nonnull__(1)));
 
 cctests_decl void condition_failure_subtyping_init_module (void);
 

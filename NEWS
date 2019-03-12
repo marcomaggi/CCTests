@@ -22,6 +22,10 @@ Revision 0.4.0-devel.0
 
 * Better support for terminal colours.
 
+* BACKWARDS INCOMPATIBILITY Changed API to subtype exceptional-condition
+  object types: from direct access to the descriptor pointer to function
+  that sets a descriptor's parent.
+
 
 Revision 0.3.0-devel.7
 ----------------------

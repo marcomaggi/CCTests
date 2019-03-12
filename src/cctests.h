@@ -252,7 +252,8 @@ struct cctests_condition_base_t {
   cce_condition_root_t	root;
 };
 
-cctests_decl cctests_descriptor_base_t const * const cctests_descriptor_base_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_base_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_base (cctests_condition_base_t * C)
   __attribute__((__nonnull__(1)));
@@ -273,7 +274,8 @@ struct cctests_condition_success_t {
   cctests_condition_base_t	base;
 };
 
-cctests_decl cctests_descriptor_success_t const * const cctests_descriptor_success_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_success_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_success (cctests_condition_success_t * C)
   __attribute__((__nonnull__(1)));
@@ -297,7 +299,8 @@ struct cctests_condition_skipped_t {
   cctests_condition_base_t	base;
 };
 
-cctests_decl cctests_descriptor_skipped_t const * const cctests_descriptor_skipped_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_skipped_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_skipped (cctests_condition_skipped_t * C)
   __attribute__((__nonnull__(1)));
@@ -321,7 +324,8 @@ struct cctests_condition_failure_t {
   cctests_condition_base_t	base;
 };
 
-cctests_decl cctests_descriptor_failure_t const * const cctests_descriptor_failure_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_failure_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_failure (cctests_condition_failure_t * C)
   __attribute__((__nonnull__(1)));
@@ -345,7 +349,8 @@ struct cctests_condition_expected_failure_t {
   cctests_condition_failure_t	failure;
 };
 
-cctests_decl cctests_descriptor_expected_failure_t const * const cctests_descriptor_expected_failure_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_expected_failure_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_expected_failure (cctests_condition_expected_failure_t * C)
   __attribute__((__nonnull__(1)));
@@ -379,13 +384,14 @@ struct cctests_condition_assertion_t {
   char const *			dynamic_string;
 };
 
-cctests_decl cctests_descriptor_assertion_t const * const cctests_descriptor_assertion_ptr;
-
 /* ------------------------------------------------------------------ */
 
 #undef CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS
 #define CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS				\
   char const * expr, char const * filename, char const * funcname, int const linenum, char const * description_message
+
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_assertion_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_assertion (cctests_condition_assertion_t * C, CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
   __attribute__((__nonnull__(1,2,3,4)));
@@ -413,9 +419,8 @@ struct cctests_condition_assertion_expected_value_t {
   cctests_condition_assertion_t	assertion;
 };
 
-cctests_decl cctests_descriptor_assertion_expected_value_t const * const cctests_descriptor_assertion_expected_value_ptr;
-
-/* ------------------------------------------------------------------ */
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_expected_value_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_assertion_expected_value (cctests_condition_assertion_expected_value_t * C,
 								   CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS)
@@ -448,8 +453,8 @@ cctests_decl bool cctests_condition_is_assertion_expected_value (cce_condition_t
     TYPE		result;						\
   };									\
 									\
-  cctests_decl cctests_descriptor_assertion_expected_ ## STEM ## _t	\
-  const * const cctests_descriptor_assertion_expected_ ## STEM ## _ptr; \
+  cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_assertion_expected_ ## STEM ## _t) (cce_descriptor_t * const D) \
+    __attribute__((__nonnull__(1)));					\
 									\
   cctests_decl void cctests_condition_init_assertion_expected_ ## STEM	\
   (cctests_condition_assertion_expected_ ## STEM ## _t * C, TYPE expected, TYPE result, CCTESTS_CONDITION_COMMON_SIGNATURE_ARGS) \
@@ -465,47 +470,47 @@ cctests_decl bool cctests_condition_is_assertion_expected_value (cce_condition_t
 /* ------------------------------------------------------------------ */
 
 CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(char,	signed char)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uchar,	unsigned char)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uchar,	unsigned char)
 
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int,	signed int)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint,	unsigned int)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int,	signed int)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint,	unsigned int)
 
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(short,	signed short)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ushort,	unsigned short)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(short,	signed short)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ushort,	unsigned short)
 
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(long,	signed long)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ulong,	unsigned long)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(long,	signed long)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ulong,	unsigned long)
 
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(llong,	signed long long)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ullong,	unsigned long long)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(llong,	signed long long)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ullong,	unsigned long long)
 
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int8,	int8_t)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int16,	int16_t)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int32,	int32_t)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int64,	int64_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int8,	int8_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int16,	int16_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int32,	int32_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(int64,	int64_t)
 
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint8,	uint8_t)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint16,	uint16_t)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint32,	uint32_t)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,	uint64_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint8,	uint8_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint16,	uint16_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint32,	uint32_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uint64,	uint64_t)
 
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(float,	float)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(double,	double)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(float,	float)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(double,	double)
 
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(size,	size_t)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ssize,	ssize_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(size,	size_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ssize,	ssize_t)
 
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(pointer,	void *)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ptrdiff,	ptrdiff_t)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(intptr,	intptr_t)
-  CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uintptr,	uintptr_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(pointer,	void *)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(ptrdiff,	ptrdiff_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(intptr,	intptr_t)
+CCTESTS_DECLARE_CONDITION_ASSERTION_EXPECTED(uintptr,	uintptr_t)
 
 
 /** --------------------------------------------------------------------
  ** Exceptional-condition objects: assertion failure, expected ASCIIZ value.
  ** ----------------------------------------------------------------- */
 
-  typedef struct cctests_descriptor_assertion_expected_asciiz_t	cctests_descriptor_assertion_expected_asciiz_t;
+typedef struct cctests_descriptor_assertion_expected_asciiz_t	cctests_descriptor_assertion_expected_asciiz_t;
 typedef struct cctests_condition_assertion_expected_asciiz_t	cctests_condition_assertion_expected_asciiz_t;
 
 struct cctests_descriptor_assertion_expected_asciiz_t {
@@ -520,6 +525,9 @@ struct cctests_condition_assertion_expected_asciiz_t {
 };
 
 /* ------------------------------------------------------------------ */
+
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_expected_asciiz_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_assertion_expected_asciiz (cce_destination_t L,
 								    cctests_condition_assertion_expected_asciiz_t * C,
@@ -557,6 +565,9 @@ struct cctests_condition_assertion_expected_ascii_t {
 
 /* ------------------------------------------------------------------ */
 
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_expected_ascii_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
+
 cctests_decl void cctests_condition_init_assertion_expected_ascii (cce_destination_t L,
 								   cctests_condition_assertion_expected_ascii_t * C,
 								   char const * expected, char const * result,
@@ -589,7 +600,8 @@ struct cctests_condition_unreachable_t {
   int				linenum;
 };
 
-cctests_decl cctests_descriptor_unreachable_t const * const cctests_descriptor_unreachable_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_unreachable_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_unreachable (cctests_condition_unreachable_t * C,
 						      char const * filename,
@@ -622,7 +634,8 @@ struct cctests_condition_signal_t {
   cctests_condition_base_t	base;
 };
 
-cctests_decl cctests_descriptor_signal_t const * const cctests_descriptor_signal_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_signal_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_signal (cctests_condition_signal_t * C)
   __attribute__((__nonnull__(1)));
@@ -646,7 +659,8 @@ struct cctests_condition_signal_1_t {
   cctests_condition_signal_t	signal;
 };
 
-cctests_decl cctests_descriptor_signal_1_t const * const cctests_descriptor_signal_1_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_signal_1_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_signal_1 (cctests_condition_signal_1_t * C)
   __attribute__((__nonnull__(1)));
@@ -670,7 +684,8 @@ struct cctests_condition_signal_2_t {
   cctests_condition_signal_t	signal;
 };
 
-cctests_decl cctests_descriptor_signal_2_t const * const cctests_descriptor_signal_2_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_signal_2_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_signal_2 (cctests_condition_signal_2_t * C)
   __attribute__((__nonnull__(1)));
@@ -694,7 +709,8 @@ struct cctests_condition_signal_3_t {
   cctests_condition_signal_t	signal;
 };
 
-cctests_decl cctests_descriptor_signal_3_t const * const cctests_descriptor_signal_3_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_signal_3_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_signal_3 (cctests_condition_signal_3_t * C)
   __attribute__((__nonnull__(1)));
@@ -720,7 +736,8 @@ struct cctests_condition_regex_error_t {
   char	error_message[1024];
 };
 
-cctests_decl cctests_descriptor_regex_error_t const * const cctests_descriptor_regex_error_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_regex_error_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_regex_error (cctests_condition_regex_error_t * C, int errcode)
   __attribute__((__nonnull__(1)));
@@ -744,7 +761,8 @@ struct cctests_condition_regex_compilation_error_t {
   cctests_condition_regex_error_t	regex_error;
 };
 
-cctests_decl cctests_descriptor_regex_compilation_error_t const * const cctests_descriptor_regex_compilation_error_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_regex_compilation_error_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_regex_compilation_error (cctests_condition_regex_compilation_error_t * C, int errcode)
   __attribute__((__nonnull__(1)));
@@ -768,7 +786,8 @@ struct cctests_condition_child_failure_t {
   cctests_condition_failure_t	failure;
 };
 
-cctests_decl cctests_descriptor_child_failure_t const * const cctests_descriptor_child_failure_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_child_failure_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_child_failure (cctests_condition_child_failure_t * C)
   __attribute__((__nonnull__(1)));
@@ -792,7 +811,8 @@ struct cctests_condition_child_abnormal_termination_t {
   cctests_condition_child_failure_t	child_failure;
 };
 
-cctests_decl cctests_descriptor_child_abnormal_termination_t const * const cctests_descriptor_child_abnormal_termination_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_child_abnormal_termination_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_child_abnormal_termination (cctests_condition_child_abnormal_termination_t * C)
   __attribute__((__nonnull__(1)));
@@ -816,7 +836,8 @@ struct cctests_condition_child_failure_exit_status_t {
   cctests_condition_child_failure_t	child_failure;
 };
 
-cctests_decl cctests_descriptor_child_failure_exit_status_t const * const cctests_descriptor_child_failure_exit_status_ptr;
+cctests_decl void cce_descriptor_set_parent_to(cctests_descriptor_child_failure_exit_status_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
 
 cctests_decl void cctests_condition_init_child_failure_exit_status (cctests_condition_child_failure_exit_status_t * C)
   __attribute__((__nonnull__(1)));

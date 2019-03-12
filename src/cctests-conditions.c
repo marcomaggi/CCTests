@@ -56,7 +56,7 @@
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_base;
 
-static cctests_descriptor_base_t cctests_descriptor_base_stru = {
+static cctests_descriptor_base_t cctests_descriptor_base = {
   /* This  "parent" field  is  set below  by  the module  initialisation
      function. */
   .descriptor.parent		= NULL,
@@ -64,8 +64,6 @@ static cctests_descriptor_base_t cctests_descriptor_base_stru = {
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_base
 };
-
-cctests_descriptor_base_t const * const cctests_descriptor_base_ptr = &cctests_descriptor_base_stru;
 
 /* ------------------------------------------------------------------ */
 
@@ -86,7 +84,13 @@ cctests_condition_init_base (cctests_condition_base_t * C)
 bool
 cctests_condition_is_base (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_base_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_base.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_base_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_base.descriptor;
 }
 
 
@@ -96,19 +100,17 @@ cctests_condition_is_base (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_success;
 
-static cctests_descriptor_success_t const cctests_descriptor_success_stru = {
-  .descriptor.parent		= &cctests_descriptor_base_stru.descriptor,
+static cctests_descriptor_success_t const cctests_descriptor_success = {
+  .descriptor.parent		= &cctests_descriptor_base.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_success
 };
 
-cctests_descriptor_success_t const * const cctests_descriptor_success_ptr = &cctests_descriptor_success_stru;
-
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_success_t const cctests_condition_success_stru = {
-  .base.root.condition.descriptor	= &cctests_descriptor_success_stru.descriptor
+static cctests_condition_success_t const cctests_condition_success = {
+  .base.root.condition.descriptor	= &cctests_descriptor_success.descriptor
 };
 
 /* ------------------------------------------------------------------ */
@@ -130,13 +132,19 @@ cctests_condition_init_success (cctests_condition_success_t * C)
 cce_condition_t const *
 cctests_condition_new_success (void)
 {
-  return (cce_condition_t *)&cctests_condition_success_stru;
+  return (cce_condition_t *)&cctests_condition_success;
 }
 
 bool
 cctests_condition_is_success (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_success_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_success.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_success_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_success.descriptor;
 }
 
 
@@ -146,19 +154,17 @@ cctests_condition_is_success (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_skipped;
 
-static cctests_descriptor_skipped_t const cctests_descriptor_skipped_stru = {
-  .descriptor.parent		= &cctests_descriptor_base_stru.descriptor,
+static cctests_descriptor_skipped_t const cctests_descriptor_skipped = {
+  .descriptor.parent		= &cctests_descriptor_base.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_skipped
 };
 
-cctests_descriptor_skipped_t const * const cctests_descriptor_skipped_ptr = &cctests_descriptor_skipped_stru;
-
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_skipped_t const cctests_condition_skipped_stru = {
-  .base.root.condition.descriptor	= &cctests_descriptor_skipped_stru.descriptor
+static cctests_condition_skipped_t const cctests_condition_skipped = {
+  .base.root.condition.descriptor	= &cctests_descriptor_skipped.descriptor
 };
 
 /* ------------------------------------------------------------------ */
@@ -180,13 +186,19 @@ cctests_condition_init_skipped (cctests_condition_skipped_t * C)
 cce_condition_t const *
 cctests_condition_new_skipped (void)
 {
-  return (cce_condition_t *)&cctests_condition_skipped_stru;
+  return (cce_condition_t *)&cctests_condition_skipped;
 }
 
 bool
 cctests_condition_is_skipped (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_skipped_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_skipped.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_skipped_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_skipped.descriptor;
 }
 
 
@@ -196,19 +208,17 @@ cctests_condition_is_skipped (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_failure;
 
-static cctests_descriptor_failure_t const cctests_descriptor_failure_stru = {
-  .descriptor.parent		= &cctests_descriptor_base_stru.descriptor,
+static cctests_descriptor_failure_t const cctests_descriptor_failure = {
+  .descriptor.parent		= &cctests_descriptor_base.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_failure
 };
 
-cctests_descriptor_failure_t const * const cctests_descriptor_failure_ptr = &cctests_descriptor_failure_stru;
-
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_failure_t const cctests_condition_failure_stru = {
-  .base.root.condition.descriptor	= &cctests_descriptor_failure_stru.descriptor
+static cctests_condition_failure_t const cctests_condition_failure = {
+  .base.root.condition.descriptor	= &cctests_descriptor_failure.descriptor
 };
 
 /* ------------------------------------------------------------------ */
@@ -230,13 +240,19 @@ cctests_condition_init_failure (cctests_condition_failure_t * C)
 cce_condition_t const *
 cctests_condition_new_failure (void)
 {
-  return (cce_condition_t *)&cctests_condition_failure_stru;
+  return (cce_condition_t *)&cctests_condition_failure;
 }
 
 bool
 cctests_condition_is_failure (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_failure_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_failure.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_failure_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_failure.descriptor;
 }
 
 
@@ -246,19 +262,17 @@ cctests_condition_is_failure (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_expected_failure;
 
-static cctests_descriptor_expected_failure_t const cctests_descriptor_expected_failure_stru = {
-  .descriptor.parent		= &cctests_descriptor_failure_stru.descriptor,
+static cctests_descriptor_expected_failure_t const cctests_descriptor_expected_failure = {
+  .descriptor.parent		= &cctests_descriptor_failure.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_expected_failure
 };
 
-cctests_descriptor_expected_failure_t const * const cctests_descriptor_expected_failure_ptr = &cctests_descriptor_expected_failure_stru;
-
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_expected_failure_t const cctests_condition_expected_failure_stru = {
-  .failure.base.root.condition.descriptor	= &cctests_descriptor_expected_failure_stru.descriptor
+static cctests_condition_expected_failure_t const cctests_condition_expected_failure = {
+  .failure.base.root.condition.descriptor	= &cctests_descriptor_expected_failure.descriptor
 };
 
 /* ------------------------------------------------------------------ */
@@ -280,13 +294,19 @@ cctests_condition_init_expected_failure (cctests_condition_expected_failure_t * 
 cce_condition_t const *
 cctests_condition_new_expected_failure (void)
 {
-  return (cce_condition_t *)&cctests_condition_expected_failure_stru;
+  return (cce_condition_t *)&cctests_condition_expected_failure;
 }
 
 bool
 cctests_condition_is_expected_failure (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_expected_failure_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_expected_failure.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_expected_failure_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_expected_failure.descriptor;
 }
 
 
@@ -298,15 +318,13 @@ static cce_condition_static_message_fun_t	cctests_condition_static_message_asser
 static cce_condition_delete_fun_t		cctests_condition_delete_assertion;
 static cctests_condition_print_assertion_fun_t	cctests_condition_print_assertion_fun;
 
-static cctests_descriptor_assertion_t const cctests_descriptor_assertion_stru = {
-  .descriptor.parent		= &cctests_descriptor_failure_stru.descriptor,
+static cctests_descriptor_assertion_t const cctests_descriptor_assertion = {
+  .descriptor.parent		= &cctests_descriptor_failure.descriptor,
   .descriptor.delete		= cctests_condition_delete_assertion,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_assertion,
   .print			= cctests_condition_print_assertion_fun
 };
-
-cctests_descriptor_assertion_t const * const cctests_descriptor_assertion_ptr = &cctests_descriptor_assertion_stru;
 
 /* ------------------------------------------------------------------ */
 
@@ -364,7 +382,7 @@ cctests_condition_new_assertion (cce_destination_t L, CCTESTS_CONDITION_COMMON_S
   cctests_condition_assertion_t	*C = cce_sys_malloc(L, sizeof(cctests_condition_assertion_t));
 
   /* Initialise the basic condition fields. */
-  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_stru.descriptor);
+  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion.descriptor);
   cctests_condition_init_assertion(C, CCTESTS_CONDITION_COMMON_CALL_ARGS);
   return (cce_condition_t const *)C;
 }
@@ -374,7 +392,7 @@ cctests_condition_new_assertion (cce_destination_t L, CCTESTS_CONDITION_COMMON_S
 bool
 cctests_condition_is_assertion (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_assertion_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_assertion.descriptor));
 }
 
 void
@@ -383,6 +401,12 @@ cctests_condition_print_assertion (cce_condition_t const * C)
   CCTESTS_PC(cctests_descriptor_assertion_t, D, C->descriptor);
 
   D->print(C);
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_assertion_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_assertion.descriptor;
 }
 
 
@@ -394,16 +418,13 @@ static cce_condition_static_message_fun_t	cctests_condition_static_message_asser
 static cce_condition_delete_fun_t		cctests_condition_delete_assertion_expected_value;
 static cctests_condition_print_assertion_fun_t	cctests_condition_print_assertion_expected_value_fun;
 
-static cctests_descriptor_assertion_expected_value_t const cctests_descriptor_assertion_expected_value_stru = {
-  .descriptor.parent		= &cctests_descriptor_assertion_stru.descriptor,
+static cctests_descriptor_assertion_expected_value_t const cctests_descriptor_assertion_expected_value = {
+  .descriptor.parent		= &cctests_descriptor_assertion.descriptor,
   .descriptor.delete		= cctests_condition_delete_assertion_expected_value,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_assertion_expected_value,
   .print			= cctests_condition_print_assertion_expected_value_fun
 };
-
-cctests_descriptor_assertion_expected_value_t const * const cctests_descriptor_assertion_expected_value_ptr =
-  &cctests_descriptor_assertion_expected_value_stru;
 
 /* ------------------------------------------------------------------ */
 
@@ -438,7 +459,13 @@ cctests_condition_init_assertion_expected_value (cctests_condition_assertion_exp
 bool
 cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_assertion_expected_value_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_assertion_expected_value.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_assertion_expected_value_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_assertion_expected_value.descriptor;
 }
 
 
@@ -451,16 +478,13 @@ cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
   static cce_condition_delete_fun_t		cctests_condition_delete_assertion_expected_ ## STEM; \
   static cctests_condition_print_assertion_fun_t cctests_condition_print_assertion_expected_ ## STEM ## _fun; \
 									\
-  static cctests_descriptor_assertion_expected_ ## STEM ## _t const cctests_descriptor_assertion_expected_ ## STEM ## _stru = { \
-    .descriptor.parent		= &cctests_descriptor_assertion_expected_value_stru.descriptor, \
+  static cctests_descriptor_assertion_expected_ ## STEM ## _t const cctests_descriptor_assertion_expected_ ## STEM = { \
+    .descriptor.parent		= &cctests_descriptor_assertion_expected_value.descriptor, \
     .descriptor.delete		= cctests_condition_delete_assertion_expected_ ## STEM, \
     .descriptor.final		= NULL,					\
     .descriptor.static_message	= cctests_condition_static_message_assertion_expected_ ## STEM, \
     .print			= cctests_condition_print_assertion_expected_ ## STEM ## _fun \
   };									\
-									\
-  cctests_descriptor_assertion_expected_ ## STEM ## _t const * const cctests_descriptor_assertion_expected_ ## STEM ## _ptr = \
-    &cctests_descriptor_assertion_expected_ ## STEM ## _stru;		\
 									\
   void									\
   cctests_condition_delete_assertion_expected_ ## STEM (cce_condition_t * C) \
@@ -511,7 +535,7 @@ cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
       cce_sys_malloc(L, sizeof(cctests_condition_assertion_expected_ ## STEM ## _t)); \
 									\
     /* Initialise the basic condition fields. */			\
-    cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_ ## STEM ## _stru.descriptor); \
+    cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_ ## STEM .descriptor); \
     cctests_condition_init_assertion_expected_ ## STEM(C, expected, result, CCTESTS_CONDITION_COMMON_CALL_ARGS); \
     return (cce_condition_t const *)C;					\
   }									\
@@ -519,7 +543,13 @@ cctests_condition_is_assertion_expected_value (cce_condition_t const * C)
   bool									\
   cctests_condition_is_assertion_expected_ ## STEM (cce_condition_t const * C) \
   {									\
-    return cce_condition_is(C, &(cctests_descriptor_assertion_expected_ ## STEM ## _ptr->descriptor)); \
+    return cce_condition_is(C, &(cctests_descriptor_assertion_expected_ ## STEM .descriptor)); \
+  }									\
+									\
+  void									\
+  cce_descriptor_set_parent_to(cctests_descriptor_assertion_expected_ ## STEM ## _t) (cce_descriptor_t * const D) \
+  {									\
+    D->parent = &cctests_descriptor_assertion_expected_ ## STEM .descriptor;	\
   }
 
 /* ------------------------------------------------------------------ */
@@ -579,16 +609,13 @@ static cce_condition_delete_fun_t		cctests_condition_delete_assertion_expected_a
 static cce_condition_final_fun_t		cctests_condition_final_assertion_expected_asciiz;
 static cctests_condition_print_assertion_fun_t	cctests_condition_print_assertion_expected_asciiz_fun;
 
-static cctests_descriptor_assertion_expected_asciiz_t const cctests_descriptor_assertion_expected_asciiz_stru = {
-  .descriptor.parent		= &cctests_descriptor_assertion_expected_value_stru.descriptor,
+static cctests_descriptor_assertion_expected_asciiz_t const cctests_descriptor_assertion_expected_asciiz = {
+  .descriptor.parent		= &cctests_descriptor_assertion_expected_value.descriptor,
   .descriptor.delete		= cctests_condition_delete_assertion_expected_asciiz,
   .descriptor.final		= cctests_condition_final_assertion_expected_asciiz,
   .descriptor.static_message	= cctests_condition_static_message_assertion_expected_asciiz,
   .print			= cctests_condition_print_assertion_expected_asciiz_fun
 };
-
-cctests_descriptor_assertion_expected_asciiz_t const * const cctests_descriptor_assertion_expected_asciiz_ptr =
-  &cctests_descriptor_assertion_expected_asciiz_stru;
 
 /* ------------------------------------------------------------------ */
 
@@ -660,7 +687,7 @@ cctests_condition_new_assertion_expected_asciiz (cce_destination_t L,
     cce_sys_malloc(L, sizeof(cctests_condition_assertion_expected_asciiz_t));
 
   /* Initialise the basic condition fields. */
-  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_asciiz_stru.descriptor);
+  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_asciiz.descriptor);
   cctests_condition_init_assertion_expected_asciiz(L, C, expected, result, CCTESTS_CONDITION_COMMON_CALL_ARGS);
   return (cce_condition_t const *)C;
 }
@@ -670,7 +697,13 @@ cctests_condition_new_assertion_expected_asciiz (cce_destination_t L,
 bool
 cctests_condition_is_assertion_expected_asciiz (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_assertion_expected_asciiz_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_assertion_expected_asciiz.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_assertion_expected_asciiz_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_assertion_expected_asciiz.descriptor;
 }
 
 
@@ -683,16 +716,13 @@ static cce_condition_delete_fun_t		cctests_condition_delete_assertion_expected_a
 static cce_condition_final_fun_t		cctests_condition_final_assertion_expected_ascii;
 static cctests_condition_print_assertion_fun_t	cctests_condition_print_assertion_expected_ascii_fun;
 
-static cctests_descriptor_assertion_expected_ascii_t const cctests_descriptor_assertion_expected_ascii_stru = {
-  .descriptor.parent		= &cctests_descriptor_assertion_expected_value_stru.descriptor,
+static cctests_descriptor_assertion_expected_ascii_t const cctests_descriptor_assertion_expected_ascii = {
+  .descriptor.parent		= &cctests_descriptor_assertion_expected_value.descriptor,
   .descriptor.delete		= cctests_condition_delete_assertion_expected_ascii,
   .descriptor.final		= cctests_condition_final_assertion_expected_ascii,
   .descriptor.static_message	= cctests_condition_static_message_assertion_expected_ascii,
   .print			= cctests_condition_print_assertion_expected_ascii_fun
 };
-
-cctests_descriptor_assertion_expected_ascii_t const * const cctests_descriptor_assertion_expected_ascii_ptr =
-  &cctests_descriptor_assertion_expected_ascii_stru;
 
 /* ------------------------------------------------------------------ */
 
@@ -767,7 +797,7 @@ cctests_condition_new_assertion_expected_ascii (cce_destination_t L,
     cce_sys_malloc(L, sizeof(cctests_condition_assertion_expected_ascii_t));
 
   /* Initialise the basic condition fields. */
-  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_ascii_stru.descriptor);
+  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_assertion_expected_ascii.descriptor);
   cctests_condition_init_assertion_expected_ascii(L, C, expected, result, result_len, CCTESTS_CONDITION_COMMON_CALL_ARGS);
   return (cce_condition_t const *)C;
 }
@@ -777,7 +807,13 @@ cctests_condition_new_assertion_expected_ascii (cce_destination_t L,
 bool
 cctests_condition_is_assertion_expected_ascii (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_assertion_expected_ascii_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_assertion_expected_ascii.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_assertion_expected_ascii_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_assertion_expected_ascii.descriptor;
 }
 
 
@@ -788,14 +824,12 @@ cctests_condition_is_assertion_expected_ascii (cce_condition_t const * C)
 static cce_condition_static_message_fun_t	cctests_condition_static_message_unreachable;
 static cce_condition_delete_fun_t		cctests_condition_delete_unreachable;
 
-static cctests_descriptor_unreachable_t const cctests_descriptor_unreachable_stru = {
-  .descriptor.parent		= &cctests_descriptor_failure_stru.descriptor,
+static cctests_descriptor_unreachable_t const cctests_descriptor_unreachable = {
+  .descriptor.parent		= &cctests_descriptor_failure.descriptor,
   .descriptor.delete		= cctests_condition_delete_unreachable,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_unreachable
 };
-
-cctests_descriptor_unreachable_t const * const cctests_descriptor_unreachable_ptr = &cctests_descriptor_unreachable_stru;
 
 /* ------------------------------------------------------------------ */
 
@@ -835,7 +869,7 @@ cctests_condition_new_unreachable (cce_destination_t L,
   cctests_condition_unreachable_t *	C = cce_sys_malloc(L, sizeof(cctests_condition_unreachable_t));
 
   /* Initialise the basic condition fields. */
-  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_unreachable_stru.descriptor);
+  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_unreachable.descriptor);
 
   cctests_condition_init_unreachable(C, filename, funcname, linenum);
 
@@ -845,7 +879,13 @@ cctests_condition_new_unreachable (cce_destination_t L,
 bool
 cctests_condition_is_unreachable (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_unreachable_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_unreachable.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_unreachable_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_unreachable.descriptor;
 }
 
 
@@ -855,19 +895,17 @@ cctests_condition_is_unreachable (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_signal;
 
-static cctests_descriptor_signal_t const cctests_descriptor_signal_stru = {
-  .descriptor.parent		= &cctests_descriptor_base_stru.descriptor,
+static cctests_descriptor_signal_t const cctests_descriptor_signal = {
+  .descriptor.parent		= &cctests_descriptor_base.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_signal
 };
 
-cctests_descriptor_signal_t const * const cctests_descriptor_signal_ptr = &cctests_descriptor_signal_stru;
-
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_signal_t const cctests_condition_signal_stru = {
-  .base.root.condition.descriptor	= &cctests_descriptor_signal_stru.descriptor
+static cctests_condition_signal_t const cctests_condition_signal = {
+  .base.root.condition.descriptor	= &cctests_descriptor_signal.descriptor
 };
 
 /* ------------------------------------------------------------------ */
@@ -889,13 +927,19 @@ cctests_condition_init_signal (cctests_condition_signal_t * C)
 cce_condition_t const *
 cctests_condition_new_signal (void)
 {
-  return (cce_condition_t *)&cctests_condition_signal_stru;
+  return (cce_condition_t *)&cctests_condition_signal;
 }
 
 bool
 cctests_condition_is_signal (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_signal_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_signal.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_signal_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_signal.descriptor;
 }
 
 
@@ -905,19 +949,17 @@ cctests_condition_is_signal (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_signal_1;
 
-static cctests_descriptor_signal_1_t const cctests_descriptor_signal_1_stru = {
-  .descriptor.parent		= &cctests_descriptor_signal_stru.descriptor,
+static cctests_descriptor_signal_1_t const cctests_descriptor_signal_1 = {
+  .descriptor.parent		= &cctests_descriptor_signal.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_signal_1
 };
 
-cctests_descriptor_signal_1_t const * const cctests_descriptor_signal_1_ptr = &cctests_descriptor_signal_1_stru;
-
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_signal_1_t const cctests_condition_signal_1_stru = {
-  .signal.base.root.condition.descriptor	= &cctests_descriptor_signal_1_stru.descriptor
+static cctests_condition_signal_1_t const cctests_condition_signal_1 = {
+  .signal.base.root.condition.descriptor	= &cctests_descriptor_signal_1.descriptor
 };
 
 /* ------------------------------------------------------------------ */
@@ -939,13 +981,19 @@ cctests_condition_init_signal_1 (cctests_condition_signal_1_t * C)
 cce_condition_t const *
 cctests_condition_new_signal_1 (void)
 {
-  return (cce_condition_t *)&cctests_condition_signal_1_stru;
+  return (cce_condition_t *)&cctests_condition_signal_1;
 }
 
 bool
 cctests_condition_is_signal_1 (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_signal_1_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_signal_1.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_signal_1_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_signal_1.descriptor;
 }
 
 
@@ -955,19 +1003,17 @@ cctests_condition_is_signal_1 (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_signal_2;
 
-static cctests_descriptor_signal_2_t const cctests_descriptor_signal_2_stru = {
-  .descriptor.parent		= &cctests_descriptor_signal_stru.descriptor,
+static cctests_descriptor_signal_2_t const cctests_descriptor_signal_2 = {
+  .descriptor.parent		= &cctests_descriptor_signal.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_signal_2
 };
 
-cctests_descriptor_signal_2_t const * const cctests_descriptor_signal_2_ptr = &cctests_descriptor_signal_2_stru;
-
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_signal_2_t const cctests_condition_signal_2_stru = {
-  .signal.base.root.condition.descriptor	= &cctests_descriptor_signal_2_stru.descriptor
+static cctests_condition_signal_2_t const cctests_condition_signal_2 = {
+  .signal.base.root.condition.descriptor	= &cctests_descriptor_signal_2.descriptor
 };
 
 /* ------------------------------------------------------------------ */
@@ -989,13 +1035,19 @@ cctests_condition_init_signal_2 (cctests_condition_signal_2_t * C)
 cce_condition_t const *
 cctests_condition_new_signal_2 (void)
 {
-  return (cce_condition_t *)&cctests_condition_signal_2_stru;
+  return (cce_condition_t *)&cctests_condition_signal_2;
 }
 
 bool
 cctests_condition_is_signal_2 (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_signal_2_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_signal_2.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_signal_2_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_signal_2.descriptor;
 }
 
 
@@ -1005,19 +1057,17 @@ cctests_condition_is_signal_2 (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_signal_3;
 
-static cctests_descriptor_signal_3_t const cctests_descriptor_signal_3_stru = {
-  .descriptor.parent		= &cctests_descriptor_signal_stru.descriptor,
+static cctests_descriptor_signal_3_t const cctests_descriptor_signal_3 = {
+  .descriptor.parent		= &cctests_descriptor_signal.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_signal_3
 };
 
-cctests_descriptor_signal_3_t const * const cctests_descriptor_signal_3_ptr = &cctests_descriptor_signal_3_stru;
-
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_signal_3_t const cctests_condition_signal_3_stru = {
-  .signal.base.root.condition.descriptor	= &cctests_descriptor_signal_3_stru.descriptor
+static cctests_condition_signal_3_t const cctests_condition_signal_3 = {
+  .signal.base.root.condition.descriptor	= &cctests_descriptor_signal_3.descriptor
 };
 
 /* ------------------------------------------------------------------ */
@@ -1039,13 +1089,19 @@ cctests_condition_init_signal_3 (cctests_condition_signal_3_t * C)
 cce_condition_t const *
 cctests_condition_new_signal_3 (void)
 {
-  return (cce_condition_t *)&cctests_condition_signal_3_stru;
+  return (cce_condition_t *)&cctests_condition_signal_3;
 }
 
 bool
 cctests_condition_is_signal_3 (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_signal_3_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_signal_3.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_signal_3_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_signal_3.descriptor;
 }
 
 
@@ -1055,18 +1111,16 @@ cctests_condition_is_signal_3 (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_regex_error;
 
-static cctests_descriptor_regex_error_t cctests_descriptor_regex_error_stru = {
+static cctests_descriptor_regex_error_t cctests_descriptor_regex_error = {
   /* This field is set by the initialisation function to the pointer:
    *
-   *	&(cce_descriptor_runtime_error_ptr->descriptor)
+   *	&(cce_descriptor_runtime_error.descriptor)
    */
   .descriptor.parent		= NULL,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_regex_error
 };
-
-cctests_descriptor_regex_error_t const * const cctests_descriptor_regex_error_ptr = &cctests_descriptor_regex_error_stru;
 
 /* ------------------------------------------------------------------ */
 
@@ -1093,7 +1147,7 @@ cctests_condition_new_regex_error (cce_destination_t L, int errcode)
 {
   cctests_condition_regex_error_t *	C = cce_sys_malloc(L, sizeof(cctests_condition_regex_error_t));
 
-  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_regex_error_stru.descriptor);
+  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_regex_error.descriptor);
   cctests_condition_init_regex_error(C, errcode);
   return (cce_condition_t *)C;
 }
@@ -1101,7 +1155,13 @@ cctests_condition_new_regex_error (cce_destination_t L, int errcode)
 bool
 cctests_condition_is_regex_error (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_regex_error_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_regex_error.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_regex_error_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_regex_error.descriptor;
 }
 
 
@@ -1111,15 +1171,12 @@ cctests_condition_is_regex_error (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_regex_compilation_error;
 
-static cctests_descriptor_regex_compilation_error_t const cctests_descriptor_regex_compilation_error_stru = {
-  .descriptor.parent		= &cctests_descriptor_regex_error_stru.descriptor,
+static cctests_descriptor_regex_compilation_error_t const cctests_descriptor_regex_compilation_error = {
+  .descriptor.parent		= &cctests_descriptor_regex_error.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_regex_compilation_error
 };
-
-cctests_descriptor_regex_compilation_error_t const * const cctests_descriptor_regex_compilation_error_ptr =
-  &cctests_descriptor_regex_compilation_error_stru;
 
 /* ------------------------------------------------------------------ */
 
@@ -1143,7 +1200,7 @@ cctests_condition_new_regex_compilation_error (cce_destination_t L, int errcode)
   cctests_condition_regex_compilation_error_t *	C = \
     cce_sys_malloc(L, sizeof(cctests_condition_regex_compilation_error_t));
 
-  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_regex_compilation_error_stru.descriptor);
+  cce_condition_init((cce_condition_t *)C, &cctests_descriptor_regex_compilation_error.descriptor);
   cctests_condition_init_regex_compilation_error(C, errcode);
   return (cce_condition_t *)C;
 }
@@ -1151,7 +1208,13 @@ cctests_condition_new_regex_compilation_error (cce_destination_t L, int errcode)
 bool
 cctests_condition_is_regex_compilation_error (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_regex_compilation_error_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_regex_compilation_error.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_regex_compilation_error_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_regex_compilation_error.descriptor;
 }
 
 
@@ -1161,19 +1224,17 @@ cctests_condition_is_regex_compilation_error (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_child_failure;
 
-static cctests_descriptor_child_failure_t const cctests_descriptor_child_failure_stru = {
-  .descriptor.parent		= &cctests_descriptor_failure_stru.descriptor,
+static cctests_descriptor_child_failure_t const cctests_descriptor_child_failure = {
+  .descriptor.parent		= &cctests_descriptor_failure.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_child_failure
 };
 
-cctests_descriptor_child_failure_t const * const cctests_descriptor_child_failure_ptr = &cctests_descriptor_child_failure_stru;
-
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_child_failure_t const cctests_condition_child_failure_stru = {
-  .failure.base.root.condition.descriptor	= &cctests_descriptor_child_failure_stru.descriptor
+static cctests_condition_child_failure_t const cctests_condition_child_failure = {
+  .failure.base.root.condition.descriptor	= &cctests_descriptor_child_failure.descriptor
 };
 
 /* ------------------------------------------------------------------ */
@@ -1195,13 +1256,19 @@ cctests_condition_init_child_failure (cctests_condition_child_failure_t * C)
 cce_condition_t const *
 cctests_condition_new_child_failure (void)
 {
-  return (cce_condition_t *)&cctests_condition_child_failure_stru;
+  return (cce_condition_t *)&cctests_condition_child_failure;
 }
 
 bool
 cctests_condition_is_child_failure (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_child_failure_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_child_failure.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_child_failure_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_child_failure.descriptor;
 }
 
 
@@ -1211,20 +1278,17 @@ cctests_condition_is_child_failure (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_child_abnormal_termination;
 
-static cctests_descriptor_child_abnormal_termination_t const cctests_descriptor_child_abnormal_termination_stru = {
-  .descriptor.parent		= &cctests_descriptor_child_failure_stru.descriptor,
+static cctests_descriptor_child_abnormal_termination_t const cctests_descriptor_child_abnormal_termination = {
+  .descriptor.parent		= &cctests_descriptor_child_failure.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_child_abnormal_termination
 };
 
-cctests_descriptor_child_abnormal_termination_t const * const cctests_descriptor_child_abnormal_termination_ptr =
-  &cctests_descriptor_child_abnormal_termination_stru;
-
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_child_abnormal_termination_t const cctests_condition_child_abnormal_termination_stru = {
-  .child_failure.failure.base.root.condition.descriptor	= &cctests_descriptor_child_abnormal_termination_stru.descriptor
+static cctests_condition_child_abnormal_termination_t const cctests_condition_child_abnormal_termination = {
+  .child_failure.failure.base.root.condition.descriptor	= &cctests_descriptor_child_abnormal_termination.descriptor
 };
 
 /* ------------------------------------------------------------------ */
@@ -1246,13 +1310,19 @@ cctests_condition_init_child_abnormal_termination (cctests_condition_child_abnor
 cce_condition_t const *
 cctests_condition_new_child_abnormal_termination (void)
 {
-  return (cce_condition_t *)&cctests_condition_child_abnormal_termination_stru;
+  return (cce_condition_t *)&cctests_condition_child_abnormal_termination;
 }
 
 bool
 cctests_condition_is_child_abnormal_termination (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_child_abnormal_termination_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_child_abnormal_termination.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_child_abnormal_termination_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_child_abnormal_termination.descriptor;
 }
 
 
@@ -1262,20 +1332,17 @@ cctests_condition_is_child_abnormal_termination (cce_condition_t const * C)
 
 static cce_condition_static_message_fun_t	cctests_condition_static_message_child_failure_exit_status;
 
-static cctests_descriptor_child_failure_exit_status_t const cctests_descriptor_child_failure_exit_status_stru = {
-  .descriptor.parent		= &cctests_descriptor_child_failure_stru.descriptor,
+static cctests_descriptor_child_failure_exit_status_t const cctests_descriptor_child_failure_exit_status = {
+  .descriptor.parent		= &cctests_descriptor_child_failure.descriptor,
   .descriptor.delete		= NULL,
   .descriptor.final		= NULL,
   .descriptor.static_message	= cctests_condition_static_message_child_failure_exit_status
 };
 
-cctests_descriptor_child_failure_exit_status_t const * const cctests_descriptor_child_failure_exit_status_ptr =
-  &cctests_descriptor_child_failure_exit_status_stru;
-
 /* This struct type has no dynamic fields, so there is only one instance
    of this struct type.  We allocate it statically. */
-static cctests_condition_child_failure_exit_status_t const cctests_condition_child_failure_exit_status_stru = {
-  .child_failure.failure.base.root.condition.descriptor	= &cctests_descriptor_child_failure_exit_status_stru.descriptor
+static cctests_condition_child_failure_exit_status_t const cctests_condition_child_failure_exit_status = {
+  .child_failure.failure.base.root.condition.descriptor	= &cctests_descriptor_child_failure_exit_status.descriptor
 };
 
 /* ------------------------------------------------------------------ */
@@ -1297,13 +1364,19 @@ cctests_condition_init_child_failure_exit_status (cctests_condition_child_failur
 cce_condition_t const *
 cctests_condition_new_child_failure_exit_status (void)
 {
-  return (cce_condition_t *)&cctests_condition_child_failure_exit_status_stru;
+  return (cce_condition_t *)&cctests_condition_child_failure_exit_status;
 }
 
 bool
 cctests_condition_is_child_failure_exit_status (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(cctests_descriptor_child_failure_exit_status_ptr->descriptor));
+  return cce_condition_is(C, &(cctests_descriptor_child_failure_exit_status.descriptor));
+}
+
+void
+cce_descriptor_set_parent_to(cctests_descriptor_child_failure_exit_status_t) (cce_descriptor_t * const D)
+{
+  D->parent = &cctests_descriptor_child_failure_exit_status.descriptor;
 }
 
 
@@ -1314,8 +1387,8 @@ cctests_condition_is_child_failure_exit_status (cce_condition_t const * C)
 void
 cctests_conditions_module_initialisation (void)
 {
-  cce_descriptor_set_root_parent(&cctests_descriptor_base_stru.descriptor);
-  cctests_descriptor_regex_error_stru.descriptor.parent = &(cce_descriptor_runtime_error_ptr->descriptor);
+  cce_descriptor_set_parent_to(cce_descriptor_root_t)(&cctests_descriptor_base.descriptor);
+  cce_descriptor_set_parent_to(cce_descriptor_runtime_error_t)(&cctests_descriptor_regex_error.descriptor);
 }
 
 /* end of file */

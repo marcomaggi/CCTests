@@ -31,7 +31,7 @@ static cce_condition_delete_fun_t		my_condition_delete_assertion_subtype;
 static cce_condition_final_fun_t		my_condition_final_assertion_subtype;
 static cce_condition_static_message_fun_t	my_condition_static_message_assertion_subtype;
 
-static my_descriptor_assertion_subtype_t my_descriptor_assertion_subtype_stru = {
+static my_descriptor_assertion_subtype_t my_descriptor_assertion_subtype = {
   /* This  "parent" field  is  set below  by  the module  initialisation
      function. */
   .descriptor.parent		= NULL,
@@ -39,8 +39,6 @@ static my_descriptor_assertion_subtype_t my_descriptor_assertion_subtype_stru = 
   .descriptor.final		= my_condition_final_assertion_subtype,
   .descriptor.static_message	= my_condition_static_message_assertion_subtype
 };
-
-my_descriptor_assertion_subtype_t const * const my_descriptor_assertion_subtype_ptr = &my_descriptor_assertion_subtype_stru;
 
 
 /** --------------------------------------------------------------------
@@ -137,7 +135,7 @@ my_condition_new_assertion_subtype (cce_destination_t upper_L,
   } else {
     my_condition_assertion_subtype_t * C = cce_sys_malloc_guarded(L, C_H, sizeof(my_condition_assertion_subtype_t));
 
-    cce_condition_init((cce_condition_t *) C, &(my_descriptor_assertion_subtype_ptr->descriptor));
+    cce_condition_init((cce_condition_t *) C, &(my_descriptor_assertion_subtype.descriptor));
     my_condition_init_assertion_subtype(L, C, expr, filename, funcname, linenum, description_message, the_data);
 
     cce_run_body_handlers(L);
@@ -146,11 +144,17 @@ my_condition_new_assertion_subtype (cce_destination_t upper_L,
   }
 }
 
+bool
+my_condition_is_assertion_subtype (cce_condition_t const * C)
+{
+  return cce_condition_is(C, &(my_descriptor_assertion_subtype.descriptor));
+}
+
 
 void
 condition_assertion_subtyping_init_module (void)
 {
-  my_descriptor_assertion_subtype_stru.descriptor.parent = &(cctests_descriptor_assertion_ptr->descriptor);
+  cce_descriptor_set_parent_to(cctests_descriptor_assertion_t)(&my_descriptor_assertion_subtype.descriptor);
 }
 
 /* end of file */

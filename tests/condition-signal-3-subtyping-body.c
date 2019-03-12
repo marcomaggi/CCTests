@@ -7,7 +7,7 @@
 
 	Body definitions of a subtype of "test signal-3".
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -31,7 +31,7 @@ static cce_condition_delete_fun_t		my_condition_delete_signal_3_subtype;
 static cce_condition_final_fun_t		my_condition_final_signal_3_subtype;
 static cce_condition_static_message_fun_t	my_condition_static_message_signal_3_subtype;
 
-static my_descriptor_signal_3_subtype_t my_descriptor_signal_3_subtype_stru = {
+static my_descriptor_signal_3_subtype_t my_descriptor_signal_3_subtype = {
   /* This  "parent" field  is  set below  by  the module  initialisation
      function. */
   .descriptor.parent		= NULL,
@@ -39,8 +39,6 @@ static my_descriptor_signal_3_subtype_t my_descriptor_signal_3_subtype_stru = {
   .descriptor.final		= my_condition_final_signal_3_subtype,
   .descriptor.static_message	= my_condition_static_message_signal_3_subtype
 };
-
-my_descriptor_signal_3_subtype_t const * const my_descriptor_signal_3_subtype_ptr = &my_descriptor_signal_3_subtype_stru;
 
 
 /** --------------------------------------------------------------------
@@ -124,7 +122,7 @@ my_condition_new_signal_3_subtype (cce_destination_t upper_L, int the_data)
   } else {
     my_condition_signal_3_subtype_t * C = cce_sys_malloc_guarded(L, C_H, sizeof(my_condition_signal_3_subtype_t));
 
-    cce_condition_init((cce_condition_t *) C, &(my_descriptor_signal_3_subtype_ptr->descriptor));
+    cce_condition_init((cce_condition_t *) C, &(my_descriptor_signal_3_subtype.descriptor));
     my_condition_init_signal_3_subtype(L, C, the_data);
 
     cce_run_body_handlers(L);
@@ -133,11 +131,17 @@ my_condition_new_signal_3_subtype (cce_destination_t upper_L, int the_data)
   }
 }
 
+bool
+my_condition_is_signal_3_subtype (cce_condition_t const * C)
+{
+  return cce_condition_is(C, &(my_descriptor_signal_3_subtype.descriptor));
+}
+
 
 void
 condition_signal_3_subtyping_init_module (void)
 {
-  my_descriptor_signal_3_subtype_stru.descriptor.parent = &(cctests_descriptor_signal_3_ptr->descriptor);
+  cce_descriptor_set_parent_to(cctests_descriptor_signal_3_t)(&my_descriptor_signal_3_subtype.descriptor);
 }
 
 /* end of file */

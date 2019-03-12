@@ -7,7 +7,7 @@
 
 	Body definitions of a subtype of "regex error".
 
-  Copyright (C) 2017, 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
   See the COPYING file.
 */
@@ -31,7 +31,7 @@ static cce_condition_delete_fun_t		my_condition_delete_regex_error_subtype;
 static cce_condition_final_fun_t		my_condition_final_regex_error_subtype;
 static cce_condition_static_message_fun_t	my_condition_static_message_regex_error_subtype;
 
-static my_descriptor_regex_error_subtype_t my_descriptor_regex_error_subtype_stru = {
+static my_descriptor_regex_error_subtype_t my_descriptor_regex_error_subtype = {
   /* This  "parent" field  is  set below  by  the module  initialisation
      function. */
   .descriptor.parent		= NULL,
@@ -39,8 +39,6 @@ static my_descriptor_regex_error_subtype_t my_descriptor_regex_error_subtype_str
   .descriptor.final		= my_condition_final_regex_error_subtype,
   .descriptor.static_message	= my_condition_static_message_regex_error_subtype
 };
-
-my_descriptor_regex_error_subtype_t const * const my_descriptor_regex_error_subtype_ptr = &my_descriptor_regex_error_subtype_stru;
 
 
 /** --------------------------------------------------------------------
@@ -125,7 +123,7 @@ my_condition_new_regex_error_subtype (cce_destination_t upper_L, int errcode, in
   } else {
     my_condition_regex_error_subtype_t * C = cce_sys_malloc_guarded(L, C_H, sizeof(my_condition_regex_error_subtype_t));
 
-    cce_condition_init((cce_condition_t *) C, &(my_descriptor_regex_error_subtype_ptr->descriptor));
+    cce_condition_init((cce_condition_t *) C, &(my_descriptor_regex_error_subtype.descriptor));
     my_condition_init_regex_error_subtype(L, C, errcode, the_data);
 
     cce_run_body_handlers(L);
@@ -134,11 +132,17 @@ my_condition_new_regex_error_subtype (cce_destination_t upper_L, int errcode, in
   }
 }
 
+bool
+my_condition_is_regex_error_subtype (cce_condition_t const * C)
+{
+  return cce_condition_is(C, &(my_descriptor_regex_error_subtype.descriptor));
+}
+
 
 void
 condition_regex_error_subtyping_init_module (void)
 {
-  my_descriptor_regex_error_subtype_stru.descriptor.parent = &(cctests_descriptor_regex_error_ptr->descriptor);
+  cce_descriptor_set_parent_to(cctests_descriptor_regex_error_t)(&my_descriptor_regex_error_subtype.descriptor);
 }
 
 /* end of file */
