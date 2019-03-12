@@ -1119,6 +1119,25 @@ return @cfalse{}.
 @CCTestsConditionIsFunc{\OBJECTTYPESTEM\}
 @end macro
 
+@c ------------------------------------------------------------------------
+
+@macro CCTestsConditionSubtypingSection{CSTEM,FILESTEM}
+@subsubheading Sub--typing example
+
+
+To define a sub--type of @objtype{cctests_condition_\CSTEM\_t} we can copy the code in the files:
+
+@example
+condition-\FILESTEM\-subtype.c
+condition-\FILESTEM\-subtype-headear.h
+condition-\FILESTEM\-subtype-body.c
+@end example
+
+@noindent
+under the @file{tests} directory of the source distribution; the code defines a new
+condition--object type @objtype{my_condition_\CSTEM\_subtype_t}.
+@end macro
+
 @c page
 @node conditions base
 @section Base condition object
@@ -1182,20 +1201,7 @@ The parent condition type.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_base_t} we can copy the code in the files:
-
-@example
-condition-base-subtype.c
-condition-base-subtype-headear.h
-condition-base-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_base_subtype_t}.
+@CCTestsConditionSubtypingSection{base,base}
 
 @c page
 @node conditions success
@@ -1257,20 +1263,7 @@ The condition object's base values.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_success_t} we can copy the code in the files:
-
-@example
-condition-success-subtype.c
-condition-success-subtype-headear.h
-condition-success-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_success_subtype_t}.
+@CCTestsConditionSubtypingSection{success,success}
 
 @c page
 @node conditions skipped
@@ -1331,20 +1324,7 @@ The condition object's base values.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_skipped_t} we can copy the code in the files:
-
-@example
-condition-skipped-subtype.c
-condition-skipped-subtype-headear.h
-condition-skipped-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_skipped_subtype_t}.
+@CCTestsConditionSubtypingSection{skipped,skipped}
 
 @c page
 @node conditions failure
@@ -1404,20 +1384,7 @@ The condition object's base values.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_failure_t} we can copy the code in the files:
-
-@example
-condition-failure-subtype.c
-condition-failure-subtype-headear.h
-condition-failure-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_failure_subtype_t}.
+@CCTestsConditionSubtypingSection{failure,failure}
 
 @c page
 @node conditions expected failure
@@ -1471,21 +1438,7 @@ Type of data structure representing the exceptional--condition object.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_expected_failure_t} we can copy the code in the
-files:
-
-@example
-condition-expected-failure-subtype.c
-condition-expected-failure-subtype-headear.h
-condition-expected-failure-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_expected_failure_subtype_t}.
+@CCTestsConditionSubtypingSection{expected_failure,expected-failure}
 
 @c page
 @node conditions assertion
@@ -1732,20 +1685,7 @@ exceptional--condition object.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_assertion_t} we can copy the code in the files:
-
-@example
-condition-assertion-subtype.c
-condition-assertion-subtype-headear.h
-condition-assertion-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_assertion_subtype_t}.
+@CCTestsConditionSubtypingSection{assertion,assertion}
 
 @c page
 @node conditions assertion expected
@@ -2306,21 +2246,7 @@ cce_raise((L), cctests_condition_new_unreachable((L), __FILE__, __func__, __LINE
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_unreachable_t} we can copy the code in the
-files:
-
-@example
-condition-unreachable-subtype.c
-condition-unreachable-subtype-headear.h
-condition-unreachable-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_unreachable_subtype_t}.
+@CCTestsConditionSubtypingSection{unreachable,unreachable}
 
 @c page
 @node conditions regex
@@ -2417,21 +2343,7 @@ raise an exception by performing a non--local exit to @var{L}.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_regex_error_t} we can copy the code in the
-files:
-
-@example
-condition-regex-error-subtype.c
-condition-regex-error-subtype-headear.h
-condition-regex-error-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_regex_error_subtype_t}.
+@CCTestsConditionSubtypingSection{regex_error,regex-error}
 
 @c page
 @node conditions regex comp
@@ -2508,21 +2420,7 @@ raise an exception by performing a non--local exit to @var{L}.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_regex_compilation_error_t} we can copy the code
-in the files:
-
-@example
-condition-regex-compilation-error-subtype.c
-condition-regex-compilation-error-subtype-headear.h
-condition-regex-compilation-error-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_regex_compilation_error_subtype_t}.
+@CCTestsConditionSubtypingSection{regex_compilation_error,regex-compilation-error}
 
 @c page
 @node conditions child
@@ -2769,20 +2667,7 @@ The condition object's base values.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_signal_t} we can copy the code in the files:
-
-@example
-condition-signal-subtype.c
-condition-signal-subtype-headear.h
-condition-signal-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_signal_subtype_t}.
+@CCTestsConditionSubtypingSection{signal,signal}
 
 @c page
 @node conditions signal one
@@ -2842,20 +2727,7 @@ The condition object's base values.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_signal_1_t} we can copy the code in the files:
-
-@example
-condition-signal-1-subtype.c
-condition-signal-1-subtype-headear.h
-condition-signal-1-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_signal_1_subtype_t}.
+@CCTestsConditionSubtypingSection{signal_1,signal-1}
 
 @c page
 @node conditions signal two
@@ -2915,20 +2787,7 @@ The condition object's base values.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_signal_2_t} we can copy the code in the files:
-
-@example
-condition-signal-2-subtype.c
-condition-signal-2-subtype-headear.h
-condition-signal-2-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_signal_2_subtype_t}.
+@CCTestsConditionSubtypingSection{signal_2,signal-2}
 
 @c page
 @node conditions signal three
@@ -2988,20 +2847,7 @@ The condition object's base values.
 
 @c ------------------------------------------------------------------------
 
-@subsubheading Sub--typing example
-
-
-To define a sub--type of @objtype{cctests_condition_signal_3_t} we can copy the code in the files:
-
-@example
-condition-signal-3-subtype.c
-condition-signal-3-subtype-headear.h
-condition-signal-3-subtype-body.c
-@end example
-
-@noindent
-under the @file{tests} directory of the source distribution; the code defines a new
-condition--object type @objtype{my_condition_signal_3_subtype_t}.
+@CCTestsConditionSubtypingSection{signal_3,signal-3}
 
 @c page
 @node utils
