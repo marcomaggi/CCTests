@@ -43,7 +43,7 @@ static my_descriptor_base_subtype_t my_descriptor_base_subtype = {
 void
 cce_descriptor_set_parent_to(my_descriptor_base_subtype_t) (cce_descriptor_t * const D)
 {
-  D->parent = &my_descriptor_base_subtype.descriptor;
+  D->parent = cce_descriptor_pointer(my_descriptor_base_subtype);
 }
 
 
@@ -147,7 +147,7 @@ my_condition_is_base_subtype (cce_condition_t const * C)
 void
 condition_base_subtyping_init_module (void)
 {
-  cce_descriptor_set_parent_to(cctests_descriptor_base_t)(&my_descriptor_base_subtype.descriptor);
+  cce_descriptor_set_parent_to(cctests_descriptor_base_t)(cce_descriptor_pointer(my_descriptor_base_subtype));
 }
 
 /* end of file */

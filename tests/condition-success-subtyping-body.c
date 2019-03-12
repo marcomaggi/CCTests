@@ -43,7 +43,7 @@ static my_descriptor_success_subtype_t my_descriptor_success_subtype = {
 void
 cce_descriptor_set_parent_to(my_descriptor_success_subtype_t) (cce_descriptor_t * const D)
 {
-  D->parent = &my_descriptor_success_subtype.descriptor;
+  D->parent = cce_descriptor_pointer(my_descriptor_success_subtype);
 }
 
 
@@ -128,7 +128,7 @@ my_condition_new_success_subtype (cce_destination_t upper_L, int the_data)
   } else {
     my_condition_success_subtype_t * C = cce_sys_malloc_guarded(L, C_H, sizeof(my_condition_success_subtype_t));
 
-    cce_condition_init((cce_condition_t *) C, &(my_descriptor_success_subtype.descriptor));
+    cce_condition_init((cce_condition_t *) C, cce_descriptor_pointer(my_descriptor_success_subtype));
     my_condition_init_success_subtype(L, C, the_data);
 
     cce_run_body_handlers(L);
@@ -140,14 +140,14 @@ my_condition_new_success_subtype (cce_destination_t upper_L, int the_data)
 bool
 my_condition_is_success_subtype (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(my_descriptor_success_subtype.descriptor));
+  return cce_condition_is(C, cce_descriptor_pointer(my_descriptor_success_subtype));
 }
 
 
 void
 condition_success_subtyping_init_module (void)
 {
-  cce_descriptor_set_parent_to(cctests_descriptor_success_t)(&my_descriptor_success_subtype.descriptor);
+  cce_descriptor_set_parent_to(cctests_descriptor_success_t)(cce_descriptor_pointer(my_descriptor_success_subtype));
 }
 
 /* end of file */

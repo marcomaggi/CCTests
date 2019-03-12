@@ -99,6 +99,11 @@ extern "C" {
 #define CCTESTS_PC(POINTER_TYPE, POINTER_NAME, EXPRESSION)	\
   POINTER_TYPE * POINTER_NAME = (POINTER_TYPE *) (EXPRESSION)
 
+#ifndef cce_descriptor_pointer
+#  define cce_descriptor_pointer(EXCEPTIONAL_CONDITION_DESCRIPTOR_VARIABLE)	\
+  &((EXCEPTIONAL_CONDITION_DESCRIPTOR_VARIABLE).descriptor)
+#endif
+
 cctests_decl unsigned char const	CCTESTS_UCHAR_MAX;
 cctests_decl unsigned char const	CCTESTS_UCHAR_MIN;
 cctests_decl signed char const		CCTESTS_CHAR_MAX;

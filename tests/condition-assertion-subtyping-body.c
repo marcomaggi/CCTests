@@ -43,7 +43,7 @@ static my_descriptor_assertion_subtype_t my_descriptor_assertion_subtype = {
 void
 cce_descriptor_set_parent_to(my_descriptor_assertion_subtype_t) (cce_descriptor_t * const D)
 {
-  D->parent = &my_descriptor_assertion_subtype.descriptor;
+  D->parent = cce_descriptor_pointer(my_descriptor_assertion_subtype);
 }
 
 
@@ -141,7 +141,7 @@ my_condition_new_assertion_subtype (cce_destination_t upper_L,
   } else {
     my_condition_assertion_subtype_t * C = cce_sys_malloc_guarded(L, C_H, sizeof(my_condition_assertion_subtype_t));
 
-    cce_condition_init((cce_condition_t *) C, &(my_descriptor_assertion_subtype.descriptor));
+    cce_condition_init((cce_condition_t *) C, cce_descriptor_pointer(my_descriptor_assertion_subtype));
     my_condition_init_assertion_subtype(L, C, expr, filename, funcname, linenum, description_message, the_data);
 
     cce_run_body_handlers(L);
@@ -153,14 +153,14 @@ my_condition_new_assertion_subtype (cce_destination_t upper_L,
 bool
 my_condition_is_assertion_subtype (cce_condition_t const * C)
 {
-  return cce_condition_is(C, &(my_descriptor_assertion_subtype.descriptor));
+  return cce_condition_is(C, cce_descriptor_pointer(my_descriptor_assertion_subtype));
 }
 
 
 void
 condition_assertion_subtyping_init_module (void)
 {
-  cce_descriptor_set_parent_to(cctests_descriptor_assertion_t)(&my_descriptor_assertion_subtype.descriptor);
+  cce_descriptor_set_parent_to(cctests_descriptor_assertion_t)(cce_descriptor_pointer(my_descriptor_assertion_subtype));
 }
 
 /* end of file */
