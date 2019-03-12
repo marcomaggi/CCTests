@@ -3,6 +3,18 @@
 			News file for CCTests
 			=====================
 
+Revision 0.4.0-devel.1
+----------------------
+
+* Added counters for tests.
+
+* Better support for terminal colours.
+
+* BACKWARDS INCOMPATIBILITY Changed API to subtype exceptional-condition
+  object types: from direct access to the descriptor pointer to function
+  that sets a descriptor's parent.
+
+
 Revision 0.4.0-devel.0
 ----------------------
 
@@ -17,14 +29,6 @@ Revision 0.4.0-devel.0
 * BACKWARDS  INCOMPATIBILITY   Added  an   argument  assertion-violation
   description-message  to   the  constructors  of   assertion  condition
   objects.
-
-* Added counters for tests.
-
-* Better support for terminal colours.
-
-* BACKWARDS INCOMPATIBILITY Changed API to subtype exceptional-condition
-  object types: from direct access to the descriptor pointer to function
-  that sets a descriptor's parent.
 
 
 Revision 0.3.0-devel.7
