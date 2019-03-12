@@ -1064,6 +1064,61 @@ Convenience condition types
 * conditions signal three::     Convenience signal three.
 @end menu
 
+@c ------------------------------------------------------------------------
+
+@macro CCTestsSetParentToFunc{OBJECTTYPESTEM}
+@deftypefun void cce_descriptor_set_parent_to(cctests_condition_\OBJECTTYPESTEM\_t) (cce_descriptor_t * const @var{D})
+Set the parent of the descriptor referenced by @var{D} to the descriptor of the
+exceptional--condition object--type @objtype{cctests_condition_\OBJECTTYPESTEM\_t}.
+@end deftypefun
+@end macro
+
+@macro CCTestsConditionInitFunc{OBJECTTYPESTEM}
+@deftypefun void cctests_condition_init_\OBJECTTYPESTEM\ (cctests_condition_\OBJECTTYPESTEM\_t * @var{C})
+Initialisation function for the condition object.  This function is meant to be called from the
+initialisation function of sub--types of @objtype{cctests_condition_\OBJECTTYPESTEM\_t}.
+@end deftypefun
+@end macro
+
+@macro CCTestsConditionNewFunc{OBJECTTYPESTEM}
+@deftypefun {cce_condition_t const *} cctests_condition_new_\OBJECTTYPESTEM\ (void)
+Return a pointer to exceptional--condition object of type
+@objtype{cctests_condition_\OBJECTTYPESTEM\_t} made opaque in the type @objtype{cce_condition_t}.
+@end deftypefun
+@end macro
+
+@macro CCTestsConditionIsFunc{OBJECTTYPESTEM}
+@deftypefun bool cctests_condition_is_\OBJECTTYPESTEM\ (cce_condition_t const * @var{C})
+Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_\OBJECTTYPESTEM\_t}; otherwise
+return @cfalse{}.
+@end deftypefun
+@end macro
+
+@c ------------------------------------------------------------------------
+
+@macro CCTestsConditionCommonFuncsNoNew{OBJECTTYPESTEM}
+@CCTestsSetParentToFunc{\OBJECTTYPESTEM\}
+
+
+@CCTestsConditionInitFunc{\OBJECTTYPESTEM\}
+
+
+@CCTestsConditionIsFunc{\OBJECTTYPESTEM\}
+@end macro
+
+@macro CCTestsConditionCommonFuncs{OBJECTTYPESTEM}
+@CCTestsSetParentToFunc{\OBJECTTYPESTEM\}
+
+
+@CCTestsConditionInitFunc{\OBJECTTYPESTEM\}
+
+
+@CCTestsConditionNewFunc{\OBJECTTYPESTEM\}
+
+
+@CCTestsConditionIsFunc{\OBJECTTYPESTEM\}
+@end macro
+
 @c page
 @node conditions base
 @section Base condition object
@@ -1123,21 +1178,7 @@ The parent condition type.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_base_t const * const} cctests_descriptor_base_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_base (cctests_condition_base_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_base_t}.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_base (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_base_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncsNoNew{base}
 
 @c ------------------------------------------------------------------------
 
@@ -1212,26 +1253,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_success_t const * const} cctests_descriptor_success_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_success (cctests_condition_success_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_success_t}.
-@end deftypefun
-
-
-@deftypefun {cce_condition_t const *} cctests_condition_new_success (void)
-Return a pointer to exceptional--condition object.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_success (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_success_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncs{success}
 
 @c ------------------------------------------------------------------------
 
@@ -1305,26 +1327,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_skipped_t const * const} cctests_descriptor_skipped_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_skipped (cctests_condition_skipped_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_skipped_t}.
-@end deftypefun
-
-
-@deftypefun {cce_condition_t const *} cctests_condition_new_skipped (void)
-Return a pointer to exceptional--condition object.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_skipped (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_skipped_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncs{skipped}
 
 @c ------------------------------------------------------------------------
 
@@ -1397,26 +1400,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_failure_t const * const} cctests_descriptor_failure_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_failure (cctests_condition_failure_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_failure_t}.
-@end deftypefun
-
-
-@deftypefun {cce_condition_t const *} cctests_condition_new_failure (void)
-Return a pointer to exceptional--condition object.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_failure (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_failure_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncs{failure}
 
 @c ------------------------------------------------------------------------
 
@@ -1483,27 +1467,7 @@ Type of data structure representing the exceptional--condition object.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_expected_failure_t const * const} cctests_descriptor_expected_failure_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_expected_failure (cctests_condition_expected_failure_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_expected_failure_t}.
-@end deftypefun
-
-
-@deftypefun {cce_condition_t const *} cctests_condition_new_expected_failure (cce_destination_t @var{L})
-Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
-an exception by performing a non--local exit to @var{L}.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_expected_failure (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_expected_failure_t}; otherwise
-return @cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncsNoNew{expected_failure}
 
 @c ------------------------------------------------------------------------
 
@@ -1634,9 +1598,7 @@ The resulting value.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_assertion_expected_\TYPENAME\_t const * const} cctests_descriptor_assertion_expected_\TYPENAME\_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
+@CCTestsSetParentToFunc{assertion_expected_\TYPENAME\}
 
 
 @deftypefun void cctests_condition_init_assertion_expected_\TYPENAME\ (cctests_condition_assertion_expected_\TYPENAME\_t * @var{C}, \TYPE\ @var{expected}, \TYPE\ @var{result}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
@@ -1663,10 +1625,7 @@ exceptional--condition object.
 @end deftypefun
 
 
-@deftypefun bool cctests_condition_is_assertion_expected_\TYPENAME\ (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_assertion_expected_\TYPENAME\_t};
-otherwise return @cfalse{}.
-@end deftypefun
+@CCTestsConditionIsFunc{assertion_expected_\TYPENAME\}
 @end macro
 
 @c page
@@ -1744,9 +1703,7 @@ allocator.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_assertion_t const * const} cctests_descriptor_assertion_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
+@CCTestsSetParentToFunc{assertion}
 
 
 @deftypefun void cctests_condition_init_assertion (cctests_condition_assertion_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
@@ -1771,10 +1728,7 @@ exceptional--condition object.
 @end deftypefun
 
 
-@deftypefun bool cctests_condition_is_assertion (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_assertion_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionIsFunc{assertion}
 
 @c ------------------------------------------------------------------------
 
@@ -1848,9 +1802,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_assertion_expected_value_t const * const} cctests_descriptor_assertion_expected_value_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
+@CCTestsSetParentToFunc{assertion_expected_value}
 
 
 @deftypefun void cctests_condition_init_assertion_expected_value (cctests_condition_assertion_expected_value_t * @var{C}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
@@ -1865,10 +1817,7 @@ the ownership of this string is transferred to the exceptional--condition object
 @end deftypefun
 
 
-@deftypefun bool cctests_condition_is_assertion_expected_value (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_assertion_expected_value_t};
-otherwise return @cfalse{}.
-@end deftypefun
+@CCTestsConditionIsFunc{assertion_expected_value}
 
 @c page
 @node conditions assertion asciiz
@@ -1934,9 +1883,7 @@ allocation.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_assertion_expected_asciiz_t const * const} cctests_descriptor_assertion_expected_asciiz_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
+@CCTestsSetParentToFunc{assertion_expected_asciiz}
 
 
 @deftypefun void cctests_condition_init_assertion_expected_asciiz (cce_destination_t @var{L}, cctests_condition_assertion_expected_asciiz_t * @var{C}, char const * @var{expected}, char const * @var{result}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
@@ -1963,10 +1910,7 @@ the ownership of this string is transferred to the exceptional--condition object
 @end deftypefun
 
 
-@deftypefun bool cctests_condition_is_assertion_expected_asciiz (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_assertion_expected_asciiz_t};
-otherwise return @cfalse{}.
-@end deftypefun
+@CCTestsConditionIsFunc{assertion_expected_asciiz}
 
 @c page
 @node conditions assertion ascii
@@ -2035,9 +1979,7 @@ The number of characters in the string referenced by @var{result}.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_assertion_expected_ascii_t const * const} cctests_descriptor_assertion_expected_ascii_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
+@CCTestsSetParentToFunc{assertion_expected_ascii}
 
 
 @deftypefun void cctests_condition_init_assertion_expected_ascii (cce_destination_t @var{L}, cctests_condition_assertion_expected_ascii_t * @var{C}, char const * @var{expected}, char const * @var{result}, size_t @var{result_len}, char const * @var{expr}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum}, char const * @var{message})
@@ -2064,10 +2006,7 @@ the ownership of this string is transferred to the exceptional--condition object
 @end deftypefun
 
 
-@deftypefun bool cctests_condition_is_assertion_expected_ascii (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_assertion_expected_ascii_t};
-otherwise return @cfalse{}.
-@end deftypefun
+@CCTestsConditionIsFunc{assertion_expected_ascii}
 
 @c page
 @node conditions assertion chars
@@ -2339,9 +2278,7 @@ be generated with the preprocessor macro @code{__LINE__}.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_unreachable_t const * const} cctests_descriptor_unreachable_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
+@CCTestsSetParentToFunc{unreachable}
 
 
 @deftypefun void cctests_condition_init_unreachable (cctests_condition_unreachable_t * @var{C}, char const * @var{filename}, char const * @var{funcname}, int @var{linenum})
@@ -2356,10 +2293,7 @@ an exception by performing a non--local exit to @var{L}.
 @end deftypefun
 
 
-@deftypefun bool cctests_condition_is_unreachable (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_unreachable_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionIsFunc{unreachable}
 
 
 @deftypefn {Preprocessor Macro} cctests_raise_unreachable (cce_destination_t @var{L})
@@ -2464,9 +2398,7 @@ An array holding the @asciiz{} representation of the error description generated
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_regex_error_t const * const} cctests_descriptor_regex_error_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
+@CCTestsSetParentToFunc{regex_error}
 
 
 @deftypefun void cctests_condition_init_regex_error (cctests_condition_regex_error_t * @var{C}, int @var{errcode})
@@ -2481,10 +2413,7 @@ raise an exception by performing a non--local exit to @var{L}.
 @end deftypefun
 
 
-@deftypefun bool cctests_condition_is_regex_error (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_descriptor_regex_error_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionIsFunc{regex_error}
 
 @c ------------------------------------------------------------------------
 
@@ -2560,9 +2489,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_regex_compilation_error_t const * const} cctests_descriptor_regex_compilation_error_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
+@CCTestsSetParentToFunc{regex_compilation_error}
 
 
 @deftypefun void cctests_condition_init_regex_compilation_error (cctests_condition_regex_compilation_error_t * @var{C}, int @var{errcode})
@@ -2577,10 +2504,7 @@ raise an exception by performing a non--local exit to @var{L}.
 @end deftypefun
 
 
-@deftypefun bool cctests_condition_is_regex_compilation_error (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_descriptor_regex_compilation_error_t};
-otherwise return @cfalse{}.
-@end deftypefun
+@CCTestsConditionIsFunc{regex_compilation_error}
 
 @c ------------------------------------------------------------------------
 
@@ -2665,27 +2589,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_child_failure_t const * const} cctests_descriptor_child_failure_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_child_failure (cctests_condition_child_failure_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_child_failure_t}.
-@end deftypefun
-
-
-@deftypefun {cce_condition_t const *} cctests_condition_new_child_failure (cce_destination_t @var{L})
-Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
-an exception by performing a non--local exit to @var{L}.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_child_failure (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_child_failure_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncs{child_failure}
 
 @c page
 @node conditions child abnormal
@@ -2743,27 +2647,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_child_abnormal_termination_t const * const} cctests_descriptor_child_abnormal_termination_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_child_abnormal_termination (cctests_condition_child_abnormal_termination_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_child_abnormal_termination_t}.
-@end deftypefun
-
-
-@deftypefun {cce_condition_t const *} cctests_condition_new_child_abnormal_termination (cce_destination_t @var{L})
-Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
-an exception by performing a non--local exit to @var{L}.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_child_abnormal_termination (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_child_abnormal_termination_t};
-otherwise return @cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncs{child_abnormal_termination}
 
 @c page
 @node conditions child status
@@ -2821,27 +2705,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_child_failure_exit_status_t const * const} cctests_descriptor_child_failure_exit_status_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_child_failure_exit_status (cctests_condition_child_failure_exit_status_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_child_failure_exit_status_t}.
-@end deftypefun
-
-
-@deftypefun {cce_condition_t const *} cctests_condition_new_child_failure_exit_status (cce_destination_t @var{L})
-Return a pointer to exceptional condition object.  If an error occurs building the instance: raise
-an exception by performing a non--local exit to @var{L}.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_child_failure_exit_status (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_child_failure_exit_status_t};
-otherwise return @cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncs{child_failure_exit_status}
 
 @c page
 @node conditions signal
@@ -2901,26 +2765,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_signal_t const * const} cctests_descriptor_signal_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_signal (cctests_condition_signal_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_signal_t}.
-@end deftypefun
-
-
-@deftypefun {cce_condition_t const *} cctests_condition_new_signal (void)
-Return a pointer to exceptional condition object.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_signal (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_signal_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncs{signal}
 
 @c ------------------------------------------------------------------------
 
@@ -2993,26 +2838,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_signal_1_t const * const} cctests_descriptor_signal_1_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_signal_1 (cctests_condition_signal_1_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_signal_1_t}.
-@end deftypefun
-
-
-@deftypefun {cce_condition_t const *} cctests_condition_new_signal_1 (void)
-Return a pointer to exceptional condition object.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_signal_1 (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_signal_1_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncs{signal_1}
 
 @c ------------------------------------------------------------------------
 
@@ -3085,26 +2911,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_signal_2_t const * const} cctests_descriptor_signal_2_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_signal_2 (cctests_condition_signal_2_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_signal_2_t}.
-@end deftypefun
-
-
-@deftypefun {cce_condition_t const *} cctests_condition_new_signal_2 (void)
-Return a pointer to exceptional condition object.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_signal_2 (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_signal_2_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncs{signal_2}
 
 @c ------------------------------------------------------------------------
 
@@ -3177,26 +2984,7 @@ The condition object's base values.
 @end deftp
 
 
-@deftypevr {Dynamic Constant} {cctests_descriptor_signal_3_t const * const} cctests_descriptor_signal_3_ptr
-Pointer to a statically allocated exceptional condition descriptor.
-@end deftypevr
-
-
-@deftypefun void cctests_condition_init_signal_3 (cctests_condition_signal_3_t * @var{C})
-Initialisation function for the condition object.  This function is meant to be called from the
-initialisation function of sub--types of @objtype{cctests_condition_signal_3_t}.
-@end deftypefun
-
-
-@deftypefun {cce_condition_t const *} cctests_condition_new_signal_3 (void)
-Return a pointer to exceptional condition object.
-@end deftypefun
-
-
-@deftypefun bool cctests_condition_is_signal_3 (cce_condition_t const * @var{C})
-Return @ctrue{} if @var{C} if of type @objtype{cctests_condition_signal_3_t}; otherwise return
-@cfalse{}.
-@end deftypefun
+@CCTestsConditionCommonFuncs{signal_3}
 
 @c ------------------------------------------------------------------------
 
