@@ -41,6 +41,11 @@ struct my_condition_base_subtype_t {
   int *				data;
 };
 
+cctests_decl void cce_descriptor_set_parent_to(my_descriptor_base_subtype_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
+
+/* ------------------------------------------------------------------ */
+
 cctests_decl void condition_base_subtyping_init_module (void);
 
 cctests_decl void my_condition_init_base_subtype (cce_destination_t L, my_condition_base_subtype_t * C, int the_data)

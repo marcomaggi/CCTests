@@ -41,6 +41,11 @@ struct my_condition_signal_1_subtype_t {
   int *				data;
 };
 
+cctests_decl void cce_descriptor_set_parent_to(my_descriptor_signal_1_subtype_t) (cce_descriptor_t * const D)
+  __attribute__((__nonnull__(1)));
+
+/* ------------------------------------------------------------------ */
+
 cctests_decl void my_condition_init_signal_1_subtype (cce_destination_t L, my_condition_signal_1_subtype_t * C, int the_data)
   __attribute__((__nonnull__(1,2)));
 

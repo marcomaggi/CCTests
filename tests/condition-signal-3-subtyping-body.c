@@ -40,6 +40,12 @@ static my_descriptor_signal_3_subtype_t my_descriptor_signal_3_subtype = {
   .descriptor.static_message	= my_condition_static_message_signal_3_subtype
 };
 
+void
+cce_descriptor_set_parent_to(my_descriptor_signal_3_subtype_t) (cce_descriptor_t * const D)
+{
+  D->parent = &my_descriptor_signal_3_subtype.descriptor;
+}
+
 
 /** --------------------------------------------------------------------
  ** Condition type descriptor: protocol functions.
