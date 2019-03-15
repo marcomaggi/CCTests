@@ -896,8 +896,8 @@ cctests_decl char const * cctests_p_format_message (cce_destination_t L, char co
   char const * expr, char const * filename, char const * funcname, int linenum, char const * description_message
 
 #undef CCTESTS_ASSERT_COMMON_CALL_ARGS
-#define CCTESTS_ASSERT_COMMON_CALL_ARGS(...)				\
-  cctests_p_expr, __FILE__, __func__, cctests_p_linenum, cctests_p_format_message(L, __VA_ARGS__, NULL)
+#define CCTESTS_ASSERT_COMMON_CALL_ARGS(LOCATION, ...)				\
+  cctests_p_expr, __FILE__, __func__, cctests_p_linenum, cctests_p_format_message((LOCATION), __VA_ARGS__, NULL)
 
 /* ------------------------------------------------------------------ */
 
@@ -965,7 +965,7 @@ cctests_decl void cctests_p_assert_asciiz_raise (cce_destination_t L, char const
     static char const *	cctests_p_expr     = "cctests_assert_asciiz(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_asciiz_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_asciiz_raise(L, cctests_p_expected, cctests_p_result, \
-				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -998,7 +998,7 @@ cctests_decl void cctests_p_assert_ascii_raise (cce_destination_t L, char const 
     static char const *	cctests_p_expr       = "cctests_assert_ascii(" #L ", " #EXPECTED ", " #RESULT ", " #RESULT_LEN ")"; \
     if (cctests_p_assert_ascii_compare(cctests_p_expected, cctests_p_result, cctests_p_result_len)) { \
       cctests_p_assert_ascii_raise(L, cctests_p_expected, cctests_p_result, cctests_p_result_len, \
-				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1029,7 +1029,7 @@ cctests_decl void cctests_p_assert_char_raise (cce_destination_t L, signed char 
     static char const *	cctests_p_expr     = "cctests_assert_equal_char(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_char_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_char_raise(L, cctests_p_expected, cctests_p_result, \
-				  CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				  CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1057,7 +1057,7 @@ cctests_decl void cctests_p_assert_uchar_raise (cce_destination_t L, unsigned ch
     static char const *	cctests_p_expr     = "cctests_assert_equal_uchar(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_uchar_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_uchar_raise(L, cctests_p_expected, cctests_p_result, \
-				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1088,7 +1088,7 @@ cctests_decl void cctests_p_assert_short_raise (cce_destination_t L, signed shor
     static char const *cctests_p_expr     = "cctests_assert_equal_short(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_short_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_short_raise(L, cctests_p_expected, cctests_p_result, \
-				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1116,7 +1116,7 @@ cctests_decl void cctests_p_assert_ushort_raise (cce_destination_t L, unsigned s
     static char const *cctests_p_expr     = "cctests_assert_equal_ushort(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_ushort_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_ushort_raise(L, cctests_p_expected, cctests_p_result, \
-				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1147,7 +1147,7 @@ cctests_decl void cctests_p_assert_int_raise (cce_destination_t L, signed int ex
     static char const *cctests_p_expr     = "cctests_assert_equal_int(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_int_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_int_raise(L, cctests_p_expected, cctests_p_result, \
-				 CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				 CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1175,7 +1175,7 @@ cctests_decl void cctests_p_assert_uint_raise (cce_destination_t L, unsigned int
     static char const *cctests_p_expr     = "cctests_assert_equal_uint(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_uint_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_uint_raise(L, cctests_p_expected, cctests_p_result, \
-				  CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				  CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1206,7 +1206,7 @@ cctests_decl void cctests_p_assert_long_raise (cce_destination_t L, signed long 
     static char const *cctests_p_expr     = "cctests_assert_equal_long(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_long_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_long_raise(L, cctests_p_expected, cctests_p_result, \
-				  CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				  CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1234,7 +1234,7 @@ cctests_decl void cctests_p_assert_ulong_raise (cce_destination_t L, unsigned lo
     static char const *cctests_p_expr     = "cctests_assert_equal_ulong(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_ulong_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_ulong_raise(L, cctests_p_expected, cctests_p_result, \
-				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1265,7 +1265,7 @@ cctests_decl void cctests_p_assert_llong_raise (cce_destination_t L, signed long
     static char const *cctests_p_expr     = "cctests_assert_equal_llong(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_llong_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_llong_raise(L, cctests_p_expected, cctests_p_result, \
-				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1293,7 +1293,7 @@ cctests_decl void cctests_p_assert_ullong_raise (cce_destination_t L, unsigned l
     static char const *cctests_p_expr     = "cctests_assert_equal_ullong(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_ullong_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_ullong_raise(L, cctests_p_expected, cctests_p_result, \
-				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1324,7 +1324,7 @@ cctests_decl void cctests_p_assert_int8_raise (cce_destination_t L, int8_t expec
     static char const *cctests_p_expr     = "cctests_assert_equal_int8(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_int8_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_int8_raise(L, cctests_p_expected, cctests_p_result, \
-				  CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				  CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1352,7 +1352,7 @@ cctests_decl void cctests_p_assert_uint8_raise (cce_destination_t L, uint8_t exp
     static char const *cctests_p_expr     = "cctests_assert_equal_uint8(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_uint8_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_uint8_raise(L, cctests_p_expected, cctests_p_result, \
-				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1383,7 +1383,7 @@ cctests_decl void cctests_p_assert_int16_raise (cce_destination_t L, int16_t exp
     static char const *cctests_p_expr     = "cctests_assert_equal_int16(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_int16_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_int16_raise(L, cctests_p_expected, cctests_p_result, \
-				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1411,7 +1411,7 @@ cctests_decl void cctests_p_assert_uint16_raise (cce_destination_t L, uint16_t e
     static char const *cctests_p_expr     = "cctests_assert_equal_uint16(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_uint16_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_uint16_raise(L, cctests_p_expected, cctests_p_result, \
-				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1442,7 +1442,7 @@ cctests_decl void cctests_p_assert_int32_raise (cce_destination_t L, int32_t exp
     static char const *cctests_p_expr     = "cctests_assert_equal_int32(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_int32_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_int32_raise(L, cctests_p_expected, cctests_p_result, \
-				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1470,7 +1470,7 @@ cctests_decl void cctests_p_assert_uint32_raise (cce_destination_t L, uint32_t e
     static char const *cctests_p_expr     = "cctests_assert_equal_uint32(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_uint32_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_uint32_raise(L, cctests_p_expected, cctests_p_result, \
-				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1501,7 +1501,7 @@ cctests_decl void cctests_p_assert_int64_raise (cce_destination_t L, int64_t exp
     static char const *cctests_p_expr     = "cctests_assert_equal_int64(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_int64_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_int64_raise(L, cctests_p_expected, cctests_p_result, \
-				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1529,7 +1529,7 @@ cctests_decl void cctests_p_assert_uint64_raise (cce_destination_t L, uint64_t e
     static char const *cctests_p_expr     = "cctests_assert_equal_uint64(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_uint64_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_uint64_raise(L, cctests_p_expected, cctests_p_result, \
-				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1560,7 +1560,7 @@ cctests_decl void cctests_p_assert_float_raise (cce_destination_t L, float expec
     static char const *cctests_p_expr     = "cctests_assert_equal_float(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_float_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_float_raise(L, cctests_p_expected, cctests_p_result, \
-				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1588,7 +1588,7 @@ cctests_decl void cctests_p_assert_double_raise (cce_destination_t L, double exp
     static char const *cctests_p_expr     = "cctests_assert_equal_double(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_double_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_double_raise(L, cctests_p_expected, cctests_p_result, \
-				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1619,7 +1619,7 @@ cctests_decl void cctests_p_assert_pointer_raise (cce_destination_t L, void * ex
     static char const *cctests_p_expr     = "cctests_assert_equal_pointer(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_pointer_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_pointer_raise(L, cctests_p_expected, cctests_p_result, \
-				     CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				     CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1650,7 +1650,7 @@ cctests_decl void cctests_p_assert_size_raise (cce_destination_t L, size_t expec
     static char const *cctests_p_expr     = "cctests_assert_equal_size(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_size_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_size_raise(L, cctests_p_expected, cctests_p_result, \
-				  CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				  CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1678,7 +1678,7 @@ cctests_decl void cctests_p_assert_ssize_raise (cce_destination_t L, ssize_t exp
     static char const *cctests_p_expr     = "cctests_assert_equal_ssize(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_ssize_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_ssize_raise(L, cctests_p_expected, cctests_p_result, \
-				   CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				   CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1709,7 +1709,7 @@ cctests_decl void cctests_p_assert_ptrdiff_raise (cce_destination_t L, ptrdiff_t
     static char const *cctests_p_expr     = "cctests_assert_equal_ptrdiff(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_ptrdiff_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_ptrdiff_raise(L, cctests_p_expected, cctests_p_result, \
-				     CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				     CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1740,7 +1740,7 @@ cctests_decl void cctests_p_assert_intptr_raise (cce_destination_t L, intptr_t e
     static char const *cctests_p_expr     = "cctests_assert_equal_intptr(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_intptr_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_intptr_raise(L, cctests_p_expected, cctests_p_result, \
-				    CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				    CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
@@ -1768,7 +1768,7 @@ cctests_decl void cctests_p_assert_uintptr_raise (cce_destination_t L, uintptr_t
     static char const *cctests_p_expr     = "cctests_assert_equal_uintptr(" #L ", " #EXPECTED ", " #RESULT ")"; \
     if (cctests_p_assert_uintptr_compare(cctests_p_expected, cctests_p_result)) { \
       cctests_p_assert_uintptr_raise(L, cctests_p_expected, cctests_p_result, \
-				     CCTESTS_ASSERT_COMMON_CALL_ARGS(__VA_ARGS__)); \
+				     CCTESTS_ASSERT_COMMON_CALL_ARGS(L, __VA_ARGS__)); \
     }									\
   }
 
