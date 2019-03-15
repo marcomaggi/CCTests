@@ -36,13 +36,13 @@
  ** Preprocessor symbols.
  ** ----------------------------------------------------------------- */
 
-#undef CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS
-#define CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS	\
+#undef CCTESTS_P_ASSERT_COMMON_SIGNATURE_ARGS
+#define CCTESTS_P_ASSERT_COMMON_SIGNATURE_ARGS	\
   char const * const expr, char const * const filename, char const * const funcname, \
     int const linenum, char const * const description_message
 
-#undef CCTESTS_ASSERT_COMMON_CALL_ARGS
-#define CCTESTS_ASSERT_COMMON_CALL_ARGS	\
+#undef CCTESTS_P_ASSERT_COMMON_CALL_ARGS
+#define CCTESTS_P_ASSERT_COMMON_CALL_ARGS	\
   expr, filename, funcname, linenum, description_message
 
 
@@ -91,9 +91,9 @@ cctests_p_format_message (cce_destination_t L, char const * const template, ...)
  ** ----------------------------------------------------------------- */
 
 void
-cctests_p_assert_raise (cce_destination_t L, CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+cctests_p_assert_raise (cce_destination_t L, CCTESTS_P_ASSERT_COMMON_SIGNATURE_ARGS)
 {
-  cce_raise(L, cctests_condition_new_assertion(L, CCTESTS_ASSERT_COMMON_CALL_ARGS));
+  cce_raise(L, cctests_condition_new_assertion(L, CCTESTS_P_ASSERT_COMMON_CALL_ARGS));
 }
 
 
@@ -110,10 +110,10 @@ cctests_p_assert_asciiz_compare (char const * const expected, char const * const
 
 void
 cctests_p_assert_asciiz_raise (cce_destination_t L, char const * const expected, char const * const result,
-			       CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+			       CCTESTS_P_ASSERT_COMMON_SIGNATURE_ARGS)
 /* Compare zero-terminated strings. */
 {
-  cce_raise(L, cctests_condition_new_assertion_expected_asciiz(L, expected, result, CCTESTS_ASSERT_COMMON_CALL_ARGS));
+  cce_raise(L, cctests_condition_new_assertion_expected_asciiz(L, expected, result, CCTESTS_P_ASSERT_COMMON_CALL_ARGS));
 }
 
 
@@ -132,9 +132,9 @@ cctests_p_assert_ascii_compare (char const * const expected, char const * const 
 
 void
 cctests_p_assert_ascii_raise (cce_destination_t L, char const * const expected, char const * const result, size_t const result_len,
-			      CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+			      CCTESTS_P_ASSERT_COMMON_SIGNATURE_ARGS)
 {
-  cce_raise(L, cctests_condition_new_assertion_expected_ascii(L, expected, result, result_len, CCTESTS_ASSERT_COMMON_CALL_ARGS));
+  cce_raise(L, cctests_condition_new_assertion_expected_ascii(L, expected, result, result_len, CCTESTS_P_ASSERT_COMMON_CALL_ARGS));
 }
 
 
@@ -149,9 +149,9 @@ cctests_p_assert_ascii_raise (cce_destination_t L, char const * const expected, 
     return ((expected == result)? false : true);			\
   }									\
   void									\
-  cctests_p_assert_ ## STEM ## _raise (cce_destination_t L, TYPE const expected, TYPE const result, CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS) \
+  cctests_p_assert_ ## STEM ## _raise (cce_destination_t L, TYPE const expected, TYPE const result, CCTESTS_P_ASSERT_COMMON_SIGNATURE_ARGS) \
   {									\
-    cce_raise(L, cctests_condition_new_assertion_expected_ ## STEM(L, expected, result, CCTESTS_ASSERT_COMMON_CALL_ARGS)); \
+    cce_raise(L, cctests_condition_new_assertion_expected_ ## STEM(L, expected, result, CCTESTS_P_ASSERT_COMMON_CALL_ARGS)); \
   }
 
 DECLARE_IMMEDIATE_ASSERT_FUNCS(char,	signed	char)
@@ -202,9 +202,9 @@ cctests_p_assert_pointer_compare (void * const expected, void * const result)
   return ((expected == result)? false : true);
 }
 void
-cctests_p_assert_pointer_raise (cce_destination_t L, void * const expected, void * const result, CCTESTS_ASSERT_COMMON_SIGNATURE_ARGS)
+cctests_p_assert_pointer_raise (cce_destination_t L, void * const expected, void * const result, CCTESTS_P_ASSERT_COMMON_SIGNATURE_ARGS)
 {
-  cce_raise(L, cctests_condition_new_assertion_expected_pointer(L, expected, result, CCTESTS_ASSERT_COMMON_CALL_ARGS));
+  cce_raise(L, cctests_condition_new_assertion_expected_pointer(L, expected, result, CCTESTS_P_ASSERT_COMMON_CALL_ARGS));
 }
 
 /* end of file */
