@@ -297,11 +297,20 @@ cctests_final (void)
 
   fprintf(cctests_log_stream, "CCTests: %sexit test program%s: %s\n",
 	  cctests_terminal_directive_color, cctests_terminal_default_color, cctests_test_program_name);
-  fprintf(cctests_log_stream, "   number of tests: %u, %ssuccessful %u%s, %sfailed %u%s, %sskipped %u%s\n\n",
-	  cctests_counters.file.number_of_tests,
-	  cctests_terminal_success_color,  cctests_counters.file.number_of_successful_tests, cctests_terminal_default_color,
-	  cctests_terminal_failure_color,  cctests_counters.file.number_of_failed_tests,     cctests_terminal_default_color,
-	  cctests_terminal_skipping_color, cctests_counters.file.number_of_skipped_tests,    cctests_terminal_default_color);
+  fprintf(cctests_log_stream, "   number of tests: %u", cctests_counters.file.number_of_tests);
+  if (0 < cctests_counters.file.number_of_successful_tests) {
+    fprintf(cctests_log_stream, ", %ssuccessful %u%s",
+	    cctests_terminal_success_color, cctests_counters.file.number_of_successful_tests, cctests_terminal_default_color);
+  }
+  if (0 < cctests_counters.file.number_of_failed_tests) {
+    fprintf(cctests_log_stream, ", %sfailed %u%s",
+	    cctests_terminal_failure_color, cctests_counters.file.number_of_failed_tests, cctests_terminal_default_color);
+  }
+  if (0 < cctests_counters.file.number_of_skipped_tests) {
+    fprintf(cctests_log_stream, ", %sskipped %u%s",
+	    cctests_terminal_skipping_color, cctests_counters.file.number_of_skipped_tests, cctests_terminal_default_color);
+  }
+  fprintf(cctests_log_stream, "\n\n");
 
   if (cctests_all_test_passed) {
     status = CCTESTS_AUTOMAKE_TEST_HARNESS_CODE_SUCCESS;
@@ -362,11 +371,20 @@ cctests_end_group (void)
 {
   fprintf(cctests_log_stream, "CCTests: %send group%s: %s\n",
 	  cctests_terminal_directive_color, cctests_terminal_default_color, cctests_test_group_name);
-  fprintf(cctests_log_stream, "   number of tests: %u, %ssuccessful %u%s, %sfailed %u%s, %sskipped %u%s\n\n",
-	  cctests_counters.group.number_of_tests,
-	  cctests_terminal_success_color,  cctests_counters.group.number_of_successful_tests, cctests_terminal_default_color,
-	  cctests_terminal_failure_color,  cctests_counters.group.number_of_failed_tests,     cctests_terminal_default_color,
-	  cctests_terminal_skipping_color, cctests_counters.group.number_of_skipped_tests,    cctests_terminal_default_color);
+  fprintf(cctests_log_stream, "   number of tests: %u", cctests_counters.group.number_of_tests);
+  if (0 < cctests_counters.group.number_of_successful_tests) {
+    fprintf(cctests_log_stream, ", %ssuccessful %u%s",
+	    cctests_terminal_success_color, cctests_counters.group.number_of_successful_tests, cctests_terminal_default_color);
+  }
+  if (0 < cctests_counters.group.number_of_failed_tests) {
+    fprintf(cctests_log_stream, ", %sfailed %u%s",
+	    cctests_terminal_failure_color, cctests_counters.group.number_of_failed_tests, cctests_terminal_default_color);
+  }
+  if (0 < cctests_counters.group.number_of_skipped_tests) {
+    fprintf(cctests_log_stream, ", %sskipped %u%s",
+	    cctests_terminal_skipping_color, cctests_counters.group.number_of_skipped_tests, cctests_terminal_default_color);
+  }
+  fprintf(cctests_log_stream, "\n\n");
   cctests_test_group_name = NULL;
 }
 
