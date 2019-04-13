@@ -3,10 +3,12 @@
 			News file for CCTests
 			=====================
 
-Revision 0.4.0-devel.3
+Revision 0.4.1-devel.0
 ----------------------
 
 * More meaningful report of number of executed tests.
+
+* Upgraded dependency to CCExceptions 0.9.0.
 
 
 Revision 0.4.0-devel.2

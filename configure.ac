@@ -2,14 +2,14 @@ dnl @configure_input@
 dnl
 
 AC_PREREQ([2.69])
-MMUX_PKG_VERSIONS([0],[4],[0],[devel.3])
+MMUX_PKG_VERSIONS([0],[4],[1],[devel.0])
 AC_INIT([CCTests],[MMUX_PACKAGE_VERSION],
   [marco.maggi-ipsu@poste.it],
   [cctests],[https://github.com/marcomaggi/cctests])
 MMUX_INIT
 MMUX_LIBTOOL_LIBRARY_VERSIONS([cctests],4,0,0)
 AC_REVISION([0.1])
-AC_COPYRIGHT([Copyright (c) 2017, 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
+AC_COPYRIGHT([Copyright (c) 2017-2019 Marco Maggi <marco.maggi-ipsu@poste.it>
 
 This program is free software: you  can redistribute it and/or modify it
 under the terms of the GNU Lesser General Public License as published by
@@ -80,7 +80,7 @@ AC_CACHE_SAVE
 PKG_PREREQ([0.29])
 PKG_INSTALLDIR
 MMUX_CHECK_PKG_CONFIG_MACROS
-PKG_CHECK_MODULES([CCEXCEPTIONS],[ccexceptions >= 0.8.0])
+PKG_CHECK_MODULES([CCEXCEPTIONS],[ccexceptions >= 0.9.0])
 
 MMUX_PKG_CONFIG_FIND_INCLUDE_FILE([ccexceptions],[ccexceptions.h])
 
