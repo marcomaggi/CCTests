@@ -7,7 +7,7 @@
 
 
 
-  Copyright (C) 2017, 2018, 2019 Marco Maggi <mrc.mgg@gmail.com>
+  Copyright (C) 2017, 2018, 2019, 2020 Marco Maggi <mrc.mgg@gmail.com>
 
   This is free software; you  can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -666,15 +666,13 @@ cctests_condition_init_assertion_expected_asciiz (cce_destination_t L,
     size_t	expected_len	= strlen(expected);
 
     C->expected	= cce_sys_malloc(L, 1+expected_len);
-    strncpy(C->expected, expected, expected_len);
-    C->expected[expected_len] = '\0';
+    strncpy(C->expected, expected, 1+expected_len);
   }
   {
     size_t	result_len	= strlen(result);
 
     C->result	= cce_sys_malloc(L, 1+result_len);
-    strncpy(C->result, result, result_len);
-    C->result[result_len] = '\0';
+    strncpy(C->result, result, 1+result_len);
   }
 }
 
@@ -778,8 +776,7 @@ cctests_condition_init_assertion_expected_ascii (cce_destination_t L,
     size_t	expected_len	= strlen(expected);
 
     C->expected	= cce_sys_malloc(L, 1+expected_len);
-    strncpy(C->expected, expected, expected_len);
-    C->expected[expected_len] = '\0';
+    strncpy(C->expected, expected, 1+expected_len);
   }
   {
     C->result	= cce_sys_malloc(L, result_len);
