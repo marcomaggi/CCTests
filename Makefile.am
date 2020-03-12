@@ -7,6 +7,7 @@ EXTRA_DIST		= INSTALL			\
 dist_doc_DATA		= README COPYING
 AM_CFLAGS		= $(MMUX_CFLAGS)
 AM_CPPFLAGS		= -I$(srcdir)/src
+CLEANFILES		=
 
 ## --------------------------------------------------------------------
 
@@ -15,8 +16,11 @@ nodist_pkgconfig_DATA	= meta/scripts/cctests.pc
 
 #### documentation
 
+EXTRA_DIST		+= doc/cclibraries.style.css
+CLEANFILES		+= doc/cclibraries.css
+
 AM_MAKEINFOFLAGS	= --no-split
-AM_MAKEINFOHTMLFLAGS	= --split=node -c WORDS_IN_PAGE=0 \
+AM_MAKEINFOHTMLFLAGS	= --split=node -c WORDS_IN_PAGE=0 --css-ref=cclibraries.css \
 	-c PRE_BODY_CLOSE="<p>This document describes version <tt>$(PACKAGE_VERSION)</tt> of <em>$(PACKAGE_NAME)</em>.</p>"
 
 info_TEXINFOS		= doc/cctests.texi
@@ -26,6 +30,23 @@ doc_cctests_TEXINFOS	= \
 	doc/macros.texi			\
 	doc/lgpl-3.0.texi		\
 	doc/fdl-1.3.texi
+
+## --------------------------------------------------------------------
+
+doc/cctests.html/$(am__dirstamp): doc/$(am__dirstamp)
+	@$(MKDIR_P) doc/cctests.html/
+	@: > doc/cctests.html/$(am__dirstamp)
+
+doc/cctests.html/cclibraries.css: doc/cclibraries.style.css doc/cctests.html/$(am__dirstamp)
+	$(INSTALL) -m 0444 "$(top_srcdir)/doc/cclibraries.style.css" "$(builddir)/doc/cctests.html/cclibraries.css"
+
+## --------------------------------------------------------------------
+
+html-local: doc/cctests.html/cclibraries.css
+
+install-html-local:
+	$(MKDIR_P) "$(DESTDIR)$(htmldir)/cctests.html/"
+	$(INSTALL) -m 0444 $(builddir)/doc/cctests.html/cclibraries.css "$(DESTDIR)$(htmldir)/cctests.html/"
 
 
 #### libraries
