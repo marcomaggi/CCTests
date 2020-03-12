@@ -2,7 +2,7 @@ dnl @configure_input@
 dnl
 
 AC_PREREQ([2.69])
-MMUX_PKG_VERSIONS([0],[4],[1],[devel.1])
+MMUX_PKG_VERSIONS([0],[4],[1],[devel.2])
 AC_INIT([CCTests],[MMUX_PACKAGE_VERSION],
   [mrc.mgg@gmail.com],
   [cctests],[https://github.com/marcomaggi/cctests])
