@@ -7,7 +7,7 @@
 
 	Body definitions of a subtype of "test skipped".
 
-  Copyright (C) 2018, 2019 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2018, 2019 Marco Maggi <mrc.mgg@gmail.com>
 
   See the COPYING file.
 */

@@ -7,7 +7,7 @@
 
 	Test file for subtyping of "expected_failure" conditions.
 
-  Copyright (C) 2018 Marco Maggi <marco.maggi-ipsu@poste.it>
+  Copyright (C) 2018 Marco Maggi <mrc.mgg@gmail.com>
 
   See the COPYING file.
 */
