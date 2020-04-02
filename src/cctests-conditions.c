@@ -116,7 +116,7 @@ static cctests_condition_success_t const cctests_condition_success = {
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_success (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_success (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests test success";
 }
@@ -170,7 +170,7 @@ static cctests_condition_skipped_t const cctests_condition_skipped = {
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_skipped (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_skipped (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests test skipped";
 }
@@ -224,7 +224,7 @@ static cctests_condition_failure_t const cctests_condition_failure = {
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_failure (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_failure (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests test failure";
 }
@@ -278,7 +278,7 @@ static cctests_condition_expected_failure_t const cctests_condition_expected_fai
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_expected_failure (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_expected_failure (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests exception expected failure";
 }
@@ -331,7 +331,7 @@ static cctests_descriptor_assertion_t const cctests_descriptor_assertion = {
 void
 cctests_condition_delete_assertion (cce_condition_t * C)
 {
-  CCTESTS_PC(cctests_condition_assertion_t, K, C);
+  CCLIB_PC(cctests_condition_assertion_t, K, C);
 
   if (K->dynamic_string) {
     free((void *)K->dynamic_string);
@@ -340,7 +340,7 @@ cctests_condition_delete_assertion (cce_condition_t * C)
 }
 
 char const *
-cctests_condition_static_message_assertion (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_assertion (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests assertion failure";
 }
@@ -348,7 +348,7 @@ cctests_condition_static_message_assertion (cce_condition_t const * C CCTESTS_UN
 void
 cctests_condition_print_assertion_fun (cce_condition_t const * C)
 {
-  CCTESTS_PC(cctests_condition_assertion_t, K, C);
+  CCLIB_PC(cctests_condition_assertion_t, K, C);
 
   fprintf(cctests_log_stream, "CCTests: %sassertion failure%s in test function %s: %s: %s: line %d\n",
 	  cctests_terminal_failure_color, cctests_terminal_default_color,
@@ -398,7 +398,7 @@ cctests_condition_is_assertion (cce_condition_t const * C)
 void
 cctests_condition_print_assertion (cce_condition_t const * C)
 {
-  CCTESTS_PC(cctests_descriptor_assertion_t, D, C->descriptor);
+  CCLIB_PC(cctests_descriptor_assertion_t, D, C->descriptor);
 
   D->print(C);
 }
@@ -435,7 +435,7 @@ cctests_condition_delete_assertion_expected_value (cce_condition_t * C)
 }
 
 char const *
-cctests_condition_static_message_assertion_expected_value (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_assertion_expected_value (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests assertion failure: expected a value, got another";
 }
@@ -493,7 +493,7 @@ cce_descriptor_set_parent_to(cctests_descriptor_assertion_expected_value_t) (cce
   }									\
 									\
   char const *								\
-  cctests_condition_static_message_assertion_expected_ ## STEM (cce_condition_t const * C CCTESTS_UNUSED) \
+  cctests_condition_static_message_assertion_expected_ ## STEM (cce_condition_t const * C CCLIB_UNUSED) \
   {									\
     return "CCTests assertion failure, expected " #TYPE " value";	\
   }									\
@@ -503,7 +503,7 @@ cce_descriptor_set_parent_to(cctests_descriptor_assertion_expected_value_t) (cce
   {									\
     cctests_condition_print_assertion_fun(C);				\
     {									\
-      CCTESTS_PC(cctests_condition_assertion_expected_ ## STEM ## _t, K, C); \
+      CCLIB_PC(cctests_condition_assertion_expected_ ## STEM ## _t, K, C); \
 									\
       fprintf(cctests_log_stream, "   expected: ");			\
       fprintf(cctests_log_stream, "%" PRINTF_FORMAT, PRINTF_CAST K->expected); \
@@ -628,14 +628,14 @@ cctests_condition_delete_assertion_expected_asciiz (cce_condition_t * C)
 void
 cctests_condition_final_assertion_expected_asciiz (cce_condition_t * C)
 {
-  CCTESTS_PC(cctests_condition_assertion_expected_asciiz_t, K, C);
+  CCLIB_PC(cctests_condition_assertion_expected_asciiz_t, K, C);
 
   free(K->expected);
   free(K->result);
 }
 
 char const *
-cctests_condition_static_message_assertion_expected_asciiz (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_assertion_expected_asciiz (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests assertion failure, expected ASCIIZ value";
 }
@@ -645,7 +645,7 @@ cctests_condition_print_assertion_expected_asciiz_fun (cce_condition_t const * C
 {
   cctests_condition_print_assertion_fun(C);
   {
-    CCTESTS_PC(cctests_condition_assertion_expected_asciiz_t, K, C);
+    CCLIB_PC(cctests_condition_assertion_expected_asciiz_t, K, C);
 
     fprintf(cctests_log_stream, "   expected:     '%s'\n", K->expected);
     fprintf(cctests_log_stream, "   result:       '%s'\n", K->result);
@@ -733,14 +733,14 @@ cctests_condition_delete_assertion_expected_ascii (cce_condition_t * C)
 void
 cctests_condition_final_assertion_expected_ascii (cce_condition_t * C)
 {
-  CCTESTS_PC(cctests_condition_assertion_expected_ascii_t, K, C);
+  CCLIB_PC(cctests_condition_assertion_expected_ascii_t, K, C);
 
   free(K->expected);
   free(K->result);
 }
 
 char const *
-cctests_condition_static_message_assertion_expected_ascii (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_assertion_expected_ascii (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests assertion failure, expected ASCII value";
 }
@@ -750,7 +750,7 @@ cctests_condition_print_assertion_expected_ascii_fun (cce_condition_t const * C)
 {
   cctests_condition_print_assertion_fun(C);
   {
-    CCTESTS_PC(cctests_condition_assertion_expected_ascii_t, K, C);
+    CCLIB_PC(cctests_condition_assertion_expected_ascii_t, K, C);
     size_t	expected_len = strlen(K->expected);
 
     fprintf(cctests_log_stream, "   expected:     '%s' (len=%" PRIuSIZE ")\n", K->expected, expected_len);
@@ -837,7 +837,7 @@ cctests_condition_delete_unreachable (cce_condition_t * C)
 }
 
 char const *
-cctests_condition_static_message_unreachable (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_unreachable (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests unreachable code was executed";
 }
@@ -908,7 +908,7 @@ static cctests_condition_signal_t const cctests_condition_signal = {
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_signal (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_signal (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests exception signal";
 }
@@ -962,7 +962,7 @@ static cctests_condition_signal_1_t const cctests_condition_signal_1 = {
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_signal_1 (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_signal_1 (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests exception signal 1";
 }
@@ -1016,7 +1016,7 @@ static cctests_condition_signal_2_t const cctests_condition_signal_2 = {
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_signal_2 (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_signal_2 (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests exception signal 2";
 }
@@ -1070,7 +1070,7 @@ static cctests_condition_signal_3_t const cctests_condition_signal_3 = {
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_signal_3 (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_signal_3 (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests exception signal 3";
 }
@@ -1122,7 +1122,7 @@ static cctests_descriptor_regex_error_t cctests_descriptor_regex_error = {
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_regex_error (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_regex_error (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests regular expression error";
 }
@@ -1178,7 +1178,7 @@ static cctests_descriptor_regex_compilation_error_t const cctests_descriptor_reg
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_regex_compilation_error (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_regex_compilation_error (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests regular expression compilation error";
 }
@@ -1237,7 +1237,7 @@ static cctests_condition_child_failure_t const cctests_condition_child_failure =
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_child_failure (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_child_failure (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests exception child failure";
 }
@@ -1291,7 +1291,7 @@ static cctests_condition_child_abnormal_termination_t const cctests_condition_ch
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_child_abnormal_termination (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_child_abnormal_termination (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests exception child failure: abnormal termination";
 }
@@ -1345,7 +1345,7 @@ static cctests_condition_child_failure_exit_status_t const cctests_condition_chi
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_child_failure_exit_status (cce_condition_t const * C CCTESTS_UNUSED)
+cctests_condition_static_message_child_failure_exit_status (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests exception child failure: failure exit status";
 }

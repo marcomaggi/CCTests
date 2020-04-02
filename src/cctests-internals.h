@@ -8,7 +8,7 @@
 	This  header  file is  for  internal  definitions.  It  must  be
 	included by all the source files in this package.
 
-  Copyright (C) 2017, 2018, 2019 Marco Maggi <mrc.mgg@gmail.com>
+  Copyright (C) 2017, 2018, 2019, 2020 Marco Maggi <mrc.mgg@gmail.com>
 
   This program is  free software: you can redistribute  it and/or modify
   it under the  terms of the GNU General Public  License as published by
@@ -81,28 +81,28 @@
 /* While the code runs a test function: this variable holds a pointer to
  * an ASCIIZ string representing the current test function name.
  */
-cctests_private_decl char const *	cctests_test_func_name;
+cclib_private_decl char const *	cctests_test_func_name;
 
-cctests_private_decl char const *	cctests_terminal_directive_color;
-cctests_private_decl char const *	cctests_terminal_success_color;
-cctests_private_decl char const *	cctests_terminal_failure_color;
-cctests_private_decl char const *	cctests_terminal_skipping_color;
-cctests_private_decl char const *	cctests_terminal_default_color;
+cclib_private_decl char const *	cctests_terminal_directive_color;
+cclib_private_decl char const *	cctests_terminal_success_color;
+cclib_private_decl char const *	cctests_terminal_failure_color;
+cclib_private_decl char const *	cctests_terminal_skipping_color;
+cclib_private_decl char const *	cctests_terminal_default_color;
 
 
 /** --------------------------------------------------------------------
  ** Function prototypes.
  ** ----------------------------------------------------------------- */
 
-cctests_private_decl void cctests_release_resources (void);
+cclib_private_decl void cctests_release_resources (void);
 
-cctests_private_decl void cctests_conditions_module_initialisation (void);
+cclib_private_decl void cctests_conditions_module_initialisation (void);
 
-cctests_private_decl void cctests_sys_regcomp (cce_destination_t L, regex_t * rex, char const * pattern, int cflags)
-  __attribute__((__nonnull__(1,2,3)));
+cclib_private_decl void cctests_sys_regcomp (cce_destination_t L, regex_t * rex, char const * pattern, int cflags)
+  CCLIB_FUNC_ATTRIBUTE_NONNULL(1,2,3);
 
-cctests_private_decl void cctests_sys_regfree (regex_t * rex)
-  __attribute__((__nonnull__(1)));
+cclib_private_decl void cctests_sys_regfree (regex_t * rex)
+  CCLIB_FUNC_ATTRIBUTE_NONNULL(1);
 
 
 /** --------------------------------------------------------------------

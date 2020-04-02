@@ -7,7 +7,7 @@
 
 	Header definitions for subtyping of "regex compilation error" conditions.
 
-  Copyright (C) 2017, 2018, 2019 Marco Maggi <mrc.mgg@gmail.com>
+  Copyright (C) 2017, 2018, 2019, 2020 Marco Maggi <mrc.mgg@gmail.com>
 
   See the COPYING file.
 */
@@ -29,7 +29,7 @@
  ** Module initialisation.
  ** ----------------------------------------------------------------- */
 
-cctests_decl void condition_regex_compilation_error_subtyping_init_module (void);
+cclib_decl void condition_regex_compilation_error_subtyping_init_module (void);
 
 
 /** --------------------------------------------------------------------
@@ -48,21 +48,21 @@ struct my_condition_regex_compilation_error_subtype_t {
   int *					data;
 };
 
-cctests_decl void cce_descriptor_set_parent_to(my_descriptor_regex_compilation_error_subtype_t) (cce_descriptor_t * const D)
+cclib_decl void cce_descriptor_set_parent_to(my_descriptor_regex_compilation_error_subtype_t) (cce_descriptor_t * const D)
   __attribute__((__nonnull__(1)));
 
 /* ------------------------------------------------------------------ */
 
-cctests_decl void my_condition_init_regex_compilation_error_subtype (cce_destination_t L,
+cclib_decl void my_condition_init_regex_compilation_error_subtype (cce_destination_t L,
 								     my_condition_regex_compilation_error_subtype_t * C,
 								     int errcode, int the_data)
   __attribute__((__nonnull__(1,2)));
 
-cctests_decl cce_condition_t const * my_condition_new_regex_compilation_error_subtype (cce_destination_t L,
+cclib_decl cce_condition_t const * my_condition_new_regex_compilation_error_subtype (cce_destination_t L,
 										       int errcode, int the_data)
   __attribute__((__nonnull__(1),__returns_nonnull__));
 
-cctests_decl bool my_condition_is_regex_compilation_error_subtype (cce_condition_t const * C)
+cclib_decl bool my_condition_is_regex_compilation_error_subtype (cce_condition_t const * C)
   __attribute__((__pure__,__nonnull__(1)));
 
 

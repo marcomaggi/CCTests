@@ -440,7 +440,7 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	cctests_successful_func  = false;
 	cctests_counters_register_failed_test();
 	{
-	  CCTESTS_PC(cctests_condition_unreachable_t, C, cce_condition(L));
+	  CCLIB_PC(cctests_condition_unreachable_t, C, cce_condition(L));
 	  fprintf(cctests_log_stream,
 		  "CCTests: %serror%s in test function %s: exception raised, "
 		  "unreachable code was executed in file=%s, function=%s, line number=%d\n",
@@ -453,7 +453,7 @@ cctests_p_run (char const * const test_func_name, cctests_fun_t * const fun)
 	cctests_successful_func  = false;
 	cctests_counters_register_failed_test();
 	{
-	  /* CCTESTS_PC(cctests_condition_assertion_t, C, cce_condition(L)); */
+	  /* CCLIB_PC(cctests_condition_assertion_t, C, cce_condition(L)); */
 	  cctests_condition_print_assertion(cce_condition(L));
 	}
       } else {

@@ -7,7 +7,7 @@
 
 	Test file for running tests in a subprocess.
 
-  Copyright (C) 2018 Marco Maggi <mrc.mgg@gmail.com>
+  Copyright (C) 2018, 2020 Marco Maggi <mrc.mgg@gmail.com>
 
   See the COPYING file.
 */
@@ -71,7 +71,7 @@ test_1_2 (cce_destination_t upper_L)
  ** ----------------------------------------------------------------- */
 
 static void
-test_2_1_parent_function (cce_destination_t L, int64_t child_pid CCTESTS_UNUSED)
+test_2_1_parent_function (cce_destination_t L, int64_t child_pid CCLIB_UNUSED)
 {
   cctests_assert(L, true);
 }
@@ -92,7 +92,7 @@ test_2_1 (cce_destination_t upper_L)
 /* ------------------------------------------------------------------ */
 
 static void
-test_2_2_parent_function (cce_destination_t L, int64_t child_pid CCTESTS_UNUSED)
+test_2_2_parent_function (cce_destination_t L, int64_t child_pid CCLIB_UNUSED)
 {
   cctests_assert(L, true);
 }
