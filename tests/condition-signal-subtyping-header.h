@@ -49,18 +49,20 @@ struct my_condition_signal_subtype_t {
 };
 
 cclib_decl void cce_descriptor_set_parent_to(my_descriptor_signal_subtype_t) (cce_descriptor_t * const D)
-  __attribute__((__nonnull__(1)));
+  CCLIB_FUNC_ATTRIBUTE_NONNULL(1);
 
 /* ------------------------------------------------------------------ */
 
 cclib_decl void my_condition_init_signal_subtype (cce_destination_t L, my_condition_signal_subtype_t * C, int the_data)
-  __attribute__((__nonnull__(1,2)));
+  CCLIB_FUNC_ATTRIBUTE_NONNULL(1,2);
 
 cclib_decl cce_condition_t const * my_condition_new_signal_subtype (cce_destination_t L, int the_data)
-  __attribute__((__nonnull__(1),__returns_nonnull__));
+  CCLIB_FUNC_ATTRIBUTE_NONNULL(1)
+  CCLIB_FUNC_ATTRIBUTE_RETURNS_NONNULL;
 
 cclib_decl bool my_condition_is_signal_subtype (cce_condition_t const * C)
-  __attribute__((__pure__,__nonnull__(1)));
+  CCLIB_FUNC_ATTRIBUTE_NONNULL(1)
+  CCLIB_FUNC_ATTRIBUTE_PURE;
 
 
 /** --------------------------------------------------------------------
