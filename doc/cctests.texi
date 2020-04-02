@@ -148,7 +148,6 @@ included in the section entitled ``@gnu{} Free Documentation License''.
 * assertions::                  Verifying assertions.
 * process::                     Running processes.
 * conditions::                  Condition object types.
-* utils::                       Utility definitions.
 * constants::                   Useful constants.
 * debugging::                   Debugging facilities.
 * automake::                    Interfacing with @gnu{} Automake.
@@ -2848,47 +2847,6 @@ The condition object's base values.
 @c ------------------------------------------------------------------------
 
 @CCTestsConditionSubtypingSection{signal_3,signal-3}
-
-@c page
-@node utils
-@chapter Utility definitions
-
-
-@defmac CCTESTS_PC (@var{POINTER_TYPE}, @var{POINTER_NAME}, @var{EXPRESSION})
-Preprocessor macro used to define pointer variables initialised with a cast expression.  It expands
-to:
-
-@example
-POINTER_TYPE * POINTER_NAME = (POINTER_TYPE *) (EXPRESSION)
-@end example
-
-For example, the macro use:
-
-@example
-CCTESTS_PC(cctests_descriptor_test_failure_t, C, _C);
-@end example
-
-@noindent
-expands into:
-
-@example
-cctests_descriptor_test_failure_t * C = \
-   (cctests_descriptor_test_failure_t *) (_C);
-@end example
-@end defmac
-
-
-@defmac CCTESTS_UNUSED
-Preprocessor macro that is meant to expand into an attribute declaration.  If the symbol
-@code{__GNUC__} is defined, the expansion is:
-
-@example
-__attribute__((__unused__))
-@end example
-
-@noindent
-otherwise the expansion is the empty string.
-@end defmac
 
 @c page
 @node constants
