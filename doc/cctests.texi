@@ -33,7 +33,7 @@
 
 @c To be used as @value{COPYRIGHT_YEARS} whenever we need to include the
 @c list of copyright years.
-@set COPYRIGHT_YEARS            2017, 2018, 2019
+@set COPYRIGHT_YEARS            2017, 2018, 2019, 2020
 
 @c ------------------------------------------------------------
 
@@ -51,7 +51,7 @@
 
 @c ------------------------------------------------------------------------
 
-@set CCEXCEPTIONS_REQUIRED_VERSION      0.9.0
+@set CCEXCEPTIONS_REQUIRED_VERSION      0.10.0
 
 @c ------------------------------------------------------------
 

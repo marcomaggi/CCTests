@@ -7,7 +7,7 @@
 
 	Test file for subtyping of "expected_failure" conditions.
 
-  Copyright (C) 2018 Marco Maggi <mrc.mgg@gmail.com>
+  Copyright (C) 2018, 2020 Marco Maggi <mrc.mgg@gmail.com>
 
   See the COPYING file.
 */
@@ -36,7 +36,7 @@ main (void)
       fprintf(stderr, "%s: static message: %s\n", __func__, cce_condition_static_message(cce_condition(L)));
 
       if (my_condition_is_expected_failure_subtype(cce_condition(L))) {
-	CCE_PC(my_condition_expected_failure_subtype_t, C, cce_condition(L));
+	CCLIB_PC(my_condition_expected_failure_subtype_t, C, cce_condition(L));
 	fprintf(stderr, "%s: is expected_failure subtype, data=%d\n", __func__, *(C->data));
       } else {
 	fprintf(stderr, "%s: wrong condition-object type\n", __func__);

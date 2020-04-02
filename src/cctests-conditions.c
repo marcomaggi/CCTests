@@ -68,7 +68,7 @@ static cctests_descriptor_base_t cctests_descriptor_base = {
 /* ------------------------------------------------------------------ */
 
 char const *
-cctests_condition_static_message_base (cce_condition_t const * C CCE_UNUSED)
+cctests_condition_static_message_base (cce_condition_t const * C CCLIB_UNUSED)
 {
   return "CCTests base exceptional condition";
 }

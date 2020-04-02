@@ -10,7 +10,7 @@ This package installs a C11 language library implementing a framework to
 organise test suites.  The library targets POSIX systems.
 
 This package depends  upon the external packages:  CCExceptions at least
-version  0.9.0.   This  package  relies  on  `pkg-config`  to  find  the
+version  0.10.0.   This  package  relies on  `pkg-config`  to  find  the
 dependency packages installed on the system.
 
 The package uses the GNU Autotools and it is tested, using Travis CI, on
@@ -19,7 +19,7 @@ both Ubuntu GNU+Linux systems and OS X systems.
 
 ## License
 
-Copyright (c) 2017-2019 Marco Maggi <mrc.mgg@gmail.com><br/>
+Copyright (c) 2017-2020 Marco Maggi <mrc.mgg@gmail.com><br/>
 All rights reserved.
 
 This program is free software: you  can redistribute it and/or modify it

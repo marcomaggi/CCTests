@@ -7,7 +7,7 @@
 
 
 
-  Copyright (C) 2017, 2018, 2019 Marco Maggi <mrc.mgg@gmail.com>
+  Copyright (C) 2017, 2018, 2019, 2020 Marco Maggi <mrc.mgg@gmail.com>
 
   This program is free  software: you can redistribute it and/or  modify it under the
   terms of the  GNU Lesser General Public  License as published by  the Free Software
@@ -511,7 +511,7 @@ acquire_environment_test_file (cce_destination_t upper_L)
 
   if (cce_location(L)) {
     if (cctests_condition_is_regex_compilation_error(cce_condition(L))) {
-      CCE_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
+      CCLIB_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
       fprintf(cctests_log_stream,
 	      "CCTests: %serror%s acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_FILE "\": %s\n",
 	      cctests_terminal_failure_color, cctests_terminal_default_color,
@@ -542,7 +542,7 @@ acquire_environment_test_group (cce_destination_t upper_L)
 
   if (cce_location(L)) {
     if (cctests_condition_is_regex_compilation_error(cce_condition(L))) {
-      CCE_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
+      CCLIB_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
       fprintf(cctests_log_stream,
 	      "CCTests: %serror%s acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_GROUP "\": %s\n",
 	      cctests_terminal_failure_color, cctests_terminal_default_color,
@@ -573,7 +573,7 @@ acquire_environment_test_name (cce_destination_t upper_L)
 
   if (cce_location(L)) {
     if (cctests_condition_is_regex_compilation_error(cce_condition(L))) {
-      CCE_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
+      CCLIB_PC(cctests_condition_regex_compilation_error_t, C, cce_condition(L));
       fprintf(cctests_log_stream,
 	      "CCTests: %serror%ss acquiring environment variable \"" CCTESTS_ENVIRONMENT_VARIABLE_NAME "\": %s\n",
 	      cctests_terminal_failure_color, cctests_terminal_default_color,
